@@ -1,6 +1,6 @@
 # CXL-HDM Completion Arena Design
 
-**Status:** approved for implementation
+**Status:** superseded by `2026-08-23-cxl-cache-llc-completion-writeback-design.md`
 
 ## Goal
 

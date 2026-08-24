@@ -1769,6 +1769,149 @@ cafu_csr0_avmm_wrapper_inst
 );
 
 
+// AXI1 is the generated CAFU/CXL.cache interface.  Its original ATE/cust
+// master keeps the read path directly; these write-side signals are serialized
+// with CIRA completion stores by cira_axi_write_arbiter below.
+logic [11:0]  legacy_axi1_awid;
+logic [63:0]  legacy_axi1_awaddr;
+logic [9:0]   legacy_axi1_awlen;
+logic [2:0]   legacy_axi1_awsize;
+logic [1:0]   legacy_axi1_awburst;
+logic [2:0]   legacy_axi1_awprot;
+logic [3:0]   legacy_axi1_awqos;
+logic [6:0]   legacy_axi1_awuser;
+logic         legacy_axi1_awvalid;
+logic [3:0]   legacy_axi1_awcache;
+logic [1:0]   legacy_axi1_awlock;
+logic [3:0]   legacy_axi1_awregion;
+logic [5:0]   legacy_axi1_awatop;
+logic         legacy_axi1_awready;
+logic [511:0] legacy_axi1_wdata;
+logic [63:0]  legacy_axi1_wstrb;
+logic         legacy_axi1_wlast;
+logic         legacy_axi1_wuser;
+logic         legacy_axi1_wvalid;
+logic         legacy_axi1_wready;
+logic [11:0]  legacy_axi1_bid;
+logic [1:0]   legacy_axi1_bresp;
+logic [3:0]   legacy_axi1_buser;
+logic         legacy_axi1_bvalid;
+logic         legacy_axi1_bready;
+
+logic         cira_cache_req_valid;
+logic [31:0]  cira_cache_req_status;
+logic [63:0]  cira_cache_req_result;
+logic [63:0]  cira_cache_req_hpa;
+logic         cira_cache_req_busy;
+logic         cira_cache_req_done;
+logic         cira_cache_req_error;
+
+logic [11:0]  cira_axi1_awid;
+logic [63:0]  cira_axi1_awaddr;
+logic [9:0]   cira_axi1_awlen;
+logic [2:0]   cira_axi1_awsize;
+logic [1:0]   cira_axi1_awburst;
+logic [2:0]   cira_axi1_awprot;
+logic [3:0]   cira_axi1_awqos;
+logic [6:0]   cira_axi1_awuser;
+logic         cira_axi1_awvalid;
+logic [3:0]   cira_axi1_awcache;
+logic [1:0]   cira_axi1_awlock;
+logic [3:0]   cira_axi1_awregion;
+logic [5:0]   cira_axi1_awatop;
+logic         cira_axi1_awready;
+logic [511:0] cira_axi1_wdata;
+logic [63:0]  cira_axi1_wstrb;
+logic         cira_axi1_wlast;
+logic         cira_axi1_wuser;
+logic         cira_axi1_wvalid;
+logic         cira_axi1_wready;
+logic [11:0]  cira_axi1_bid;
+logic [1:0]   cira_axi1_bresp;
+logic [3:0]   cira_axi1_buser;
+logic         cira_axi1_bvalid;
+logic         cira_axi1_bready;
+
+cira_cxl_cache_completion_writer cira_cache_completion_writer_inst (
+    .clk                (ip2hdm_clk),
+    .rst_n              (ip2hdm_reset_n),
+    .req_valid          (cira_cache_req_valid),
+    .req_status         (cira_cache_req_status),
+    .req_result         (cira_cache_req_result),
+    .req_completion_hpa (cira_cache_req_hpa),
+    .req_busy           (cira_cache_req_busy),
+    .req_done           (cira_cache_req_done),
+    .req_error          (cira_cache_req_error),
+    .awid               (cira_axi1_awid),
+    .awaddr             (cira_axi1_awaddr),
+    .awlen              (cira_axi1_awlen),
+    .awsize             (cira_axi1_awsize),
+    .awburst            (cira_axi1_awburst),
+    .awprot             (cira_axi1_awprot),
+    .awqos              (cira_axi1_awqos),
+    .awuser             (cira_axi1_awuser),
+    .awvalid            (cira_axi1_awvalid),
+    .awcache            (cira_axi1_awcache),
+    .awlock             (cira_axi1_awlock),
+    .awregion           (cira_axi1_awregion),
+    .awatop             (cira_axi1_awatop),
+    .awready            (cira_axi1_awready),
+    .wdata              (cira_axi1_wdata),
+    .wstrb              (cira_axi1_wstrb),
+    .wlast              (cira_axi1_wlast),
+    .wuser              (cira_axi1_wuser),
+    .wvalid             (cira_axi1_wvalid),
+    .wready             (cira_axi1_wready),
+    .bid                (cira_axi1_bid),
+    .bresp              (cira_axi1_bresp),
+    .buser              (cira_axi1_buser),
+    .bvalid             (cira_axi1_bvalid),
+    .bready             (cira_axi1_bready)
+);
+
+cira_axi_write_arbiter cira_axi1_write_arbiter_inst (
+    .clk                (ip2hdm_clk), .rst_n(ip2hdm_reset_n),
+    .legacy_awid        (legacy_axi1_awid), .legacy_awaddr(legacy_axi1_awaddr),
+    .legacy_awlen       (legacy_axi1_awlen), .legacy_awsize(legacy_axi1_awsize),
+    .legacy_awburst     (legacy_axi1_awburst), .legacy_awprot(legacy_axi1_awprot),
+    .legacy_awqos       (legacy_axi1_awqos), .legacy_awuser(legacy_axi1_awuser),
+    .legacy_awvalid     (legacy_axi1_awvalid), .legacy_awcache(legacy_axi1_awcache),
+    .legacy_awlock      (legacy_axi1_awlock), .legacy_awregion(legacy_axi1_awregion),
+    .legacy_awatop      (legacy_axi1_awatop), .legacy_awready(legacy_axi1_awready),
+    .legacy_wdata       (legacy_axi1_wdata), .legacy_wstrb(legacy_axi1_wstrb),
+    .legacy_wlast       (legacy_axi1_wlast), .legacy_wuser(legacy_axi1_wuser),
+    .legacy_wvalid      (legacy_axi1_wvalid), .legacy_wready(legacy_axi1_wready),
+    .legacy_bid         (legacy_axi1_bid), .legacy_bresp(legacy_axi1_bresp),
+    .legacy_buser       (legacy_axi1_buser), .legacy_bvalid(legacy_axi1_bvalid),
+    .legacy_bready      (legacy_axi1_bready),
+    .cira_awid          (cira_axi1_awid), .cira_awaddr(cira_axi1_awaddr),
+    .cira_awlen         (cira_axi1_awlen), .cira_awsize(cira_axi1_awsize),
+    .cira_awburst       (cira_axi1_awburst), .cira_awprot(cira_axi1_awprot),
+    .cira_awqos         (cira_axi1_awqos), .cira_awuser(cira_axi1_awuser),
+    .cira_awvalid       (cira_axi1_awvalid), .cira_awcache(cira_axi1_awcache),
+    .cira_awlock        (cira_axi1_awlock), .cira_awregion(cira_axi1_awregion),
+    .cira_awatop        (cira_axi1_awatop), .cira_awready(cira_axi1_awready),
+    .cira_wdata         (cira_axi1_wdata), .cira_wstrb(cira_axi1_wstrb),
+    .cira_wlast         (cira_axi1_wlast), .cira_wuser(cira_axi1_wuser),
+    .cira_wvalid        (cira_axi1_wvalid), .cira_wready(cira_axi1_wready),
+    .cira_bid           (cira_axi1_bid), .cira_bresp(cira_axi1_bresp),
+    .cira_buser         (cira_axi1_buser), .cira_bvalid(cira_axi1_bvalid),
+    .cira_bready        (cira_axi1_bready),
+    .phy_awid           (axi1_awid), .phy_awaddr(axi1_awaddr),
+    .phy_awlen          (axi1_awlen), .phy_awsize(axi1_awsize),
+    .phy_awburst        (axi1_awburst), .phy_awprot(axi1_awprot),
+    .phy_awqos          (axi1_awqos), .phy_awuser(axi1_awuser),
+    .phy_awvalid        (axi1_awvalid), .phy_awcache(axi1_awcache),
+    .phy_awlock         (axi1_awlock), .phy_awregion(axi1_awregion),
+    .phy_awatop         (axi1_awatop), .phy_awready(axi1_awready),
+    .phy_wdata          (axi1_wdata), .phy_wstrb(axi1_wstrb),
+    .phy_wlast          (axi1_wlast), .phy_wuser(axi1_wuser),
+    .phy_wvalid         (axi1_wvalid), .phy_wready(axi1_wready),
+    .phy_bid            (axi1_bid), .phy_bresp(axi1_bresp),
+    .phy_buser          (axi1_buser), .phy_bvalid(axi1_bvalid),
+    .phy_bready         (axi1_bready)
+);
+
 `ifdef BYPASS_ATE 
 
 cust_afu_wrapper cust_afu_wrapper_inst
@@ -1779,35 +1922,35 @@ cust_afu_wrapper cust_afu_wrapper_inst
   .axi4_mm_rst_n                         (ip2hdm_reset_n),
 
 // AXI-MM interface - write address channel
-  .awid                                  (axi1_awid),
-  .awaddr                                (axi1_awaddr), 
-  .awlen                                 (axi1_awlen),
-  .awsize                                (axi1_awsize),
-  .awburst                               (axi1_awburst),
-  .awprot                                (axi1_awprot),
-  .awqos                                 (axi1_awqos),
-  .awuser                                (axi1_awuser),
-  .awvalid                               (axi1_awvalid),
-  .awcache                               (axi1_awcache),
-  .awlock                                (axi1_awlock),
-  .awregion                              (axi1_awregion),
-  .awatop                                (axi1_awatop),
-  .awready                               (axi1_awready),
+  .awid                                  (legacy_axi1_awid),
+  .awaddr                                (legacy_axi1_awaddr),
+  .awlen                                 (legacy_axi1_awlen),
+  .awsize                                (legacy_axi1_awsize),
+  .awburst                               (legacy_axi1_awburst),
+  .awprot                                (legacy_axi1_awprot),
+  .awqos                                 (legacy_axi1_awqos),
+  .awuser                                (legacy_axi1_awuser),
+  .awvalid                               (legacy_axi1_awvalid),
+  .awcache                               (legacy_axi1_awcache),
+  .awlock                                (legacy_axi1_awlock),
+  .awregion                              (legacy_axi1_awregion),
+  .awatop                                (legacy_axi1_awatop),
+  .awready                               (legacy_axi1_awready),
   
 // AXI-MM interface - write data channel
-  .wdata                                 (axi1_wdata),
-  .wstrb                                 (axi1_wstrb),
-  .wlast                                 (axi1_wlast),
-  .wuser                                 (axi1_wuser),
-  .wvalid                                (axi1_wvalid),
-  .wready                                (axi1_wready),
+  .wdata                                 (legacy_axi1_wdata),
+  .wstrb                                 (legacy_axi1_wstrb),
+  .wlast                                 (legacy_axi1_wlast),
+  .wuser                                 (legacy_axi1_wuser),
+  .wvalid                                (legacy_axi1_wvalid),
+  .wready                                (legacy_axi1_wready),
   
 //  AXI-MM interface - write response channel
-   .bid                                  (axi1_bid),
-   .bresp                                (axi1_bresp),
-   .buser                                (axi1_buser),
-   .bvalid                               (axi1_bvalid),
-   .bready                               (axi1_bready),
+   .bid                                  (legacy_axi1_bid),
+   .bresp                                (legacy_axi1_bresp),
+   .buser                                (legacy_axi1_buser),
+   .bvalid                               (legacy_axi1_bvalid),
+   .bready                               (legacy_axi1_bready),
   
 // AXI-MM interface - read address channel
   .arid                                  (axi1_arid),
@@ -1841,34 +1984,34 @@ cust_afu_wrapper cust_afu_wrapper_inst
 afu_atomic_test_engine afu_atomic_test_engine(
    .rtl_clk (ip2hdm_clk  ),
    .reset_n (ip2hdm_reset_n),
-   .awaddr  (axi1_awaddr   ), 
-   .awburst (axi1_awburst  ),
-   .awcache (axi1_awcache  ),
-   .awid    (axi1_awid     ),
-   .awlen   (axi1_awlen    ),
-   .awlock  (axi1_awlock   ),
-   .awqos   (axi1_awqos    ),
-   .awprot  (axi1_awprot   ),
-   .awready (axi1_awready  ),
-   .awregion(axi1_awregion ),
-   .awsize  (axi1_awsize   ),
-   .awatop  (axi1_awatop   ),
-   .awuser  (axi1_awuser   ),
-   .awvalid (axi1_awvalid  ),
+   .awaddr  (legacy_axi1_awaddr   ),
+   .awburst (legacy_axi1_awburst  ),
+   .awcache (legacy_axi1_awcache  ),
+   .awid    (legacy_axi1_awid     ),
+   .awlen   (legacy_axi1_awlen    ),
+   .awlock  (legacy_axi1_awlock   ),
+   .awqos   (legacy_axi1_awqos    ),
+   .awprot  (legacy_axi1_awprot   ),
+   .awready (legacy_axi1_awready  ),
+   .awregion(legacy_axi1_awregion ),
+   .awsize  (legacy_axi1_awsize   ),
+   .awatop  (legacy_axi1_awatop   ),
+   .awuser  (legacy_axi1_awuser   ),
+   .awvalid (legacy_axi1_awvalid  ),
                       
-   .wdata   (axi1_wdata    ),
+   .wdata   (legacy_axi1_wdata    ),
    .wid     (axi1_wid      ),
-   .wlast   (axi1_wlast    ),
-   .wready  (axi1_wready   ),
-   .wstrb   (axi1_wstrb    ),
-   .wuser   (axi1_wuser    ),
-   .wvalid  (axi1_wvalid   ),  
+   .wlast   (legacy_axi1_wlast    ),
+   .wready  (legacy_axi1_wready   ),
+   .wstrb   (legacy_axi1_wstrb    ),
+   .wuser   (legacy_axi1_wuser    ),
+   .wvalid  (legacy_axi1_wvalid   ),
                       
-   .bid     (axi1_bid      ),
-   .bready  (axi1_bready   ),
-   .bresp   (axi1_bresp    ),
-   .buser   (axi1_buser    ),
-   .bvalid  (axi1_bvalid   ),
+   .bid     (legacy_axi1_bid      ),
+   .bready  (legacy_axi1_bready   ),
+   .bresp   (legacy_axi1_bresp    ),
+   .buser   (legacy_axi1_buser    ),
+   .bvalid  (legacy_axi1_bvalid   ),
                       
    .araddr  (axi1_araddr   ),
    .arburst (axi1_arburst  ),
@@ -2817,6 +2960,16 @@ end
 ,   .ext_vx_launch_toggle    (vx_launch_toggle)
 ,   .ext_vx_kernel_addr      (vx_kernel_addr)
 ,   .ext_vx_kernel_args      (vx_kernel_args)
+
+
+    // CIRA completion request/result handshake, all in ip2hdm_clk.
+,   .cira_cache_req_valid      (cira_cache_req_valid)
+,   .cira_cache_req_status     (cira_cache_req_status)
+,   .cira_cache_req_result     (cira_cache_req_result)
+,   .cira_cache_req_hpa        (cira_cache_req_hpa)
+,   .cira_cache_req_busy       (cira_cache_req_busy)
+,   .cira_cache_req_done       (cira_cache_req_done)
+,   .cira_cache_req_error      (cira_cache_req_error)
 );
 
 

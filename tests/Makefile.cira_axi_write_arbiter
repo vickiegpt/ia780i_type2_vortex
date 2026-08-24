@@ -1,0 +1,26 @@
+VERILATOR ?= verilator
+RTL_DIR   := ../hardware_test_design/common/rv64
+
+TOP     := tb_cira_axi_write_arbiter
+SOURCES := $(TOP).sv $(RTL_DIR)/cira_axi_write_arbiter.sv
+BIN     := obj_dir/tb_cira_axi_write_arbiter
+
+VFLAGS := --binary -j 0 --timing \
+          -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC -Wno-INITIALDLY
+
+.PHONY: all run lint clean
+
+all: run
+
+$(BIN): $(SOURCES)
+	$(VERILATOR) $(VFLAGS) --top-module $(TOP) $(SOURCES) -o tb_cira_axi_write_arbiter
+
+run: $(BIN)
+	./$(BIN)
+
+lint:
+	$(VERILATOR) --lint-only -Wall -Wno-DECLFILENAME \
+		--top-module cira_axi_write_arbiter $(RTL_DIR)/cira_axi_write_arbiter.sv
+
+clean:
+	rm -rf obj_dir

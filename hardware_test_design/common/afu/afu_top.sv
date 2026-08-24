@@ -537,6 +537,17 @@ import cxl_memuring_vortex_pkg::*;
 , input  logic        ext_vx_launch_toggle
 , input  logic [63:0] ext_vx_kernel_addr
 , input  logic [63:0] ext_vx_kernel_args
+
+
+// CIRA completion requests cross to the AXI1/CXL.cache writer in
+// ed_top_wrapper_typ2.  All signals share ip2hdm_clk.
+, output logic        cira_cache_req_valid
+, output logic [31:0] cira_cache_req_status
+, output logic [63:0] cira_cache_req_result
+, output logic [63:0] cira_cache_req_hpa
+, input  logic        cira_cache_req_busy
+, input  logic        cira_cache_req_done
+, input  logic        cira_cache_req_error
 );
 
 
@@ -869,10 +880,19 @@ import cxl_memuring_vortex_pkg::*;
 // GPU wrapper internal signals
 logic        gpu_csr_valid;
 logic        gpu_csr_write;
-logic [11:0] gpu_csr_addr;
+logic [13:0] gpu_csr_addr;
 logic [63:0] gpu_csr_wdata;
 logic        gpu_csr_ready;
 logic [63:0] gpu_csr_rdata;
+
+// CIRA job dispatch <-> Vortex launch handshake. Declared here because the
+// launch arbitration below runs ahead of the dispatcher instantiation, and an
+// undeclared identifier would silently become a 1-bit implicit wire.
+logic        cira_launch_valid;
+logic        cira_launch_ready;
+logic [63:0] cira_kernel_addr;
+logic [63:0] cira_kernel_args;
+logic        cira_speculative;
 
 logic        gpu_kernel_done;
 logic [31:0] gpu_kernel_status;
@@ -947,6 +967,37 @@ always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n) begin
 end
 
 //=========================================================================
+// Kernel launch arbitration: CIRA dispatcher vs. the legacy ext_vx_* path.
+// The dispatcher takes priority, and the two never overlap in practice --
+// ext_vx_* is the bring-up path, CIRA is the production one.
+//=========================================================================
+
+logic                gpu_launch_valid_mux;
+vortex_kernel_args_t gpu_kernel_args_mux;
+vortex_kernel_args_t cira_kernel_args_packed;
+
+always_comb begin
+    cira_kernel_args_packed                  = '0;
+    cira_kernel_args_packed.pc_start         = cira_kernel_addr;
+    cira_kernel_args_packed.kernel_param_ptr = cira_kernel_args;
+    // Single workgroup, same convention as the ext_vx_* path: the Vortex
+    // runtime expects grid/block = 1 and spreads threads over warps itself.
+    cira_kernel_args_packed.grid_x           = 16'h1;
+    cira_kernel_args_packed.grid_y           = 16'h1;
+    cira_kernel_args_packed.grid_z           = 16'h1;
+    cira_kernel_args_packed.block_x          = 16'h1;
+    cira_kernel_args_packed.block_y          = 16'h1;
+    cira_kernel_args_packed.block_z          = 16'h1;
+
+    gpu_launch_valid_mux = cira_launch_valid || ext_launch_pending;
+    gpu_kernel_args_mux  = cira_launch_valid ? cira_kernel_args_packed
+                                             : ext_kernel_args;
+end
+
+// The dispatcher owns the handshake whenever it is the one launching.
+assign cira_launch_ready = cira_launch_valid && gpu_kernel_launch_ready_int;
+
+//=========================================================================
 // AVMM-to-CSR Bridge: CAFU AVMM (125 MHz) -> GPU CSR (400 MHz ip2hdm_clk)
 // Simple req/ack handshake CDC
 //=========================================================================
@@ -954,7 +1005,7 @@ end
 // AVMM side (125 MHz domain)
 logic        avmm_csr_req;
 logic        avmm_csr_write_r;
-logic [11:0] avmm_csr_addr_r;
+logic [13:0] avmm_csr_addr_r;
 logic [63:0] avmm_csr_wdata_r;
 logic        avmm_csr_done;     // synced back from ip2hdm_clk domain
 logic [63:0] avmm_csr_rdata_r;  // captured read data
@@ -976,7 +1027,7 @@ always_ff @(posedge gpu_avmm_clk or negedge gpu_avmm_rstn) begin
         avmm_req_toggle    <= 1'b0;
         avmm_busy          <= 1'b0;
         avmm_csr_write_r   <= 1'b0;
-        avmm_csr_addr_r    <= 12'h0;
+        avmm_csr_addr_r    <= 14'h0;
         avmm_csr_wdata_r   <= 64'h0;
         avmm_csr_rdata_r   <= 64'h0;
         avmm_ack_sync1     <= 1'b0;
@@ -994,7 +1045,7 @@ always_ff @(posedge gpu_avmm_clk or negedge gpu_avmm_rstn) begin
                 // Address filtering done in ed_top_wrapper_typ2
                 avmm_busy        <= 1'b1;
                 avmm_csr_write_r <= gpu_avmm_write;
-                avmm_csr_addr_r  <= gpu_avmm_address[11:0];
+                avmm_csr_addr_r  <= gpu_avmm_address[13:0];
                 avmm_csr_wdata_r <= gpu_avmm_writedata;
                 avmm_req_toggle  <= ~avmm_req_toggle;
             end
@@ -1026,7 +1077,7 @@ always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n) begin
         avmm_ack_toggle       <= 1'b0;
         gpu_csr_valid          <= 1'b0;
         gpu_csr_write          <= 1'b0;
-        gpu_csr_addr           <= 12'h0;
+        gpu_csr_addr           <= 14'h0;
         gpu_csr_wdata          <= 64'h0;
         avmm_rdata_fast        <= 64'h0;
     end else begin
@@ -1055,6 +1106,96 @@ always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n) begin
 end
 
 assign avmm_ack_fast = avmm_ack_toggle;
+
+//=========================================================================
+// GPU CSR window split
+//
+//   BAR0+0x080000 .. +0x080FFF   legacy Vortex wrapper CSRs (0x100..0x13C)
+//   BAR0+0x082000 .. +0x083FFF   CIRA control window (cira_cxl_job.h)
+//
+// Address bit 13 selects between them. The legacy map is left exactly where
+// it was so existing probe/launch tools keep working; the CIRA window needs
+// its own 8 KB because the protocol puts the status line at 0x1F20 and the
+// arg slots at 0x100..0x14FF, which would collide with the legacy registers.
+//=========================================================================
+
+logic        cira_win_sel;
+logic        cira_csr_valid;
+logic        cira_csr_ready;
+logic [63:0] cira_csr_rdata;
+logic        vx_csr_valid;
+logic        vx_csr_ready;
+logic [63:0] vx_csr_rdata;
+
+assign cira_win_sel   = gpu_csr_addr[13];
+assign cira_csr_valid = gpu_csr_valid &&  cira_win_sel;
+assign vx_csr_valid   = gpu_csr_valid && !cira_win_sel;
+
+assign gpu_csr_ready  = cira_win_sel ? cira_csr_ready : vx_csr_ready;
+assign gpu_csr_rdata  = cira_win_sel ? cira_csr_rdata : vx_csr_rdata;
+
+//=========================================================================
+// CIRA job dispatch: doorbell -> validate -> launch -> republish status.
+// This is the device side of the protocol in runtime/include/cira_cxl_job.h.
+//=========================================================================
+
+logic        cira_wb_kernel_done;
+logic [31:0] cira_wb_kernel_status;
+logic [63:0] cira_wb_kernel_result;
+logic [63:0] cira_wb_completion_addr;
+
+logic [31:0] cira_jobs_accepted;
+logic [31:0] cira_jobs_rejected;
+logic [63:0] cira_last_seq;
+logic [3:0]  cira_state;
+
+// Completion publication uses the generated AXI1 CAFU/CXL.cache port.  The
+// writer itself lives in ed_top_wrapper_typ2, where it is serialized with the
+// existing ATE master before reaching the physical port.
+localparam logic CIRA_WB_ENABLE = 1'b1;
+
+cira_job_dispatch #(
+    .ADDR_WIDTH (13)
+) cira_dispatch_inst (
+    .clk                (ip2hdm_clk),
+    .rst_n              (ip2hdm_reset_n),
+
+    .csr_valid          (cira_csr_valid),
+    .csr_write          (gpu_csr_write),
+    .csr_addr           (gpu_csr_addr[12:0]),
+    .csr_wdata          (gpu_csr_wdata),
+    .csr_ready          (cira_csr_ready),
+    .csr_rdata          (cira_csr_rdata),
+
+    .job_launch_valid   (cira_launch_valid),
+    .job_launch_ready   (cira_launch_ready),
+    .job_kernel_addr    (cira_kernel_addr),
+    .job_kernel_args    (cira_kernel_args),
+    .job_speculative    (cira_speculative),
+
+    .job_done           (gpu_kernel_done),
+    .job_status         (gpu_kernel_status),
+    .job_result         (gpu_cycles_internal),
+
+    .wb_kernel_done     (cira_wb_kernel_done),
+    .wb_kernel_status   (cira_wb_kernel_status),
+    .wb_kernel_result   (cira_wb_kernel_result),
+    .wb_completion_addr (cira_wb_completion_addr),
+    .wb_enable          (CIRA_WB_ENABLE),
+    .wb_done            (cira_cache_req_done),
+    .wb_error           (cira_cache_req_error),
+    .wb_busy            (cira_cache_req_busy),
+
+    .dbg_jobs_accepted  (cira_jobs_accepted),
+    .dbg_jobs_rejected  (cira_jobs_rejected),
+    .dbg_last_seq       (cira_last_seq),
+    .dbg_state          (cira_state)
+);
+
+assign cira_cache_req_valid  = cira_wb_kernel_done;
+assign cira_cache_req_status = cira_wb_kernel_status;
+assign cira_cache_req_result = cira_wb_kernel_result;
+assign cira_cache_req_hpa    = cira_wb_completion_addr;
 
 //=========================================================================
 // HDM Ch1 -> Arbiter port 0 response signals (directly driven by arbiter)
@@ -1154,16 +1295,16 @@ vortex_gpu_wrapper vortex_gpu_inst (
     .rst_n                  (ip2hdm_reset_n),
 
     // CSR interface (from AVMM-to-CSR bridge above)
-    .csr_valid              (gpu_csr_valid),
+    .csr_valid              (vx_csr_valid),
     .csr_write              (gpu_csr_write),
-    .csr_addr               (gpu_csr_addr),
+    .csr_addr               (gpu_csr_addr[11:0]),
     .csr_wdata              (gpu_csr_wdata),
-    .csr_ready              (gpu_csr_ready),
-    .csr_rdata              (gpu_csr_rdata),
+    .csr_ready              (vx_csr_ready),
+    .csr_rdata              (vx_csr_rdata),
 
-    // Kernel launch interface (unused - using CSR-driven launch)
-    .kernel_launch_valid    (ext_launch_pending),
-    .kernel_args            (ext_kernel_args),
+    // Kernel launch interface: CIRA dispatcher, or the legacy ext_vx_* path
+    .kernel_launch_valid    (gpu_launch_valid_mux),
+    .kernel_args            (gpu_kernel_args_mux),
     .kernel_launch_ready    (gpu_kernel_launch_ready_int),
     .kernel_done            (gpu_kernel_done),
     .kernel_status          (gpu_kernel_status),

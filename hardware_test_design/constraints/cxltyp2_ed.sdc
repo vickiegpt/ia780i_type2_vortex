@@ -215,8 +215,8 @@ set pld_clk      [get_clocks *|cxl_ip|rtile_cxl_ip.coreclkout_hip]
 set side_hip_clk [get_clocks *|cxl_ip|rtile_cxl_ip.pld_clkout_slow]
 set cam_clk      [get_clocks *|cxl_t2ip_sip_top|gen_clkrst|cxl_memexp_sip_clkgen|rnr_ial_sip_clkgen_pll_cam_clk]
 set sbr_clk      [get_clocks *|cxl_t2ip_sip_top|gen_clkrst|cxl_memexp_sip_clkgen|rnr_ial_sip_clkgen_pll_sbr_clk]
-set emif_usr_clk_0 [get_clocks ed_top_wrapper_typ2_inst|inst_emif_avmm|GEN_CHAN_COUNT_EMIF_NOT_REVB[0].emif_inst|emif_core_usr_clk] 
-set emif_usr_clk_1 [get_clocks ed_top_wrapper_typ2_inst|inst_emif_avmm|GEN_CHAN_COUNT_EMIF_NOT_REVB[1].emif_inst|emif_core_usr_clk]
+set emif_usr_clk_0 [get_clocks ed_top_wrapper_typ2_inst|inst_emif_avmm|emif_inst_0|emif_core_usr_clk]
+set emif_usr_clk_1 [get_clocks ed_top_wrapper_typ2_inst|inst_emif_avmm|emif_inst_1|emif_core_usr_clk]
 set tck [get_clocks altera_reserved_tck]
 
 #-----------------------------------------------
@@ -341,5 +341,4 @@ foreach each_inst $inst_list {
     }
 }
 #apply_sdc_pre_dcfifo ccv_afu_cdc_fifo_vcd*
-
 

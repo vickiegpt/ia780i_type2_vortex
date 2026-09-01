@@ -28,6 +28,7 @@
 
     # Fitter Assignments
     # ==================
+    set_global_assignment -name SEED 2
     set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION ALWAYS
     set_global_assignment -name ALM_REGISTER_PACKING_EFFORT LOW
     set_global_assignment -name QII_AUTO_PACKED_REGISTERS "NORMAL"

@@ -9,6 +9,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 QSF = ROOT / "hardware_test_design/cxltyp2_ed.qsf"
 PINOUT = ROOT / "hardware_test_design/constraints/ia780i_pinout.tcl"
+TOP_SDC = ROOT / "hardware_test_design/constraints/cxltyp2_ed.sdc"
+QUARTUS_CONSTRAINTS = (
+    ROOT / "hardware_test_design/constraints/cxltyp2_quartus_constraints_ed_en.tcl"
+)
 DEFINES = ROOT / "hardware_test_design/common/cxl_ed_defines.svh.iv"
 TOP_PKG = ROOT / "hardware_test_design/common/ed_cxlip_top_pkg.sv"
 MC_PKG = ROOT / "hardware_test_design/common/mc_top/ddr_mc_top_common_pkg.sv"
@@ -55,11 +59,31 @@ def main() -> int:
     errors: list[str] = []
     qsf = active_tcl_lines(QSF)
     pinout = active_tcl_lines(PINOUT)
+    top_sdc = TOP_SDC.read_text(encoding="utf-8")
+    quartus_constraints = QUARTUS_CONSTRAINTS.read_text(encoding="utf-8")
 
     if qsf.count("source ./constraints/ia780i_pinout.tcl") != 1:
         errors.append("IA780I pinout must be sourced exactly once")
     if "set_global_assignment -name VERILOG_MACRO IA780I" not in qsf:
         errors.append("IA780I macro is not active")
+
+    for channel in (0, 1):
+        require_regex(
+            errors,
+            top_sdc,
+            rf"set\s+emif_usr_clk_{channel}\s+\[get_clocks\s+"
+            rf"ed_top_wrapper_typ2_inst\|inst_emif_avmm\|emif_inst_{channel}"
+            rf"\|emif_core_usr_clk\]",
+            f"top SDC must bind IA780I EMIF channel {channel} user clock",
+        )
+    if "GEN_CHAN_COUNT_EMIF_NOT_REVB" in top_sdc:
+        errors.append("top SDC still uses the inactive legacy EMIF hierarchy")
+    require_regex(
+        errors,
+        quartus_constraints,
+        r"set_global_assignment\s+-name\s+SEED\s+2(?:\s|$)",
+        "timing-closure fitter seed must be reproducibly fixed to 2",
+    )
 
     expected_cxl_qip = (
         "set_global_assignment -name QIP_FILE "

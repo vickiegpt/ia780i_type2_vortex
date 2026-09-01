@@ -66,9 +66,9 @@ source ./constraints/cxltyp2_quartus_constraints_ed_en.tcl
 
 
 ####-----------------SIM 9 compilance-------------------------####
-set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_QUESTA ../intel_rtile_cxl_top_cxltyp2_ed/sim/mentor/run_msim_setup.tcl -section_id eda_simulation
-set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_VCS ../intel_rtile_cxl_top_cxltyp2_ed/sim/synopsys/vcs/vcs_setup.sh -section_id eda_simulation
-set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_VCSMX ../intel_rtile_cxl_top_cxltyp2_ed/sim/synopsys/vcsmx/vcsmx_setup.sh -section_id eda_simulation
+set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_QUESTA ./intel_rtile_cxl_top_cxltyp2_ed/sim/mentor/run_msim_setup.tcl -section_id eda_simulation
+set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_VCS ./intel_rtile_cxl_top_cxltyp2_ed/sim/synopsys/vcs/vcs_setup.sh -section_id eda_simulation
+set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_VCSMX ./intel_rtile_cxl_top_cxltyp2_ed/sim/synopsys/vcsmx/vcsmx_setup.sh -section_id eda_simulation
 #set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_RIVIERAPRO ./switch_ed/sim/ -section_id eda_simulation
 #set_global_assignment -name EDA_EXDES_CUSTOM_SIM_SCRIPT_XCELIUM ./switch_ed/sim/ -section_id eda_simulation
 ####-----------------SIM 9 compilance-------------------------####
@@ -250,11 +250,11 @@ set_global_assignment -name SEARCH_PATH ./common/rv64/vortex/interfaces/
 # set_global_assignment -name SEARCH_PATH ./common/rv64/vortex/tcu/bhf/
 set_global_assignment -name SEARCH_PATH ./common/rv64/vortex/afu/opae/
 set_global_assignment -name SEARCH_PATH ./common/rv64/vortex/afu/xrt/
-set_global_assignment -name SEARCH_PATH ./../intel_rtile_cxl_top_cxltyp2_ed
-set_global_assignment -name SEARCH_PATH ./../intel_rtile_cxl_top_cxltyp2_ed/intel_rtile_cxl_top_1160/synth
+set_global_assignment -name SEARCH_PATH ./intel_rtile_cxl_top_cxltyp2_ed
+set_global_assignment -name SEARCH_PATH ./intel_rtile_cxl_top_cxltyp2_ed/intel_rtile_cxl_top_1160/synth
 
 # CXL IP - include the QIP file which has all the dependencies
-set_global_assignment -name QIP_FILE ./../intel_rtile_cxl_top_cxltyp2_ed/intel_rtile_cxl_top_cxltyp2_ed.qip
+set_global_assignment -name QIP_FILE ./intel_rtile_cxl_top_cxltyp2_ed/intel_rtile_cxl_top_cxltyp2_ed.qip
 
 # ============================================================================
 # rv64 Vortex GPU + CXL MemUring Integration

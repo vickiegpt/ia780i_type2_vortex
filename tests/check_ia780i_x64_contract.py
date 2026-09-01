@@ -21,6 +21,11 @@ AVMM_FSM = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_avmm_fsm.sv
 MC_TOP = ROOT / "hardware_test_design/common/mc_top/mc_top.sv"
 WRAPPER = ROOT / "hardware_test_design/ed_top_wrapper_typ2.sv"
 MC_EMIF = ROOT / "hardware_test_design/common/mc_top/mc_emif_avmm.sv"
+CXL_QIP = (
+    ROOT
+    / "hardware_test_design/intel_rtile_cxl_top_cxltyp2_ed"
+    / "intel_rtile_cxl_top_cxltyp2_ed.qip"
+)
 
 
 def active_tcl_lines(path: Path) -> list[str]:
@@ -54,6 +59,18 @@ def main() -> int:
         errors.append("IA780I pinout must be sourced exactly once")
     if "set_global_assignment -name VERILOG_MACRO IA780I" not in qsf:
         errors.append("IA780I macro is not active")
+
+    expected_cxl_qip = (
+        "set_global_assignment -name QIP_FILE "
+        "./intel_rtile_cxl_top_cxltyp2_ed/intel_rtile_cxl_top_cxltyp2_ed.qip"
+    )
+    active_cxl_qips = [line for line in qsf if "intel_rtile_cxl_top" in line and "QIP_FILE" in line]
+    if active_cxl_qips != [expected_cxl_qip]:
+        errors.append(f"unexpected active CXL QIP assignments: {active_cxl_qips}")
+    if not CXL_QIP.is_file():
+        errors.append(f"active CXL QIP does not exist: {CXL_QIP}")
+    if any("./../intel_rtile_cxl_top_cxltyp2_ed" in line for line in qsf):
+        errors.append("active CXL IP paths must remain inside hardware_test_design")
 
     device_lines = [
         line for line in qsf + pinout if re.search(r"-name\s+DEVICE\s+", line)

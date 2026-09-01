@@ -33,6 +33,10 @@ VORTEX_AXI = ROOT / "hardware_test_design/common/rv64/vortex/Vortex_axi.sv"
 VORTEX_AXI_ADAPTER = (
     ROOT / "hardware_test_design/common/rv64/vortex/libs/VX_axi_adapter.sv"
 )
+VORTEX_DP_RAM = (
+    ROOT / "hardware_test_design/common/rv64/vortex/libs/VX_dp_ram.sv"
+)
+VORTEX_PLATFORM = ROOT / "hardware_test_design/common/rv64/vortex/VX_platform.vh"
 BUNDLED_CDC = ROOT / "hardware_test_design/common/rv64/cxl_bundled_toggle_cdc.sv"
 AFU_TOP = ROOT / "hardware_test_design/common/afu/afu_top.sv"
 CXL_QIP = (
@@ -434,6 +438,8 @@ def main() -> int:
 
     vortex_axi = VORTEX_AXI.read_text(encoding="utf-8")
     vortex_axi_adapter = VORTEX_AXI_ADAPTER.read_text(encoding="utf-8")
+    vortex_dp_ram = VORTEX_DP_RAM.read_text(encoding="utf-8")
+    vortex_platform = VORTEX_PLATFORM.read_text(encoding="utf-8")
     require_regex(
         errors,
         vortex_axi_adapter,
@@ -446,6 +452,22 @@ def main() -> int:
         vortex_axi,
         r"VX_axi_adapter\s*#\s*\(.*?\.TAG_BUFFER_LUTRAM\s*\(1\)",
         "IA780I Vortex AXI tag buffer must use LUTRAM to avoid the BRAM read-to-response timing path",
+    )
+    require_regex(
+        errors,
+        vortex_dp_ram,
+        r"end\s+else\s+begin\s*:\s*g_auto.*?"
+        r"`USE_FAST_BRAM\s+(?:`RAM_ARRAY_WREN|reg\s+\[DATAW-1:0\]\s+ram)",
+        "VX_dp_ram LUTRAM branch must explicitly select MLAB instead of AUTO RAM mapping",
+    )
+    if vortex_dp_ram.count("`USE_FAST_BRAM") != 8:
+        errors.append("all VX_dp_ram LUTRAM declarations must carry USE_FAST_BRAM")
+    require_regex(
+        errors,
+        vortex_platform,
+        r"`ifdef\s+QUARTUS.*?`define\s+USE_FAST_BRAM\s+"
+        r"\(\*\s*ramstyle\s*=\s*\"MLAB, no_rw_check\"\s*\*\)",
+        "Quartus USE_FAST_BRAM must resolve to explicit MLAB ramstyle",
     )
     require_regex(
         errors,

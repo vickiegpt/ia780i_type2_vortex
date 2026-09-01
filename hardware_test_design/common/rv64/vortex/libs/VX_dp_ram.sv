@@ -155,7 +155,7 @@ module VX_dp_ram #(
         end else begin : g_auto
             if (RDW_MODE == "W") begin : g_write_first
                 if (WRENW != 1) begin : g_wren
-                    `RW_RAM_CHECK `RAM_ARRAY_WREN
+                    `RW_RAM_CHECK `USE_FAST_BRAM `RAM_ARRAY_WREN
                     `RAM_INITIALIZATION
                     reg [ADDRW-1:0] raddr_r;
                     always @(posedge clk) begin
@@ -166,7 +166,7 @@ module VX_dp_ram #(
                     end
                     assign rdata = ram[raddr_r];
                 end else begin : g_no_wren
-                    `RW_RAM_CHECK reg [DATAW-1:0] ram [0:SIZE-1];
+                    `RW_RAM_CHECK `USE_FAST_BRAM reg [DATAW-1:0] ram [0:SIZE-1];
                     `RAM_INITIALIZATION
                     reg [ADDRW-1:0] raddr_r;
                     always @(posedge clk) begin
@@ -179,7 +179,7 @@ module VX_dp_ram #(
                 end
             end else if (RDW_MODE == "R") begin : g_read_first
                 if (WRENW != 1) begin : g_wren
-                    `RAM_ARRAY_WREN
+                    `USE_FAST_BRAM `RAM_ARRAY_WREN
                     `RAM_INITIALIZATION
                     reg [DATAW-1:0] rdata_r;
                     always @(posedge clk) begin
@@ -190,7 +190,7 @@ module VX_dp_ram #(
                     end
                     assign rdata = rdata_r;
                 end else begin : g_no_wren
-                    reg [DATAW-1:0] ram [0:SIZE-1];
+                    `USE_FAST_BRAM reg [DATAW-1:0] ram [0:SIZE-1];
                     `RAM_INITIALIZATION
                     reg [DATAW-1:0] rdata_r;
                     always @(posedge clk) begin
@@ -268,14 +268,14 @@ module VX_dp_ram #(
         end else begin : g_auto
             if (RDW_MODE == "W") begin : g_write_first
                 if (WRENW != 1) begin : g_wren
-                    `RW_RAM_CHECK `RAM_ARRAY_WREN
+                    `RW_RAM_CHECK `USE_FAST_BRAM `RAM_ARRAY_WREN
                     `RAM_INITIALIZATION
                     always @(posedge clk) begin
                         `RAM_WRITE_WREN
                     end
                     assign rdata = ram[raddr];
                 end else begin : g_no_wren
-                    `RW_RAM_CHECK reg [DATAW-1:0] ram [0:SIZE-1];
+                    `RW_RAM_CHECK `USE_FAST_BRAM reg [DATAW-1:0] ram [0:SIZE-1];
                     `RAM_INITIALIZATION
                     always @(posedge clk) begin
                         `RAM_WRITE_ALL
@@ -284,14 +284,14 @@ module VX_dp_ram #(
                 end
             end else begin : g_read_first
                 if (WRENW != 1) begin : g_wren
-                    `NO_RW_RAM_CHECK `RAM_ARRAY_WREN
+                    `NO_RW_RAM_CHECK `USE_FAST_BRAM `RAM_ARRAY_WREN
                     `RAM_INITIALIZATION
                     always @(posedge clk) begin
                         `RAM_WRITE_WREN
                     end
                     assign rdata = ram[raddr];
                 end else begin : g_no_wren
-                    `NO_RW_RAM_CHECK reg [DATAW-1:0] ram [0:SIZE-1];
+                    `NO_RW_RAM_CHECK `USE_FAST_BRAM reg [DATAW-1:0] ram [0:SIZE-1];
                     `RAM_INITIALIZATION
                     always @(posedge clk) begin
                         `RAM_WRITE_ALL

@@ -21,6 +21,7 @@ AVMM_FSM = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_avmm_fsm.sv
 MC_TOP = ROOT / "hardware_test_design/common/mc_top/mc_top.sv"
 WRAPPER = ROOT / "hardware_test_design/ed_top_wrapper_typ2.sv"
 MC_EMIF = ROOT / "hardware_test_design/common/mc_top/mc_emif_avmm.sv"
+POISON_SIDECAR = ROOT / "hardware_test_design/common/mc_top/mc_poison_sidecar.sv"
 CXL_QIP = (
     ROOT
     / "hardware_test_design/intel_rtile_cxl_top_cxltyp2_ed"
@@ -198,6 +199,7 @@ def main() -> int:
     mc_top = MC_TOP.read_text(encoding="utf-8")
     wrapper = WRAPPER.read_text(encoding="utf-8")
     mc_emif = MC_EMIF.read_text(encoding="utf-8")
+    poison_sidecar = POISON_SIDECAR.read_text(encoding="utf-8")
     for text, location in ((mc_top, "mc_top"), (wrapper, "top wrapper")):
         require_regex(
             errors,
@@ -249,6 +251,22 @@ def main() -> int:
         r"mc_poison_sidecar\s+sidecar.*?\.phy_address\s*\(\s*"
         r"phy_amm_address\[chanCount\]",
         "mc_emif_avmm must instantiate a poison sidecar per channel",
+    )
+    summary_write_sites = re.findall(
+        r"summary_ram\s*\[[^]]+\]\s*<=", poison_sidecar
+    )
+    if len(summary_write_sites) != 1:
+        errors.append(
+            "poison summary RAM must have exactly one HDL write site; "
+            f"found {len(summary_write_sites)}"
+        )
+    require_regex(
+        errors,
+        poison_sidecar,
+        r"if\s*\(summary_write_enable\)\s*"
+        r"summary_ram\s*\[summary_write_address\]\s*<=\s*"
+        r"summary_write_data",
+        "poison summary RAM must use one explicit synchronous write port",
     )
     require_regex(
         errors,

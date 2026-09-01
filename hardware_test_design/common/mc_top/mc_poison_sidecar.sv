@@ -68,8 +68,11 @@ module mc_poison_sidecar
 
   logic [511:0] latched_readdata;
   logic         resolved_read_poison;
-  logic         summary_lookup_bit;
   logic [511:0] pending_meta_bits;
+  logic         summary_write_enable;
+  logic [17:0]  summary_write_address;
+  logic         summary_write_data;
+  logic         summary_read_data;
 
   always_comb begin
     meta_index = latched_address[26:9];
@@ -86,6 +89,19 @@ module mc_poison_sidecar
     phy_byteenable = '0;
     phy_read = 1'b0;
     phy_write = 1'b0;
+
+    summary_write_enable = 1'b0;
+    summary_write_address = meta_index;
+    summary_write_data = |pending_meta_bits;
+
+    if (reset_n && state == ST_INIT) begin
+      summary_write_enable = 1'b1;
+      summary_write_address = init_index;
+      summary_write_data = 1'b0;
+    end
+    else if (reset_n && state == ST_META_WRITE_REQ && phy_ready) begin
+      summary_write_enable = 1'b1;
+    end
 
     case (state)
       ST_DATA_REQ: begin
@@ -114,6 +130,15 @@ module mc_poison_sidecar
     endcase
   end
 
+  // Keep the large poison-summary array on one explicit synchronous RAM port.
+  // Multiple procedural write sites make Quartus implement the 2^18 entries as
+  // decoder logic instead of M20Ks, which is not a viable fit/timing structure.
+  always_ff @(posedge clk) begin
+    if (summary_write_enable)
+      summary_ram[summary_write_address] <= summary_write_data;
+    summary_read_data <= summary_ram[meta_index];
+  end
+
   always_ff @(posedge clk) begin
     if (!reset_n) begin
       state <= ST_INIT;
@@ -126,7 +151,6 @@ module mc_poison_sidecar
       latched_write_poison <= 1'b0;
       latched_readdata <= '0;
       resolved_read_poison <= 1'b0;
-      summary_lookup_bit <= 1'b0;
       pending_meta_bits <= '0;
       for (int cache_entry = 0; cache_entry < 4; cache_entry++)
         meta_cache[cache_entry] <= '0;
@@ -134,7 +158,6 @@ module mc_poison_sidecar
     else begin
       case (state)
         ST_INIT: begin
-          summary_ram[init_index] <= 1'b0;
           if (init_index == SUMMARY_LAST_INDEX) begin
             init_index <= '0;
             state <= ST_IDLE;
@@ -174,12 +197,11 @@ module mc_poison_sidecar
         end
 
         ST_SUMMARY_LOOKUP: begin
-          summary_lookup_bit <= summary_ram[meta_index];
           state <= ST_SUMMARY_RESOLVE;
         end
 
         ST_SUMMARY_RESOLVE: begin
-          if (!summary_lookup_bit) begin
+          if (!summary_read_data) begin
             if (latched_read) begin
               resolved_read_poison <= 1'b0;
               state <= ST_RESPONSE;
@@ -238,7 +260,6 @@ module mc_poison_sidecar
 
         ST_META_WRITE_REQ: begin
           if (phy_ready) begin
-            summary_ram[meta_index] <= |pending_meta_bits;
             meta_cache[cache_index].valid <= 1'b1;
             meta_cache[cache_index].tag <= cache_tag;
             meta_cache[cache_index].bits <= pending_meta_bits;

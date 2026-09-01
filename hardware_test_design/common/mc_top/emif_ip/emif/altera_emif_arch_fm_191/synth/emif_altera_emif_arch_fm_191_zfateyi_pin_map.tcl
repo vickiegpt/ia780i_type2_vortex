@@ -12,11 +12,11 @@
 
 
 set script_dir [file dirname [info script]]
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_utils.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_utils.tcl"
 
 load_package sdc_ext
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_ddr_pins { instname allpins var_array_name} {
    # We need to make a local copy of the allpins associative array
    upvar allpins pins
    upvar 1 $var_array_name var
@@ -47,7 +47,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
       }
       lappend pins(pll_c0_periph_clock) [regsub -all {\\} $net_name {\\\\}]
    }
-   set pins(pll_c0_periph_clock) [emif_altera_emif_arch_fm_191_gs4kwha_sort_duplicate_names $pins(pll_c0_periph_clock)]
+   set pins(pll_c0_periph_clock) [emif_altera_emif_arch_fm_191_zfateyi_sort_duplicate_names $pins(pll_c0_periph_clock)]
 
    #  C1 output in the periphery
    set pins(pll_c1_periph_clock) [list]
@@ -63,7 +63,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
 
       lappend pins(pll_c1_periph_clock) [regsub -all {\\} $net_name {\\\\}]
    }
-   set pins(pll_c1_periph_clock) [emif_altera_emif_arch_fm_191_gs4kwha_sort_duplicate_names $pins(pll_c1_periph_clock)]
+   set pins(pll_c1_periph_clock) [emif_altera_emif_arch_fm_191_zfateyi_sort_duplicate_names $pins(pll_c1_periph_clock)]
 
    #  VCO clock (used for the system clock)
    set pins(vco_clock) [list]
@@ -79,7 +79,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
 
       lappend pins(vco_clock) [regsub -all {\\} $net_name {\\\\}]
    }
-   set pins(vco_clock) [emif_altera_emif_arch_fm_191_gs4kwha_sort_duplicate_names $pins(vco_clock)]
+   set pins(vco_clock) [emif_altera_emif_arch_fm_191_zfateyi_sort_duplicate_names $pins(vco_clock)]
    set pins(pll_vco_clock) $pins(vco_clock)
    set pins(pll_phy_clock) $pins(pll_c1_periph_clock)
    set pins(pll_phy_clock_l) $pins(pll_c0_periph_clock)
@@ -126,23 +126,23 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
          }
 
          set core_reset_sync_clock "_UNDEFINED_PIN_"
-         set core_reset_sync_clock_id [emif_altera_emif_arch_fm_191_gs4kwha_get_output_clock_id $sync_reset_reg "Usr clock" msg_list var]
+         set core_reset_sync_clock_id [emif_altera_emif_arch_fm_191_zfateyi_get_output_clock_id $sync_reset_reg "Usr clock" msg_list var]
          if {$core_reset_sync_clock_id == -1} {
             foreach {msg_type msg} $msg_list {
-               post_message -type $msg_type "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: $msg"
+               post_message -type $msg_type "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: $msg"
             }
-            post_message -type error "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: Failed to find clock source for register $sync_reset_reg"
+            post_message -type error "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: Failed to find clock source for register $sync_reset_reg"
 
             if {$var(PHY_CORE_CLKS_SHARING_ENUM) == "CORE_CLKS_SHARING_SLAVE"} {
-               post_message -type error "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: This is a clock sharing SLAVE interface. Please ensure that the clks_sharing_master_out port of the master is connected to the clks_sharing_master_in port of the slave(s)."
+               post_message -type error "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: This is a clock sharing SLAVE interface. Please ensure that the clks_sharing_master_out port of the master is connected to the clks_sharing_master_in port of the slave(s)."
                if {$cpa_idx > 0} {
-                  post_message -type error "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: This clock sharing slave interface uses a Ping-Pong PHY and has extra clock/reset requirements. Please ensure that the master interface is also a ping-pong interface. A ping-pong interface can act as clock sharing master for both ping-pong and non-ping-pong interfaces."
+                  post_message -type error "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: This clock sharing slave interface uses a Ping-Pong PHY and has extra clock/reset requirements. Please ensure that the master interface is also a ping-pong interface. A ping-pong interface can act as clock sharing master for both ping-pong and non-ping-pong interfaces."
                }
             } else {
-               post_message -type error "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: Please ensure that the register has not been removed or optimized away."
+               post_message -type error "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: Please ensure that the register has not been removed or optimized away."
             }
          } else {
-            set core_reset_sync_clock [emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock_name $core_reset_sync_clock_id]
+            set core_reset_sync_clock [emif_altera_emif_arch_fm_191_zfateyi_get_pll_clock_name $core_reset_sync_clock_id]
          }
 
          if {[regexp {(^.*)\|arch\|arch_inst\|io_tiles_wrap_inst\|io_tiles_inst\|tile_gen\[([0-9])\].tile_ctrl_inst(.*)\|pa_core_clk_out\[[0-9]\]$} $core_reset_sync_clock matched pins(master_instname) tilegen_num tile_instnum] == 1} {
@@ -171,7 +171,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
             if { $::TimeQuestInfo(nameofexecutable) == "quartus_map" || $::TimeQuestInfo(nameofexecutable) == "quartus_syn"} {
                set vco_clock_name "_UNDEFINED_PIN_"
             } else {
-               set vco_clock_id [emif_altera_emif_arch_fm_191_gs4kwha_get_vco_clk_id $core_reset_sync_clock_id var]
+               set vco_clock_id [emif_altera_emif_arch_fm_191_zfateyi_get_vco_clk_id $core_reset_sync_clock_id var]
                set vco_clock_name [get_net_info -name [get_pin_info -net $vco_clock_id]]
             }
             if {$cpa_idx == 0} {
@@ -181,7 +181,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
             }
 
          } else {
-            post_message -type error "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: Failed to find CPA outputs."
+            post_message -type error "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: Failed to find CPA outputs."
          }
       }
 
@@ -191,10 +191,10 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
 
       set pll_master_user_clock_base [string range $pins(master_vco_clock) 0 [string last "|" $pins(master_vco_clock)] ]pll_inst|outclk
 
-      set var(pll_c3_cnt) [emif_altera_emif_arch_fm_191_gs4kwha_calculate_counter_value $var(PLL_C_CNT_HIGH_3) $var(PLL_C_CNT_LOW_3) $var(PLL_C_CNT_BYPASS_EN_3)]
+      set var(pll_c3_cnt) [emif_altera_emif_arch_fm_191_zfateyi_calculate_counter_value $var(PLL_C_CNT_HIGH_3) $var(PLL_C_CNT_LOW_3) $var(PLL_C_CNT_BYPASS_EN_3)]
       set pins(master_cal_slave_clk) "$pll_master_user_clock_base\[3\]"
 
-      set var(pll_c4_cnt) [emif_altera_emif_arch_fm_191_gs4kwha_calculate_counter_value $var(PLL_C_CNT_HIGH_4) $var(PLL_C_CNT_LOW_4) $var(PLL_C_CNT_BYPASS_EN_4)]
+      set var(pll_c4_cnt) [emif_altera_emif_arch_fm_191_zfateyi_calculate_counter_value $var(PLL_C_CNT_HIGH_4) $var(PLL_C_CNT_LOW_4) $var(PLL_C_CNT_BYPASS_EN_4)]
       set pins(master_cal_master_clk) "$pll_master_user_clock_base\[4\]"
    }
 
@@ -216,9 +216,9 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
    if {[get_collection_size $pins(pll_cascade_in_id)] == 0} {
       set pins(pll_cascade_in_id) [get_pins -compatibility_mode $pins(master_instname)|arch|arch_inst|pll_inst|pll_inst|core_refclk]
    }
-   set pll_ref_clock_id [emif_altera_emif_arch_fm_191_gs4kwha_get_input_clk_id $pins(pll_cascade_in_id) var]
+   set pll_ref_clock_id [emif_altera_emif_arch_fm_191_zfateyi_get_input_clk_id $pins(pll_cascade_in_id) var]
    if {$pll_ref_clock_id == -1} {
-      post_message -type critical_warning "emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl: Failed to find PLL reference clock"
+      post_message -type critical_warning "emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl: Failed to find PLL reference clock"
    } else {
       set pll_ref_clock [get_node_info -name $pll_ref_clock_id]
    }
@@ -263,9 +263,9 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
 
    foreach {pin_type pattern} $patterns {
       if {[string match "*|o" $pattern]} {
-         set local_pins [ emif_altera_emif_arch_fm_191_gs4kwha_get_names_in_collection [ get_fanouts $pattern ] ]
+         set local_pins [ emif_altera_emif_arch_fm_191_zfateyi_get_names_in_collection [ get_fanouts $pattern ] ]
       } else {
-         set local_pins [ emif_altera_emif_arch_fm_191_gs4kwha_get_names_in_collection [ get_fanins $pattern ] ]
+         set local_pins [ emif_altera_emif_arch_fm_191_zfateyi_get_names_in_collection [ get_fanins $pattern ] ]
       }
 
       if {[llength $local_pins] == 0} {
@@ -293,35 +293,35 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins { instname allpins var_ar
 
       for {set i 0} {$i < $var(PLL_NUM_OF_EXTRA_CLKS)} {incr i} {
          set i_cnt_num [expr $i + $var(pll_num_of_reserved_cnts)]
-         set var(pll_c${i_cnt_num}_cnt) [emif_altera_emif_arch_fm_191_gs4kwha_calculate_counter_value $var(PLL_C_CNT_HIGH_${i_cnt_num}) $var(PLL_C_CNT_LOW_${i_cnt_num}) $var(PLL_C_CNT_BYPASS_EN_${i_cnt_num})]
+         set var(pll_c${i_cnt_num}_cnt) [emif_altera_emif_arch_fm_191_zfateyi_calculate_counter_value $var(PLL_C_CNT_HIGH_${i_cnt_num}) $var(PLL_C_CNT_LOW_${i_cnt_num}) $var(PLL_C_CNT_BYPASS_EN_${i_cnt_num})]
          set pins(pll_extra_clk_${i}) "$pll_master_user_clock_base\[$i_cnt_num\]"
       }
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_initialize_ddr_db { ddr_db_par var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_initialize_ddr_db { ddr_db_par var_array_name} {
    upvar $ddr_db_par local_ddr_db
    upvar 1 $var_array_name var
 
-   global ::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename
+   global ::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename
    global ::io_only_analysis
 
-   post_sdc_message info "Initializing DDR database for CORE $::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename"
-   set instance_list [emif_altera_emif_arch_fm_191_gs4kwha_get_core_instance_list $::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename]
+   post_sdc_message info "Initializing DDR database for CORE $::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename"
+   set instance_list [emif_altera_emif_arch_fm_191_zfateyi_get_core_instance_list $::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename]
 
    foreach instname $instance_list {
 
       if {$::io_only_analysis == 0}  {
-         post_sdc_message info "Finding port-to-pin mapping for CORE: $::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename INSTANCE: $instname"
-         emif_altera_emif_arch_fm_191_gs4kwha_get_ddr_pins $instname allpins var
-         emif_altera_emif_arch_fm_191_gs4kwha_verify_ddr_pins allpins var
+         post_sdc_message info "Finding port-to-pin mapping for CORE: $::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename INSTANCE: $instname"
+         emif_altera_emif_arch_fm_191_zfateyi_get_ddr_pins $instname allpins var
+         emif_altera_emif_arch_fm_191_zfateyi_verify_ddr_pins allpins var
       }
 
       set local_ddr_db($instname) [ array get allpins ]
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_verify_ddr_pins { pins_par var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_verify_ddr_pins { pins_par var_array_name} {
 
    upvar 1 $var_array_name var
    upvar $pins_par pins
@@ -360,7 +360,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_verify_ddr_pins { pins_par var_array_n
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_all_instances_dqs_pins { ddr_db_par } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_all_instances_dqs_pins { ddr_db_par } {
    upvar $ddr_db_par local_ddr_db
 
    set dqs_pins [ list ]
@@ -383,7 +383,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_all_instances_dqs_pins { ddr_db_pa
    return $dqs_pins
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_calculate_counter_value { cnt_hi cnt_lo cnt_bypass } {
+proc emif_altera_emif_arch_fm_191_zfateyi_calculate_counter_value { cnt_hi cnt_lo cnt_bypass } {
    if {$cnt_bypass} {
       set result 1
    } else {
@@ -392,12 +392,12 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_calculate_counter_value { cnt_hi cnt_l
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_input_clk_id { pll_inclk_id var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_input_clk_id { pll_inclk_id var_array_name} {
    upvar 1 $var_array_name var
 
    array set results_array [list]
 
-   emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth $pll_inclk_id emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pin clock results_array $var(pll_inclock_search_depth)
+   emif_altera_emif_arch_fm_191_zfateyi_traverse_fanin_up_to_depth $pll_inclk_id emif_altera_emif_arch_fm_191_zfateyi_is_node_type_pin clock results_array $var(pll_inclock_search_depth)
    if {[array size results_array] == 1} {
       set pin_id [lindex [array names results_array] 0]
       set result $pin_id
@@ -409,7 +409,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_input_clk_id { pll_inclk_id var_ar
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_output_clock_id { pin_list pin_type msg_list_name var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_output_clock_id { pin_list pin_type msg_list_name var_array_name} {
    upvar 1 $msg_list_name msg_list
    upvar 1 $var_array_name var
    set output_clock_id -1
@@ -425,11 +425,11 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_output_clock_id { pin_list pin_typ
    } else {
       lappend msg_list "warning" "Could not find all $pin_type pins"
    }
-   emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock $output_id_list $pin_type output_clock_id $var(pll_outclock_search_depth)
+   emif_altera_emif_arch_fm_191_zfateyi_get_pll_clock $output_id_list $pin_type output_clock_id $var(pll_outclock_search_depth)
    return $output_clock_id
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock { dest_id_list node_type clock_id_name search_depth} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_pll_clock { dest_id_list node_type clock_id_name search_depth} {
    if {$clock_id_name != ""} {
       upvar 1 $clock_id_name clock_id
    }
@@ -437,7 +437,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock { dest_id_list node_type
 
    array set clk_array [list]
    foreach node_id $dest_id_list {
-      emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth $node_id emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pll_clk clock clk_array $search_depth
+      emif_altera_emif_arch_fm_191_zfateyi_traverse_fanin_up_to_depth $node_id emif_altera_emif_arch_fm_191_zfateyi_is_node_type_pll_clk clock clk_array $search_depth
    }
    if {[array size clk_array] == 1} {
       set clock_id [lindex [array names clk_array] 0]
@@ -452,12 +452,12 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock { dest_id_list node_type
    return $clk
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_vco_clk_id { wf_clock_id var_array_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_vco_clk_id { wf_clock_id var_array_name} {
    upvar 1 $var_array_name var
 
    array set results_array [list]
 
-   emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth $wf_clock_id emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_vco clock results_array $var(pll_vcoclock_search_depth)
+   emif_altera_emif_arch_fm_191_zfateyi_traverse_fanin_up_to_depth $wf_clock_id emif_altera_emif_arch_fm_191_zfateyi_is_node_type_vco clock results_array $var(pll_vcoclock_search_depth)
    if {[array size results_array] == 1} {
       set pin_id [lindex [array names results_array] 0]
       set result $pin_id
@@ -469,7 +469,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_vco_clk_id { wf_clock_id var_array
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pll_clk { node_id } {
+proc emif_altera_emif_arch_fm_191_zfateyi_is_node_type_pll_clk { node_id } {
    set cell_id [get_node_info -cell $node_id]
 
    if {$cell_id == ""} {
@@ -499,7 +499,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pll_clk { node_id } {
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_vco { node_id } {
+proc emif_altera_emif_arch_fm_191_zfateyi_is_node_type_vco { node_id } {
    set cell_id [get_node_info -cell $node_id]
 
    if {$cell_id == ""} {
@@ -523,7 +523,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_vco { node_id } {
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_does_ref_clk_exist { ref_clk_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_does_ref_clk_exist { ref_clk_name } {
 
    set ref_clock_found 0
    foreach_in_collection iclk [get_clocks -nowarn] {
@@ -546,7 +546,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_does_ref_clk_exist { ref_clk_name } {
    return $ref_clock_found
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instname var_array_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_p2c_c2p_clock_uncertainty { instname var_array_name } {
 
    set success 1
    set error_message ""
@@ -560,7 +560,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instna
    set read_atom_netlist_error [regexp "ERROR" $read_atom_netlist_out]
 
    if {$read_atom_netlist_error == 0} {
-      if {[emif_altera_emif_arch_fm_191_gs4kwha_are_entity_names_on]} {
+      if {[emif_altera_emif_arch_fm_191_zfateyi_are_entity_names_on]} {
          regsub -all {\|} $instname "|*:" instname
       }
       regsub -all {\\} $instname {\\\\} instname
@@ -569,7 +569,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instna
 
       # Find the IOPLLs
       if {$success == 1} {
-         if {[emif_altera_emif_arch_fm_191_gs4kwha_are_entity_names_on]} {
+         if {[emif_altera_emif_arch_fm_191_zfateyi_are_entity_names_on]} {
             set pll_atoms [get_atom_nodes -matching *${instname}|*:arch|*:arch_inst|*:pll_inst|* -type IOPLL]
          } else {
             set pll_atoms [get_atom_nodes -matching *${instname}|arch|arch_inst|pll_inst|* -type IOPLL]
@@ -662,7 +662,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instna
          set mcnt [lindex $mcnt_list 0]
          set bw   [string toupper [lindex $bw_list 0]]
          set cp_setting [lindex $cp_setting_list 0]
-         set cp_current [emif_altera_emif_arch_fm_191_gs4kwha_get_cp_current_from_setting $cp_setting]
+         set cp_current [emif_altera_emif_arch_fm_191_zfateyi_get_cp_current_from_setting $cp_setting]
          set vco_period [lindex $vco_period_list 0]
          if {[regexp {([0-9]+) ps} $vco_period matched vco_period] == 1} {
          } else {
@@ -680,11 +680,11 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instna
 
          set HFR  [get_clock_frequency_uncertainty_data PLL $vco_frequency_in_mhz $bw OFFSET${mcnt} HFR]
          set LFD  [get_clock_frequency_uncertainty_data PLL $vco_frequency_in_mhz $bw OFFSET${mcnt} LFD]
-         set SPE  [emif_altera_emif_arch_fm_191_gs4kwha_get_spe_from_cp_current $cp_current]
+         set SPE  [emif_altera_emif_arch_fm_191_zfateyi_get_spe_from_cp_current $cp_current]
 
          if {$success == 1} {
             set clock_uncertainty_sqrt  [expr sqrt(($LFD/2)*($LFD/2) + ($LFD/2)*($LFD/2))]
-            set clock_uncertainty [emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [expr ($clock_uncertainty_sqrt + $SPE)*1e9]]
+            set clock_uncertainty [emif_altera_emif_arch_fm_191_zfateyi_round_3dp [expr ($clock_uncertainty_sqrt + $SPE)*1e9]]
 
             if {$debug} {
                puts "HFR  : $HFR"
@@ -713,7 +713,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty { instna
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_cp_current_from_setting { cp_setting } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_cp_current_from_setting { cp_setting } {
 
    set cp_current 0
 
@@ -756,7 +756,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_cp_current_from_setting { cp_setti
    return $cp_current
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_spe_from_cp_current { cp_current } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_spe_from_cp_current { cp_current } {
 
    set spe 158.0e-12
 
@@ -781,7 +781,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_spe_from_cp_current { cp_current }
    return $spe
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_clock_uncertainty { results_array_name var_array_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_periphery_clock_uncertainty { results_array_name var_array_name } {
    upvar 1 $results_array_name results
    upvar 1 $var_array_name var
 
@@ -800,7 +800,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_clock_uncertainty { resu
    set results [list $c2p_setup $c2p_hold $p2c_setup $p2c_hold]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_clock_uncertainty { results_array_name var_array_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_core_clock_uncertainty { results_array_name var_array_name } {
    upvar 1 $results_array_name results
    upvar 1 $var_array_name var
 
@@ -812,14 +812,14 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_clock_uncertainty { results_a
    set results [list $c2c_same_setup $c2c_same_hold $c2c_diff_setup $c2c_diff_hold]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_overconstraints { results_array_name var_array_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_core_overconstraints { results_array_name var_array_name } {
    upvar 1 $results_array_name results
    upvar 1 $var_array_name var
 
    set results [list $var(C2C_SAME_CLK_SETUP_OC_NS) $var(C2C_SAME_CLK_HOLD_OC_NS) $var(C2C_DIFF_CLK_SETUP_OC_NS) $var(C2C_DIFF_CLK_HOLD_OC_NS)]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_overconstraints { results_st_array_name results_mt_array_name var_array_name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_periphery_overconstraints { results_st_array_name results_mt_array_name var_array_name } {
    upvar 1 $results_st_array_name results_st
    upvar 1 $results_mt_array_name results_mt
    upvar 1 $var_array_name var
@@ -832,7 +832,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_overconstraints { result
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_sort_duplicate_names { names_array } {
+proc emif_altera_emif_arch_fm_191_zfateyi_sort_duplicate_names { names_array } {
 
    set main_name ""
    set duplicate_names [list]

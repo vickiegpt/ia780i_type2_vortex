@@ -20,8 +20,8 @@
 #
 # FILE DESCRIPTION
 # ----------------
-# This file contains the routines to generate the external memory
-# interface timing report at the end of the compile flow.
+# This file contains the routines to generate the early external memory
+# interface timing report at the before the start of the compile flow.
 #
 # These routines are only meant to be used in this specific context.
 # Trying to using them in a different context can have unexpected
@@ -41,45 +41,12 @@
 #
 #############################################################
 
-# Determine if only doing IO analysis
-set ::io_only_analysis 0
+# Determin if only doing IO analysis
+set ::io_only_analysis 1
 
 #############################################################
 # Initialize the environment / Error Checking
 #############################################################
-
-proc get_speedgrade_from_opn {part} {
-   set temp_grade [get_part_info -temperature_grade $part]
-   set speed_grade [get_part_info -speed_grade $part]
-   set power_model [get_part_info -power_model $part]
-
-   if {$temp_grade == "Extended"} {
-      set temp_grade "E"
-   } elseif {$temp_grade == "Industrial"} {
-      set temp_grade "I"
-   } elseif {$temp_grade == "Commercial"} {
-      set temp_grade "C"
-   } else {
-      set temp_grade [string index $part 12]
-   }
-
-   if {$power_model == "{Standard Power}"} { 
-      set power_model "V"
-   } elseif {$power_model == "{Lower Power}"} {
-      set power_model "E"
-   } elseif {$power_model == "{Extreme Low Power}"} {
-      set power_model "X"
-   } elseif {$power_model == "{Fixed Voltage}"} {
-      set power_model "F"
-   } else {
-      set power_model [string index $part 14]
-   }
-
-   set retval $temp_grade
-   append retval $speed_grade
-   append retval $power_model
-   return $retval
-}
 
 if { ![info exists quartus(nameofexecutable)] || $quartus(nameofexecutable) != "quartus_sta" } {
    post_message -type error "This script must be run from quartus_sta"
@@ -89,63 +56,59 @@ if { ![info exists quartus(nameofexecutable)] || $quartus(nameofexecutable) != "
 # Check the project
 if { ! [ is_project_open ] } {
    if { [ llength $quartus(args) ] > 0 } {
-		set project_name [lindex $quartus(args) 0]
-		project_open -revision [ get_current_revision $project_name ] $project_name
-	} else {
-		post_message -type error "Missing project_name argument"
-		return 1
-	}
-}
-
-
-# Load the timing netlist if required
-if { ! [timing_netlist_exist] } {
-   create_timing_netlist
-   read_sdc
-   update_timing_netlist
-
-   set script_dir [file dirname [info script]]
-   source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.tcl"
-   source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_parameters.tcl"
-   source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl"
-   source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_report_timing_core.tcl"
-   if { ! [timing_netlist_exist] } {
-      post_message -type error "Timing Netlist has not been created. Run the 'Update Timing Netlist' task first."
+      set project_name [lindex $quartus(args) 0]
+      project_open -revision [ get_current_revision $project_name ] $project_name
+   } else {
+      post_message -type error "Missing project_name argument"
       return 1
    }
 }
 
 
-# Load the atom netlist if required
-load_package atoms
-read_atom_netlist
+# Load the timing netlist if required
+if { ! [timing_netlist_exist] } {
+   # In IO only flow, check to see if we could even create a timing nelist
+   # First try to see if we could even create a
+   catch {create_timing_netlist} create_timing_netlist_out
+   set create_timing_netlist_error [regexp "ERROR" $create_timing_netlist_out]
+
+   # If create timing netlist cannot run, then the IO flow is a valid flow
+   if {$create_timing_netlist_error == 1} {
+      create_emif_netlist -revision $::quartus(project)
+      sta_create_empty_report
+   } else {
+      delete_timing_netlist
+      post_message -type error "Early EMIF IO timing estimate cannot be run once the Fitter has been run"
+      return 1
+   }
+
+} else {
+   post_message -type error "Early EMIF IO timing estimate cannot be run once the Fitter has been run"
+   return 1
+}
 
 # Load the reports
 load_package report
 set current_timing_report_type [get_current_report_type]
-load_report_database -type_name $current_timing_report_type
+if { [catch {load_report_database -type_name $current_timing_report_type} load_report_out ] } {
+   create_report_database -type_name $current_timing_report_type
+}
 
 #############################################################
 # Some useful functions
 #############################################################
 set script_dir [file dirname [info script]]
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.tcl"
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_parameters.tcl"
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl"
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_report_timing_core.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_parameters.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_report_timing_core.tcl"
 
-###############################################
-# This is the main call to the netlist traversal routines
-# that will automatically find all pins and registers required
-# to timing analyze the Core.
 
 if [ info exists ddr_db ] {
    unset ddr_db
 }
-emif_altera_emif_arch_fm_191_gs4kwha_initialize_ddr_db ddr_db var
+emif_altera_emif_arch_fm_191_zfateyi_initialize_ddr_db ddr_db var
 
-set old_active_clocks [get_active_clocks]
-set_active_clocks [all_clocks]
 
 # If multiple instances of this core are present in the
 # design they will all be analyzed through the
@@ -167,30 +130,30 @@ foreach inst $instances {
    set fname ""
    set fbasename ""
    if {[llength $instances] <= 1} {
-      set fbasename "${::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename}"
+      set fbasename "${::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename}"
    } else {
-      set fbasename "${::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename}_${inst_id}"
+      set fbasename "${::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename}_${inst_id}"
    }
 
    #################################################################################
    # Now loop the timing analysis over the various operating conditions
    set summary [list]
 
-   set opcname [get_operating_conditions_info [get_operating_conditions] -display_name]
-   set hold_only_corner [get_operating_conditions_info [get_operating_conditions] -is_hold_only]
+   set opcname "All conditions"
    set opcname [string trim $opcname]
 
-   if {$hold_only_corner} {
-      set opcname "${opcname}, Hold Only"
-   }
+   #######################################
+   # PHY Analyses
 
-   emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis $opcname $inst pins var summary
+   emif_altera_emif_arch_fm_191_zfateyi_perform_core_analysis $opcname $inst pins var summary
 
+   #######################################
+   # Print out the Summary Panel for this instance
 
-   set summary [lsort -command emif_altera_emif_arch_fm_191_gs4kwha_sort_proc $summary]
+   set summary [lsort -command emif_altera_emif_arch_fm_191_zfateyi_sort_proc $summary]
 
-   post_message -type info "Core: ${::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename} - Instance: $inst"
-   post_message -type info "                                                               setup  hold"
+   post_message -type info "Core: ${::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename} - Instance: $inst"
+   post_message -type info "                                                         setup  hold"
    set panel_name "[get_report_folder -relative]||$inst"
    # Delete any pre-existing summary panel
    set panel_id [get_report_panel_id $panel_name]
@@ -211,17 +174,20 @@ foreach inst $instances {
          set hold "--"
       }
 
-      set type info
-      set offset 59
 
       if { ($su != "--" && $su < 0) || ($hold != "--" && $hold < 0) } {
          incr total_failures
+         set type warning
+         set offset 50
+      } else {
+         set type info
+         set offset 53
       }
       if {$su != "--"} {
-         set su [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp $su]
+         set su [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp $su]
       }
       if {$hold != "--"} {
-         set hold [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp $hold]
+         set hold [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp $hold]
       }
       post_message -type $type [format "%-${offset}s | %6s %6s" $path $su $hold]
       set fg_colours [list black black]
@@ -253,21 +219,3 @@ foreach inst $instances {
 # end foreach inst
 
 
-set_active_clocks $old_active_clocks
-
-set curr_part $::TimeQuestInfo(part)
-set curr_speedgrade [get_speedgrade_from_opn $curr_part]
-
-if {![test_part_trait_of $curr_part -trait FINAL_TIMING_MODEL]} {
-   post_message -type critical_warning "Timing analysis was performed using a non-final timing model and/or constraints. You must regenerate the external memory interface IP and recheck timing closure in a future version of Quartus Prime."
-}
-
-if {$var(PHY_TARGET_SPEEDGRADE) == ""} {
-   set effective_target_speedgrade "E1"
-} else {
-   set effective_target_speedgrade $var(PHY_TARGET_SPEEDGRADE)
-}
-
-if {$curr_speedgrade != $effective_target_speedgrade} {
-   post_message -type critical_warning "This External Memory Interface IP core was generated for a speed grade $effective_target_speedgrade device, but the speed grade of $curr_part is $curr_speedgrade. You should regenerate the IP core to match the target device to avoid hardware issue."
-}

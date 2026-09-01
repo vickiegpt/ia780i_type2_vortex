@@ -95,7 +95,7 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
 // ================================================================================================
 `ifdef IA780I
 
-        dram0_ddr2666_32gb emif_inst_0
+        emif emif_inst_0
         (
            .oct_rzqin            (mem_oct_rzqin          [0] ), //   input,     width = 1,                oct.oct_rzqin
            .mem_ck               (mem_ck                 [0] ), //  output,     width = 1,                mem.mem_ck
@@ -110,10 +110,10 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .mem_reset_n          (mem_reset_n            [0] ), //  output,     width = 1,                   .mem_reset_n
            .mem_par              (mem_par                [0] ), //  output,     width = 1,                   .mem_par
            .mem_alert_n          (mem_alert_n            [0] ), //   input,     width = 1,                   .mem_alert_n
-           .mem_dqs              (mem_dqs                [0][7:0] ), //   inout,     width = 9,                   .mem_dqs
-           .mem_dqs_n            (mem_dqs_n              [0][7:0] ), //   inout,     width = 9,                   .mem_dqs_n
-           .mem_dq               (mem_dq                 [0][63:0]), //   inout,    width = 72,                   .mem_dq
-           .mem_dbi_n            (mem_dbi_n              [0][7:0] ), //   inout,     width = 9,                   .mem_dbi_n
+           .mem_dqs              (mem_dqs                [0][7:0] ), //   inout,     width = 8,                   .mem_dqs
+           .mem_dqs_n            (mem_dqs_n              [0][7:0] ), //   inout,     width = 8,                   .mem_dqs_n
+           .mem_dq               (mem_dq                 [0][63:0]), //   inout,    width = 64,                   .mem_dq
+           .mem_dbi_n            (mem_dbi_n              [0][7:0] ), //   inout,     width = 8,                   .mem_dbi_n
            .pll_ref_clk          (mem_refclk             [0] ), //   input,     width = 1,        pll_ref_clk.clk
            //.pll_ref_clk_out      (pll_ref_clk_out        [0] ), //  output,     width = 1,    pll_ref_clk_out.clk
            .pll_locked           (pll_locked             [0] ), //  output,     width = 1,         pll_locked.pll_locked
@@ -125,11 +125,11 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .amm_address_0        (emif_amm_address       [0] ),
            .amm_read_0           (emif_amm_read          [0] ), //   input,     width = 1,                   .read
            .amm_write_0          (emif_amm_write         [0] ), //   input,     width = 1,                   .write
-           .amm_writedata_0      (emif_amm_writedata     [0] ), //   input,   width = 576,                   .writedata
+           .amm_writedata_0      (emif_amm_writedata     [0] ), //   input,   width = 512,                   .writedata
            .amm_burstcount_0     (emif_amm_burstcount    [0] ), //   input,     width = 7,                   .burstcount
-           .amm_byteenable_0     (emif_amm_byteenable    [0] ), //   input,    width = 72,                   .byteenable
+           .amm_byteenable_0     (emif_amm_byteenable    [0] ), //   input,    width = 64,                   .byteenable
            .amm_ready_0          (emif_amm_ready         [0] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
-           .amm_readdata_0       (emif_amm_readdata      [0] ), //  output,   width = 576,                   .readdata
+           .amm_readdata_0       (emif_amm_readdata      [0] ), //  output,   width = 512,                   .readdata
            .amm_readdatavalid_0  (emif_amm_readdatavalid [0] ), //  output,     width = 1,                   .readdatavalid
            .calbus_read          (calbus_read            [0] ), //   input,     width = 1,        emif_calbus.calbus_read
            .calbus_write         (calbus_write           [0] ), //   input,     width = 1,                   .calbus_write
@@ -140,7 +140,7 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .local_reset_req      (1'b0                       ), //   input,     width = 1,    local_reset_req.local_reset_req
            .calbus_clk           (calbus_clk                 )  //   input,     width = 1,    emif_calbus_clk.clk
         );
-        dram1_ddr2666_32gb emif_inst_1
+        emif emif_inst_1
         (
            .oct_rzqin            (mem_oct_rzqin          [1] ), //   input,     width = 1,                oct.oct_rzqin
            .mem_ck               (mem_ck                 [1] ), //  output,     width = 1,                mem.mem_ck
@@ -155,10 +155,10 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .mem_reset_n          (mem_reset_n            [1] ), //  output,     width = 1,                   .mem_reset_n
            .mem_par              (mem_par                [1] ), //  output,     width = 1,                   .mem_par
            .mem_alert_n          (mem_alert_n            [1] ), //   input,     width = 1,                   .mem_alert_n
-           .mem_dqs              (mem_dqs                [1][7:0] ), //   inout,     width = 9,                   .mem_dqs
-           .mem_dqs_n            (mem_dqs_n              [1][7:0] ), //   inout,     width = 9,                   .mem_dqs_n
-           .mem_dq               (mem_dq                 [1][63:0]), //   inout,    width = 72,                   .mem_dq
-           .mem_dbi_n            (mem_dbi_n              [1][7:0] ), //   inout,     width = 9,                   .mem_dbi_n
+           .mem_dqs              (mem_dqs                [1][7:0] ), //   inout,     width = 8,                   .mem_dqs
+           .mem_dqs_n            (mem_dqs_n              [1][7:0] ), //   inout,     width = 8,                   .mem_dqs_n
+           .mem_dq               (mem_dq                 [1][63:0]), //   inout,    width = 64,                   .mem_dq
+           .mem_dbi_n            (mem_dbi_n              [1][7:0] ), //   inout,     width = 8,                   .mem_dbi_n
            .pll_ref_clk          (mem_refclk             [1] ), //   input,     width = 1,        pll_ref_clk.clk
            //.pll_ref_clk_out      (pll_ref_clk_out        [1] ), //  output,     width = 1,    pll_ref_clk_out.clk
            .pll_locked           (pll_locked             [1] ), //  output,     width = 1,         pll_locked.pll_locked
@@ -170,11 +170,11 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .amm_address_0        (emif_amm_address       [1] ),
            .amm_read_0           (emif_amm_read          [1] ), //   input,     width = 1,                   .read
            .amm_write_0          (emif_amm_write         [1] ), //   input,     width = 1,                   .write
-           .amm_writedata_0      (emif_amm_writedata     [1] ), //   input,   width = 576,                   .writedata
+           .amm_writedata_0      (emif_amm_writedata     [1] ), //   input,   width = 512,                   .writedata
            .amm_burstcount_0     (emif_amm_burstcount    [1] ), //   input,     width = 7,                   .burstcount
-           .amm_byteenable_0     (emif_amm_byteenable    [1] ), //   input,    width = 72,                   .byteenable
+           .amm_byteenable_0     (emif_amm_byteenable    [1] ), //   input,    width = 64,                   .byteenable
            .amm_ready_0          (emif_amm_ready         [1] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
-           .amm_readdata_0       (emif_amm_readdata      [1] ), //  output,   width = 576,                   .readdata
+           .amm_readdata_0       (emif_amm_readdata      [1] ), //  output,   width = 512,                   .readdata
            .amm_readdatavalid_0  (emif_amm_readdatavalid [1] ), //  output,     width = 1,                   .readdatavalid
            .calbus_read          (calbus_read            [1] ), //   input,     width = 1,        emif_calbus.calbus_read
            .calbus_write         (calbus_write           [1] ), //   input,     width = 1,                   .calbus_write

@@ -1,4 +1,4 @@
-module emif_altera_emif_arch_fm_191_gs4kwha #(
+module emif_altera_emif_arch_fm_191_zfateyi #(
    parameter PROTOCOL_ENUM                                      = "",
    parameter PHY_TARGET_IS_ES                                   = 0,
    parameter PHY_TARGET_IS_ES2                                  = 0,
@@ -1797,10 +1797,10 @@ module emif_altera_emif_arch_fm_191_gs4kwha #(
    output logic [0:0]      mem_reset_n,
    output logic [0:0]      mem_par,
    input  logic [0:0]      mem_alert_n,
-   inout  tri   [8:0]      mem_dqs,
-   inout  tri   [8:0]      mem_dqs_n,
-   inout  tri   [71:0]     mem_dq,
-   inout  tri   [8:0]      mem_dbi_n,
+   inout  tri   [7:0]      mem_dqs,
+   inout  tri   [7:0]      mem_dqs_n,
+   inout  tri   [63:0]     mem_dq,
+   inout  tri   [7:0]      mem_dbi_n,
    inout  tri   [0:0]      mem_ck_bidir,
    inout  tri   [0:0]      mem_ck_bidir_n,
    output logic [0:0]      mem_dk,
@@ -1940,20 +1940,20 @@ module emif_altera_emif_arch_fm_191_gs4kwha #(
    input  logic            amm_read_0,
    input  logic            amm_write_0,
    input  logic [26:0]     amm_address_0,
-   output logic [575:0]    amm_readdata_0,
-   input  logic [575:0]    amm_writedata_0,
+   output logic [511:0]    amm_readdata_0,
+   input  logic [511:0]    amm_writedata_0,
    input  logic [6:0]      amm_burstcount_0,
-   input  logic [71:0]     amm_byteenable_0,
+   input  logic [63:0]     amm_byteenable_0,
    input  logic            amm_beginbursttransfer_0,
    output logic            amm_readdatavalid_0,
    output logic            amm_ready_1,
    input  logic            amm_read_1,
    input  logic            amm_write_1,
    input  logic [26:0]     amm_address_1,
-   output logic [575:0]    amm_readdata_1,
-   input  logic [575:0]    amm_writedata_1,
+   output logic [511:0]    amm_readdata_1,
+   input  logic [511:0]    amm_writedata_1,
    input  logic [6:0]      amm_burstcount_1,
-   input  logic [71:0]     amm_byteenable_1,
+   input  logic [63:0]     amm_byteenable_1,
    input  logic            amm_beginbursttransfer_1,
    output logic            amm_readdatavalid_1,
    output logic            amm_early_ready_0,
@@ -2045,7 +2045,7 @@ module emif_altera_emif_arch_fm_191_gs4kwha #(
    timeunit 1ns;
    timeprecision 1ps;
 
-   emif_altera_emif_arch_fm_191_gs4kwha_top # (
+   emif_altera_emif_arch_fm_191_zfateyi_top # (
       .PROTOCOL_ENUM (PROTOCOL_ENUM),
       .PHY_TARGET_IS_ES (PHY_TARGET_IS_ES),
       .PHY_TARGET_IS_ES2 (PHY_TARGET_IS_ES2),

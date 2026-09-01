@@ -17,7 +17,7 @@ set script_dir [file dirname [info script]]
 load_package sdc_ext
 load_package design
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_index_in_collection { col j } {
+proc emif_altera_emif_arch_fm_191_zfateyi_index_in_collection { col j } {
    set i 0
    foreach_in_collection path $col {
       if {$i == $j} {
@@ -29,7 +29,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_index_in_collection { col j } {
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_clock_to_pin_name_mapping {} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_clock_to_pin_name_mapping {} {
    set result [list]
    set clocks_collection [get_clocks]
    foreach_in_collection clock $clocks_collection {
@@ -38,7 +38,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_clock_to_pin_name_mapping {} {
       }
       set clock_name [get_clock_info -name $clock]
       set clock_target [get_clock_info -targets $clock]
-      set first_index [emif_altera_emif_arch_fm_191_gs4kwha_index_in_collection $clock_target 0]
+      set first_index [emif_altera_emif_arch_fm_191_zfateyi_index_in_collection $clock_target 0]
       set catch_exception_net [catch {get_net_info -name $first_index} pin_name_net]
       if {$catch_exception_net == 0} {
          lappend result [list $clock_name $pin_name_net]
@@ -63,8 +63,8 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_clock_to_pin_name_mapping {} {
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name { pin_name } {
-   set table [emif_altera_emif_arch_fm_191_gs4kwha_get_clock_to_pin_name_mapping]
+proc emif_altera_emif_arch_fm_191_zfateyi_get_clock_name_from_pin_name { pin_name } {
+   set table [emif_altera_emif_arch_fm_191_zfateyi_get_clock_to_pin_name_mapping]
    foreach entry $table {
       if {[string compare [lindex [lindex [split $entry] 1] 0] $pin_name] == 0} {
          return [lindex $entry 0]
@@ -75,7 +75,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name { pin_nam
 
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_find_all_keepers { mystring } {
+proc emif_altera_emif_arch_fm_191_zfateyi_find_all_keepers { mystring } {
    set allkeepers [get_keepers $mystring ]
 
    foreach_in_collection keeper $allkeepers {
@@ -85,11 +85,11 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_find_all_keepers { mystring } {
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_round_3dp { x } {
+proc emif_altera_emif_arch_fm_191_zfateyi_round_3dp { x } {
    return [expr { round($x * 1000) / 1000.0  } ]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_current_timequest_report_folder {} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_current_timequest_report_folder {} {
 
    set catch_exception [catch {get_current_timequest_report_folder} error_message]
    if {[regexp ERROR $error_message] == 1} {
@@ -99,27 +99,27 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_current_timequest_report_folder {}
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_timequest_name {hier_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_timequest_name {hier_name} {
    set sta_name $hier_name
    return $sta_name
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_are_entity_names_on { } {
+proc emif_altera_emif_arch_fm_191_zfateyi_are_entity_names_on { } {
    return [set_project_mode -is_show_entity]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_instance_list {corename} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_core_instance_list {corename} {
    global ::io_only_analysis
 
    if {$::io_only_analysis == 1}  {
       set instance_list [list $corename]
 
    } else {
-      set full_instance_list [emif_altera_emif_arch_fm_191_gs4kwha_get_core_full_instance_list $corename]
+      set full_instance_list [emif_altera_emif_arch_fm_191_zfateyi_get_core_full_instance_list $corename]
       set instance_list [list]
 
       foreach inst $full_instance_list {
-         set sta_name [emif_altera_emif_arch_fm_191_gs4kwha_get_timequest_name $inst]
+         set sta_name [emif_altera_emif_arch_fm_191_zfateyi_get_timequest_name $inst]
          if {[lsearch $instance_list [escape_brackets $sta_name]] == -1} {
             lappend instance_list $sta_name
          }
@@ -129,7 +129,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_instance_list {corename} {
    return $instance_list
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock {args} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock {args} {
    array set opts [list -name "" -target "" -source "" -multiply_by 1 -divide_by 1 -phase 0]
    array set opts $args
 
@@ -139,13 +139,13 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock {args} {
       return ""
    }
 
-   set clock_name [emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name $opts(-target)]
+   set clock_name [emif_altera_emif_arch_fm_191_zfateyi_get_clock_name_from_pin_name $opts(-target)]
 
    if {[string compare -nocase $clock_name ""] == 0} {
       set nets [get_nets $opts(-target) -nowarn]
       if {[get_collection_size $nets] > 0} {
          set pin_name [get_pin_info -name [get_net_info -pin $nets]]
-         set clock_name [emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name $pin_name]
+         set clock_name [emif_altera_emif_arch_fm_191_zfateyi_get_clock_name_from_pin_name $pin_name]
 
          if {[string compare -nocase $clock_name ""] != 0} {
             if {[regexp -nocase "lvds_clk" $pin_name] || [regexp -nocase "loaden" $pin_name] } {
@@ -179,7 +179,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock {args} {
    return $clock_name
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_full_instance_list {corename} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_core_full_instance_list {corename} {
 
    set instance_list [list]
 
@@ -205,7 +205,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_core_full_instance_list {corename}
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth { node_id match_command edge_type results_array_name depth} {
+proc emif_altera_emif_arch_fm_191_zfateyi_traverse_fanin_up_to_depth { node_id match_command edge_type results_array_name depth} {
    upvar 1 $results_array_name results
 
    if {$depth < 0} {
@@ -220,12 +220,12 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth { node_id m
          set results($fanin_id) 1
       } elseif {$depth == 0} {
       } else {
-         emif_altera_emif_arch_fm_191_gs4kwha_traverse_fanin_up_to_depth $fanin_id $match_command $edge_type results [expr {$depth - 1}]
+         emif_altera_emif_arch_fm_191_zfateyi_traverse_fanin_up_to_depth $fanin_id $match_command $edge_type results [expr {$depth - 1}]
       }
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pin { node_id } {
+proc emif_altera_emif_arch_fm_191_zfateyi_is_node_type_pin { node_id } {
    set node_type [get_node_info -type $node_id]
    if {$node_type == "port"} {
       set result 1
@@ -235,7 +235,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_is_node_type_pin { node_id } {
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_pll_clock_name { clock_id } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_pll_clock_name { clock_id } {
    set clock_name [get_node_info -name $clock_id]
 
    return $clock_name
@@ -249,7 +249,7 @@ proc post_sdc_message {msg_type msg} {
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_names_in_collection { col } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_names_in_collection { col } {
    set res [list]
    foreach_in_collection node $col {
       lappend res [ get_node_info -name $node ]
@@ -257,11 +257,11 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_get_names_in_collection { col } {
    return $res
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_format_3dp { x } {
+proc emif_altera_emif_arch_fm_191_zfateyi_format_3dp { x } {
    return [format %.3f $x]
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_colours { x y } {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_colours { x y } {
 
    set fcolour [list "black"]
    if {$x < 0} {
@@ -298,7 +298,7 @@ proc max { a b } {
    }
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection { col attribute } {
+proc emif_altera_emif_arch_fm_191_zfateyi_max_in_collection { col attribute } {
    set i 0
    set max 0
    foreach_in_collection path $col {
@@ -315,7 +315,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection { col attribute } {
    return $max
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection { col attribute } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection { col attribute } {
    set i 0
    set min 0
    foreach_in_collection path $col {
@@ -332,7 +332,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection { col attribute } {
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_clock { col attribute clock } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_to_clock { col attribute clock } {
    set i 0
    set min ERROR
    foreach_in_collection path $col {
@@ -351,7 +351,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_clock { col attri
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_clock { col attribute clock } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_from_clock { col attribute clock } {
    set i 0
    set min ERROR
    foreach_in_collection path $col {
@@ -370,7 +370,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_clock { col att
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_name { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_to_name { col attribute name } {
    set i 0
    set min 0
    foreach_in_collection path $col {
@@ -389,7 +389,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_name { col attrib
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_name { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_from_name { col attribute name } {
    set i 0
    set min 0
    foreach_in_collection path $col {
@@ -408,7 +408,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_name { col attr
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_to_name { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_max_in_collection_to_name { col attribute name } {
    set i 0
    set max 0
    foreach_in_collection path $col {
@@ -427,7 +427,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_to_name { col attrib
    return $max
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_from_name { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_max_in_collection_from_name { col attribute name } {
    set i 0
    set max 0
    foreach_in_collection path $col {
@@ -447,7 +447,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_from_name { col attr
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_name2 { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_to_name2 { col attribute name } {
    set i 0
    set min 0
    foreach_in_collection path $col {
@@ -466,7 +466,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_to_name2 { col attri
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_name2 { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_min_in_collection_from_name2 { col attribute name } {
    set i 0
    set min 0
    foreach_in_collection path $col {
@@ -485,7 +485,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_min_in_collection_from_name2 { col att
    return $min
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_to_name2 { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_max_in_collection_to_name2 { col attribute name } {
    set i 0
    set max 0
    foreach_in_collection path $col {
@@ -504,7 +504,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_to_name2 { col attri
    return $max
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_from_name2 { col attribute name } {
+proc emif_altera_emif_arch_fm_191_zfateyi_max_in_collection_from_name2 { col attribute name } {
    set i 0
    set max 0
    foreach_in_collection path $col {
@@ -523,7 +523,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_max_in_collection_from_name2 { col att
    return $max
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_sort_proc {a b} {
+proc emif_altera_emif_arch_fm_191_zfateyi_sort_proc {a b} {
    set idxs [list 1 2 0]
    foreach i $idxs {
       set ai [lindex $a $i]
@@ -537,7 +537,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_sort_proc {a b} {
    return 0
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_gcd {p q} {
+proc emif_altera_emif_arch_fm_191_zfateyi_gcd {p q} {
    set p [expr {abs($p)}]
    set q [expr {abs($q)}]
    while {$q != 0} {
@@ -548,7 +548,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_gcd {p q} {
    return $p
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path {atom_id atom_oport_id path} {
+proc emif_altera_emif_arch_fm_191_zfateyi_traverse_atom_path {atom_id atom_oport_id path} {
    # Return list of {atom oterm_id} pairs by tracing the atom netlist starting from the given atom_id through the given path
    # Path consists of list of {atom_type fanin|fanout|end <port_type> <-optional>}
    set result [list]
@@ -571,9 +571,9 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path {atom_id atom_oport
                set iport_fanin [get_atom_port_info -key fanin -node $atom_id -port_id $atom_iport -type iport]
                set source_atom [lindex $iport_fanin 0]
                set source_oterm [lindex $iport_fanin 1]
-               set result [emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path $source_atom $source_oterm [lrange $path 1 end]]
+               set result [emif_altera_emif_arch_fm_191_zfateyi_traverse_atom_path $source_atom $source_oterm [lrange $path 1 end]]
             } elseif {$atom_optional == "-optional"} {
-               set result [emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path $atom_id $atom_oport_id [lrange $path 1 end]]
+               set result [emif_altera_emif_arch_fm_191_zfateyi_traverse_atom_path $atom_id $atom_oport_id [lrange $path 1 end]]
             }
          } elseif {$next_direction == "fanout"} {
             set atom_oport [get_atom_oport_by_type -node $atom_id -type $port_type]
@@ -582,7 +582,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path {atom_id atom_oport
                foreach dest $oport_fanout {
                   set dest_atom [lindex $dest 0]
                   set dest_iterm [lindex $dest 1]
-                  set fanout_result_list [emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path $dest_atom -1 [lrange $path 1 end]]
+                  set fanout_result_list [emif_altera_emif_arch_fm_191_zfateyi_traverse_atom_path $dest_atom -1 [lrange $path 1 end]]
                   foreach fanout_result $fanout_result_list {
                      if {[lsearch $result $fanout_result] == -1} {
                         lappend result $fanout_result
@@ -594,13 +594,13 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path {atom_id atom_oport
             error "Unexpected path"
          }
       } elseif {$atom_optional == "-optional"} {
-         set result [emif_altera_emif_arch_fm_191_gs4kwha_traverse_atom_path $atom_id $atom_oport_id [lrange $path 1 end]]
+         set result [emif_altera_emif_arch_fm_191_zfateyi_traverse_atom_path $atom_id $atom_oport_id [lrange $path 1 end]]
       }
    }
    return $result
 }
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_get_operating_conditions_number {} {
+proc emif_altera_emif_arch_fm_191_zfateyi_get_operating_conditions_number {} {
    set cur_operating_condition [get_operating_conditions]
    set counter 0
    foreach_in_collection op [get_available_operating_conditions] {

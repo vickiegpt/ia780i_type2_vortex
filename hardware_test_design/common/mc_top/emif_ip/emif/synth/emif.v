@@ -22,10 +22,10 @@ module emif (
 		output wire [0:0]    mem_reset_n,          //                   .mem_reset_n,          Asynchronous reset
 		output wire [0:0]    mem_par,              //                   .mem_par,              Command and address parity
 		input  wire [0:0]    mem_alert_n,          //                   .mem_alert_n,          Alert flag
-		inout  wire [8:0]    mem_dqs,              //                   .mem_dqs,              Data strobe
-		inout  wire [8:0]    mem_dqs_n,            //                   .mem_dqs_n,            Data strobe (negative leg)
-		inout  wire [71:0]   mem_dq,               //                   .mem_dq,               Read/write data
-		inout  wire [8:0]    mem_dbi_n,            //                   .mem_dbi_n,            Acts as either the data bus inversion pin, or the data mask pin, depending on configuration.
+		inout  wire [7:0]    mem_dqs,              //                   .mem_dqs,              Data strobe
+		inout  wire [7:0]    mem_dqs_n,            //                   .mem_dqs_n,            Data strobe (negative leg)
+		inout  wire [63:0]   mem_dq,               //                   .mem_dq,               Read/write data
+		inout  wire [7:0]    mem_dbi_n,            //                   .mem_dbi_n,            Acts as either the data bus inversion pin, or the data mask pin, depending on configuration.
 		output wire          local_cal_success,    //             status.local_cal_success,    When high, indicates that PHY calibration was successful
 		output wire          local_cal_fail,       //                   .local_cal_fail,       When high, indicates that PHY calibration failed
 		output wire          emif_usr_reset_n,     //   emif_usr_reset_n.reset_n,              Reset for the user clock domain. Asynchronous assertion and synchronous deassertion
@@ -34,10 +34,10 @@ module emif (
 		input  wire          amm_read_0,           //                   .read,                 Read request signal
 		input  wire          amm_write_0,          //                   .write,                Write request signal
 		input  wire [26:0]   amm_address_0,        //                   .address,              Address for the read/write request
-		output wire [575:0]  amm_readdata_0,       //                   .readdata,             Read data
-		input  wire [575:0]  amm_writedata_0,      //                   .writedata,            Write data
+		output wire [511:0]  amm_readdata_0,       //                   .readdata,             Read data
+		input  wire [511:0]  amm_writedata_0,      //                   .writedata,            Write data
 		input  wire [6:0]    amm_burstcount_0,     //                   .burstcount,           Number of transfers in each read/write burst
-		input  wire [71:0]   amm_byteenable_0,     //                   .byteenable,           Byte-enable for write data
+		input  wire [63:0]   amm_byteenable_0,     //                   .byteenable,           Byte-enable for write data
 		output wire          amm_readdatavalid_0,  //                   .readdatavalid,        Indicates whether read data is valid
 		input  wire          calbus_read,          //        emif_calbus.calbus_read,          EMIF Calibration component bus for read
 		input  wire          calbus_write,         //                   .calbus_write,         EMIF Calibration component bus for write
@@ -48,7 +48,7 @@ module emif (
 		input  wire          calbus_clk            //    emif_calbus_clk.clk,                  EMIF Calibration component bus for the clock
 	);
 
-	emif_altera_emif_fm_277_ybkgfay emif (
+	emif_altera_emif_fm_277_jlny3vi emif (
 		.local_reset_req      (local_reset_req),      //   input,     width = 1,    local_reset_req.local_reset_req
 		.local_reset_done     (local_reset_done),     //  output,     width = 1, local_reset_status.local_reset_done
 		.pll_ref_clk          (pll_ref_clk),          //   input,     width = 1,        pll_ref_clk.clk
@@ -67,10 +67,10 @@ module emif (
 		.mem_reset_n          (mem_reset_n),          //  output,     width = 1,                   .mem_reset_n
 		.mem_par              (mem_par),              //  output,     width = 1,                   .mem_par
 		.mem_alert_n          (mem_alert_n),          //   input,     width = 1,                   .mem_alert_n
-		.mem_dqs              (mem_dqs),              //   inout,     width = 9,                   .mem_dqs
-		.mem_dqs_n            (mem_dqs_n),            //   inout,     width = 9,                   .mem_dqs_n
-		.mem_dq               (mem_dq),               //   inout,    width = 72,                   .mem_dq
-		.mem_dbi_n            (mem_dbi_n),            //   inout,     width = 9,                   .mem_dbi_n
+		.mem_dqs              (mem_dqs),              //   inout,     width = 8,                   .mem_dqs
+		.mem_dqs_n            (mem_dqs_n),            //   inout,     width = 8,                   .mem_dqs_n
+		.mem_dq               (mem_dq),               //   inout,    width = 64,                   .mem_dq
+		.mem_dbi_n            (mem_dbi_n),            //   inout,     width = 8,                   .mem_dbi_n
 		.local_cal_success    (local_cal_success),    //  output,     width = 1,             status.local_cal_success
 		.local_cal_fail       (local_cal_fail),       //  output,     width = 1,                   .local_cal_fail
 		.emif_usr_reset_n     (emif_usr_reset_n),     //  output,     width = 1,   emif_usr_reset_n.reset_n
@@ -79,10 +79,10 @@ module emif (
 		.amm_read_0           (amm_read_0),           //   input,     width = 1,                   .read
 		.amm_write_0          (amm_write_0),          //   input,     width = 1,                   .write
 		.amm_address_0        (amm_address_0),        //   input,    width = 27,                   .address
-		.amm_readdata_0       (amm_readdata_0),       //  output,   width = 576,                   .readdata
-		.amm_writedata_0      (amm_writedata_0),      //   input,   width = 576,                   .writedata
+		.amm_readdata_0       (amm_readdata_0),       //  output,   width = 512,                   .readdata
+		.amm_writedata_0      (amm_writedata_0),      //   input,   width = 512,                   .writedata
 		.amm_burstcount_0     (amm_burstcount_0),     //   input,     width = 7,                   .burstcount
-		.amm_byteenable_0     (amm_byteenable_0),     //   input,    width = 72,                   .byteenable
+		.amm_byteenable_0     (amm_byteenable_0),     //   input,    width = 64,                   .byteenable
 		.amm_readdatavalid_0  (amm_readdatavalid_0),  //  output,     width = 1,                   .readdatavalid
 		.calbus_read          (calbus_read),          //   input,     width = 1,        emif_calbus.calbus_read
 		.calbus_write         (calbus_write),         //   input,     width = 1,                   .calbus_write

@@ -12,7 +12,7 @@
 
 
 * Auto-generated contents start below...
-.param emif_corename=str('emif_altera_emif_arch_fm_191_gs4kwha')
+.param emif_corename=str('emif_altera_emif_arch_fm_191_zfateyi')
 
 .param PROTOCOL                                              = str('DDR4')
 .param NUM_RANKS                                             = 1

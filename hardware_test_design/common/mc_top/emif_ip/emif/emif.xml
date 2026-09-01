@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2025.09.15.12:31:28"
- outputDirectory="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/">
+ date="2026.09.01.04:27:49"
+ outputDirectory="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/">
  <perimeter>
   <parameter
      name="AUTO_GENERATION_ID"
@@ -24,7 +24,7 @@
   <parameter
      name="AUTO_DEVICE"
      type="String"
-     defaultValue="AGIB027R29A1E2VR3"
+     defaultValue="AGIB023R18A1E1V"
      onHdl="0"
      affectsHdl="1" />
   <parameter
@@ -143,10 +143,10 @@
    <port name="mem_reset_n" direction="output" role="mem_reset_n" width="1" />
    <port name="mem_par" direction="output" role="mem_par" width="1" />
    <port name="mem_alert_n" direction="input" role="mem_alert_n" width="1" />
-   <port name="mem_dqs" direction="bidir" role="mem_dqs" width="9" />
-   <port name="mem_dqs_n" direction="bidir" role="mem_dqs_n" width="9" />
-   <port name="mem_dq" direction="bidir" role="mem_dq" width="72" />
-   <port name="mem_dbi_n" direction="bidir" role="mem_dbi_n" width="9" />
+   <port name="mem_dqs" direction="bidir" role="mem_dqs" width="8" />
+   <port name="mem_dqs_n" direction="bidir" role="mem_dqs_n" width="8" />
+   <port name="mem_dq" direction="bidir" role="mem_dq" width="64" />
+   <port name="mem_dbi_n" direction="bidir" role="mem_dbi_n" width="8" />
   </interface>
   <interface name="status" kind="conduit" start="0">
    <property name="associatedClock" value="" />
@@ -181,7 +181,7 @@
   <interface name="ctrl_amm_0" kind="avalon" start="0">
    <property name="addressAlignment" value="DYNAMIC" />
    <property name="addressGroup" value="0" />
-   <property name="addressSpan" value="9663676416" />
+   <property name="addressSpan" value="8589934592" />
    <property name="addressUnits" value="WORDS" />
    <property name="alwaysBurstMaxBurst" value="false" />
    <property name="associatedClock" value="emif_usr_clk" />
@@ -236,14 +236,14 @@
    <port name="amm_read_0" direction="input" role="read" width="1" />
    <port name="amm_write_0" direction="input" role="write" width="1" />
    <port name="amm_address_0" direction="input" role="address" width="27" />
-   <port name="amm_readdata_0" direction="output" role="readdata" width="576" />
-   <port name="amm_writedata_0" direction="input" role="writedata" width="576" />
+   <port name="amm_readdata_0" direction="output" role="readdata" width="512" />
+   <port name="amm_writedata_0" direction="input" role="writedata" width="512" />
    <port name="amm_burstcount_0" direction="input" role="burstcount" width="7" />
    <port
        name="amm_byteenable_0"
        direction="input"
        role="byteenable"
-       width="72" />
+       width="64" />
    <port
        name="amm_readdatavalid_0"
        direction="output"
@@ -292,34 +292,34 @@
   <parameter name="AUTO_CTRL_AMM_0_CPU_INFO_ID" value="" />
   <generatedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/synth/emif.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/synth/emif.v"
        attributes="CONTAINS_INLINE_CONFIGURATION" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/synth/emif.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/synth/emif.v"
        attributes="CONTAINS_INLINE_CONFIGURATION" />
   </childGeneratedFiles>
   <sourceFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif.ip" />
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif.ip" />
   </sourceFiles>
   <childSourceFiles>
    <file
-       path="/home/steve/opt/unionfs/alt_25_1/ip/altera/emif/hwtcl/altera_emif_fm/altera_emif_fm_hw.tcl" />
+       path="/opt/altera_pro/25.1/ip/altera/emif/hwtcl/altera_emif_fm/altera_emif_fm_hw.tcl" />
    <file
-       path="/home/steve/opt/unionfs/alt_25_1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
+       path="/opt/altera_pro/25.1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
   </childSourceFiles>
   <messages>
    <message level="Info" culprit="emif">"Generating: emif"</message>
-   <message level="Info" culprit="emif">"Generating: emif_altera_emif_fm_277_ybkgfay"</message>
-   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_gs4kwha"</message>
+   <message level="Info" culprit="emif">"Generating: emif_altera_emif_fm_277_jlny3vi"</message>
+   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_zfateyi"</message>
   </messages>
  </entity>
  <entity
    kind="altera_emif_fm"
    version="2.7.7"
-   name="emif_altera_emif_fm_277_ybkgfay">
+   name="emif_altera_emif_fm_277_jlny3vi">
   <parameter name="PHY_DDRT_IO_VOLTAGE" value="1.2" />
   <parameter name="BOARD_QDR4_USE_DEFAULT_SLEW_RATES" value="true" />
   <parameter name="CTRL_QDR4_WAR_TURNAROUND_DELAY_CYC" value="11" />
@@ -608,7 +608,7 @@
   <parameter name="MEM_LPDDR3_R_ODT0_2X2" value="off,off" />
   <parameter name="MEM_DDRT_USE_DEFAULT_ODT" value="true" />
   <parameter name="MEM_DDRT_TRP_CYC" value="14" />
-  <parameter name="MEM_DDR4_TTL_DQ_WIDTH" value="72" />
+  <parameter name="MEM_DDR4_TTL_DQ_WIDTH" value="64" />
   <parameter name="MEM_DDR4_SPEEDBIN_ENUM" value="DDR4_SPEEDBIN_2666" />
   <parameter name="CTRL_LPDDR3_SELF_REFRESH_EN" value="false" />
   <parameter name="CTRL_DDRT_ECC_STATUS_EN" value="true" />
@@ -1702,7 +1702,7 @@
   <parameter name="MEM_DDRT_READ_PREAMBLE_TRAINING" value="false" />
   <parameter name="MEM_DDR3_TTL_DQ_WIDTH" value="72" />
   <parameter name="DIAG_LPDDR3_EX_DESIGN_NUM_OF_SLAVES" value="1" />
-  <parameter name="MEM_TTL_DATA_WIDTH" value="72" />
+  <parameter name="MEM_TTL_DATA_WIDTH" value="64" />
   <parameter name="MEM_DDR4_TDVWP_UI" value="0.72" />
   <parameter
      name="MEM_DDRT_AC_PARITY_LATENCY"
@@ -1730,7 +1730,7 @@
   <parameter name="MEM_DDRT_HIDE_LATENCY_SETTINGS" value="true" />
   <parameter name="BOARD_RLD3_MAX_CK_DELAY_NS" value="0.6" />
   <parameter name="CTRL_DDRT_PMM_ADR_FLOW_EN" value="false" />
-  <parameter name="MEM_DDR4_DQS_WIDTH" value="9" />
+  <parameter name="MEM_DDR4_DQS_WIDTH" value="8" />
   <parameter name="MEM_LPDDR3_TRCD_CYC" value="17" />
   <parameter name="DIAG_DDRT_ENABLE_DEFAULT_MODE" value="false" />
   <parameter name="EMIF_5_STORED_PARAM" value="" />
@@ -1860,7 +1860,7 @@
   <parameter name="DIAG_QDR2_USER_USE_SIM_MEMORY_VALIDATION_TG" value="true" />
   <parameter
      name="SYS_INFO_DEVICE_DIE_REVISIONS"
-     value="HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA" />
+     value="HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA" />
   <parameter name="PHY_QDR2_USER_STARTING_VREFIN" value="70.0" />
   <parameter name="MEM_DDR3_CFG_GEN_DBE" value="false" />
   <parameter name="MEM_DDR4_RCD_COMMAND_LATENCY" value="1" />
@@ -2356,7 +2356,7 @@
   <parameter name="MEM_DDR3_TWLS_PS" value="125.0" />
   <parameter name="EMIF_14_STORED_PARAM" value="" />
   <parameter name="EMIF_3_REF_CLK_SHARING" value="EXPORTED" />
-  <parameter name="MEM_DDR4_TTL_DQS_WIDTH" value="9" />
+  <parameter name="MEM_DDR4_TTL_DQS_WIDTH" value="8" />
   <parameter name="MEM_DDR4_USER_VREFDQ_TRAINING_VALUE" value="56.0" />
   <parameter name="DIAG_DDRT_DISABLE_AFI_P2C_REGISTERS" value="false" />
   <parameter name="EX_DESIGN_GUI_RLD2_TARGET_DEV_KIT" value="TARGET_DEV_KIT_NONE" />
@@ -2437,7 +2437,7 @@
   <parameter name="PHY_DDR4_AUTO_STARTING_VREFIN_EN" value="true" />
   <parameter name="MEM_DDRT_MPR_READ_FORMAT" value="DDRT_MPR_READ_FORMAT_SERIAL" />
   <parameter name="EX_DESIGN_GUI_RLD3_HDL_FORMAT" value="HDL_FORMAT_VERILOG" />
-  <parameter name="MEM_TTL_NUM_OF_READ_GROUPS" value="9" />
+  <parameter name="MEM_TTL_NUM_OF_READ_GROUPS" value="8" />
   <parameter name="BOARD_DDR3_BRD_SKEW_WITHIN_AC_NS" value="0.02" />
   <parameter name="MEM_DDR3_RTT_WR_ENUM" value="DDR3_RTT_WR_RZQ_4" />
   <parameter
@@ -2502,7 +2502,7 @@
   <parameter name="DIAG_RLD2_DISABLE_AFI_P2C_REGISTERS" value="false" />
   <parameter name="PHY_RLD3_REF_CLK_JITTER_PS" value="10.0" />
   <parameter name="PHY_MIMIC_HPS_EMIF" value="false" />
-  <parameter name="MEM_DDR4_DQ_WIDTH" value="72" />
+  <parameter name="MEM_DDR4_DQ_WIDTH" value="64" />
   <parameter name="PHY_DDRT_AC_IO_STD_ENUM" value="unset" />
   <parameter name="MEM_DDR4_DRV_STR_ENUM" value="DDR4_DRV_STR_RZQ_7" />
   <parameter name="DIAG_DDRT_USE_SIM_MEMORY_VALIDATION_TG" value="false" />
@@ -2783,7 +2783,7 @@
   <parameter name="EMIF_0_STORED_PARAM" value="" />
   <parameter name="MEM_DDR4_W_ODTN_4X4" value="Rank 0,Rank 1,Rank 2,Rank 3" />
   <parameter name="MEM_LPDDR3_W_ODT1_2X2" value="off,off" />
-  <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS" value="9" />
+  <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS" value="8" />
   <parameter name="MEM_DDR4_TTL_CK_WIDTH" value="1" />
   <parameter name="BOARD_LPDDR3_MAX_DQS_DELAY_NS" value="0.6" />
   <parameter name="PHY_DDR3_IO_VOLTAGE" value="1.5" />
@@ -2872,32 +2872,32 @@
   <parameter name="MEM_DDRT_W_ODT0_4X4" value="on,on,off,off" />
   <generatedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_fm_277/synth/emif_altera_emif_fm_277_ybkgfay.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_fm_277/synth/emif_altera_emif_fm_277_jlny3vi.v"
        attributes="CONTAINS_INLINE_CONFIGURATION" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_fm_277/synth/emif_altera_emif_fm_277_ybkgfay.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_fm_277/synth/emif_altera_emif_fm_277_jlny3vi.v"
        attributes="CONTAINS_INLINE_CONFIGURATION" />
   </childGeneratedFiles>
   <sourceFiles>
    <file
-       path="/home/steve/opt/unionfs/alt_25_1/ip/altera/emif/hwtcl/altera_emif_fm/altera_emif_fm_hw.tcl" />
+       path="/opt/altera_pro/25.1/ip/altera/emif/hwtcl/altera_emif_fm/altera_emif_fm_hw.tcl" />
   </sourceFiles>
   <childSourceFiles>
    <file
-       path="/home/steve/opt/unionfs/alt_25_1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
+       path="/opt/altera_pro/25.1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
   </childSourceFiles>
   <instantiator instantiator="emif" as="emif" />
   <messages>
-   <message level="Info" culprit="emif">"Generating: emif_altera_emif_fm_277_ybkgfay"</message>
-   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_gs4kwha"</message>
+   <message level="Info" culprit="emif">"Generating: emif_altera_emif_fm_277_jlny3vi"</message>
+   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_zfateyi"</message>
   </messages>
  </entity>
  <entity
    kind="altera_emif_arch_fm"
    version="19.1"
-   name="emif_altera_emif_arch_fm_191_gs4kwha">
+   name="emif_altera_emif_arch_fm_191_zfateyi">
   <parameter name="SEC_HMC_CFG_DBC1_REORDER_RDATA" value="enable" />
   <parameter name="SEC_HMC_CFG_WR_TO_WR_DIFF_CHIP" value="3" />
   <parameter name="CTRL_QDR4_WAR_TURNAROUND_DELAY_CYC" value="11" />
@@ -2975,7 +2975,7 @@
   <parameter name="DIAG_SIM_VERBOSE_LEVEL" value="5" />
   <parameter name="MEM_DDR3_MIRROR_ADDRESSING_EN" value="true" />
   <parameter name="BOARD_LPDDR3_USER_RDATA_SLEW_RATE" value="2.0" />
-  <parameter name="PORT_MEM_DBI_N_WIDTH" value="9" />
+  <parameter name="PORT_MEM_DBI_N_WIDTH" value="8" />
   <parameter name="BOARD_DDR3_USER_CK_SLEW_RATE" value="4.0" />
   <parameter name="PORT_MEM_CFG_N_WIDTH" value="1" />
   <parameter name="CTRL_DDRT_USER_PRIORITY_EN" value="false" />
@@ -3064,7 +3064,7 @@
   <parameter name="MEM_DDR3_SPEEDBIN_ENUM" value="DDR3_SPEEDBIN_2133" />
   <parameter name="SEC_HMC_CFG_DBC3_ENABLE_RC" value="enable" />
   <parameter name="PRI_HMC_CFG_PCH_TO_VALID" value="10" />
-  <parameter name="LANES_USAGE_1" value="45" />
+  <parameter name="LANES_USAGE_1" value="5" />
   <parameter name="LANES_USAGE_0" value="765762413" />
   <parameter name="MEM_DDR4_DISCRETE_CS_WIDTH" value="1" />
   <parameter name="LANES_USAGE_3" value="0" />
@@ -3103,7 +3103,7 @@
   <parameter name="MEM_QDR2_WIDTH_EXPANDED" value="false" />
   <parameter name="CENTER_TIDS_0" value="5249028" />
   <parameter name="MEM_DDRT_USE_DEFAULT_ODT" value="true" />
-  <parameter name="MEM_DDR4_TTL_DQ_WIDTH" value="72" />
+  <parameter name="MEM_DDR4_TTL_DQ_WIDTH" value="64" />
   <parameter name="DIAG_USE_NEW_EFFMON_S10" value="false" />
   <parameter name="PLL_M_CNT_EVEN_DUTY_EN" value="false" />
   <parameter name="PHY_LPDDR3_HPS_ENABLE_EARLY_RELEASE" value="false" />
@@ -3126,7 +3126,7 @@
   <parameter name="PORT_MEM_DQ_PINLOC_2" value="11544585" />
   <parameter name="PORT_MEM_DQ_PINLOC_1" value="8391682" />
   <parameter name="DIAG_RLD3_SIM_MEMORY_PRELOAD" value="false" />
-  <parameter name="PORT_MEM_DQ_PINLOC_0" value="1048648" />
+  <parameter name="PORT_MEM_DQ_PINLOC_0" value="1048640" />
   <parameter name="CTRL_DDR4_AUTO_PRECHARGE_EN" value="false" />
   <parameter name="PHY_DATA_OUT_MODE_ENUM" value="OUT_OCT_40_CAL" />
   <parameter name="PORT_AFI_WDATA_DBI_N_WIDTH" value="1" />
@@ -3257,8 +3257,8 @@
   <parameter name="PORT_AFI_LBK1_N_WIDTH" value="1" />
   <parameter name="DIAG_DDR3_EX_DESIGN_SEPARATE_RZQS" value="true" />
   <parameter name="PORT_MEM_LDA_N_PINLOC_0" value="0" />
-  <parameter name="UNUSED_DQS_BUSES_LANELOC_1" value="4" />
-  <parameter name="UNUSED_DQS_BUSES_LANELOC_0" value="5249027" />
+  <parameter name="UNUSED_DQS_BUSES_LANELOC_1" value="4101" />
+  <parameter name="UNUSED_DQS_BUSES_LANELOC_0" value="6302724" />
   <parameter name="UNUSED_DQS_BUSES_LANELOC_3" value="0" />
   <parameter name="UNUSED_DQS_BUSES_LANELOC_2" value="0" />
   <parameter name="UNUSED_DQS_BUSES_LANELOC_5" value="0" />
@@ -3345,7 +3345,7 @@
   <parameter name="SEC_HMC_CFG_DBC3_ENABLE_ECC" value="disable" />
   <parameter name="BOARD_DDR4_USER_RDATA_SLEW_RATE" value="4.0" />
   <parameter name="MEM_DDRT_TREFI_CYC" value="8320" />
-  <parameter name="PORT_CTRL_AMM_RDATA_WIDTH" value="576" />
+  <parameter name="PORT_CTRL_AMM_RDATA_WIDTH" value="512" />
   <parameter name="MEM_DDR3_CTRL_CFG_WRITE_ODT_RANK" value="0" />
   <parameter name="MEM_DDR3_ADDRESS_MIRROR_BITVEC" value="0" />
   <parameter name="MEM_DDR4_TTL_NUM_OF_LOGICAL_RANKS" value="1" />
@@ -3557,7 +3557,7 @@
   <parameter name="PINS_DCC_SPLIT_1" value="201329664" />
   <parameter name="PINS_DCC_SPLIT_2" value="805306368" />
   <parameter name="PINS_DCC_SPLIT_3" value="12585984" />
-  <parameter name="PINS_DCC_SPLIT_4" value="196656" />
+  <parameter name="PINS_DCC_SPLIT_4" value="48" />
   <parameter name="PORT_MEM_CK_BIDIR_PINLOC_4" value="0" />
   <parameter name="SEC_HMC_CFG_ARBITER_TYPE" value="arbiter_type_2t" />
   <parameter name="PORT_MEM_CK_BIDIR_PINLOC_5" value="0" />
@@ -3864,16 +3864,16 @@
   <parameter name="MEM_RLD2_BL" value="4" />
   <parameter name="PORT_MEM_DQ_PINLOC_26" value="0" />
   <parameter name="PORT_MEM_DQ_PINLOC_27" value="0" />
-  <parameter name="PORT_MEM_DQ_PINLOC_24" value="143" />
+  <parameter name="PORT_MEM_DQ_PINLOC_24" value="0" />
   <parameter name="DIAG_DDR3_USE_SIM_MEMORY_VALIDATION_TG" value="false" />
   <parameter name="PORT_MEM_DQ_PINLOC_25" value="0" />
   <parameter name="PRI_HMC_CFG_MPS_DQSTRK_DISABLE" value="disable" />
-  <parameter name="PORT_MEM_DQ_PINLOC_22" value="141695109" />
-  <parameter name="PORT_MEM_DQ_PINLOC_23" value="149042316" />
+  <parameter name="PORT_MEM_DQ_PINLOC_22" value="0" />
+  <parameter name="PORT_MEM_DQ_PINLOC_23" value="0" />
   <parameter name="PRI_HMC_CFG_MRR_TO_VALID" value="0" />
   <parameter name="PORT_MEM_DQ_PINLOC_20" value="135397499" />
   <parameter name="EX_DESIGN_GUI_QDR2_GEN_SIM" value="true" />
-  <parameter name="PORT_MEM_DQ_PINLOC_21" value="138546306" />
+  <parameter name="PORT_MEM_DQ_PINLOC_21" value="134274" />
   <parameter name="EX_DESIGN_GUI_DDR4_GEN_CDC" value="false" />
   <parameter name="MEM_DDRT_TRCD_CYC" value="14" />
   <parameter name="PORT_MEM_DQ_PINLOC_28" value="0" />
@@ -3980,22 +3980,22 @@
   <parameter name="EMIF_5_STORED_PARAM" value="" />
   <parameter name="BOARD_DDR3_CK_SLEW_RATE" value="4.0" />
   <parameter name="PRI_HMC_CFG_RB_RESERVED_ENTRY" value="8" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_1" value="95526003" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_0" value="133311503" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_3" value="55630906" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_2" value="75572298" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_5" value="7" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_4" value="19954731" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_1" value="145895565" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_0" value="149044250" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_3" value="139597959" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_2" value="142746762" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_5" value="77687911" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_4" value="120716420" />
   <parameter name="BOARD_LPDDR3_USER_WDATA_ISI_NS" value="0.0" />
   <parameter name="DIAG_USE_RS232_UART" value="false" />
   <parameter name="MEM_RLD3_WRITE_PROTOCOL_ENUM" value="RLD3_WRITE_1BANK" />
   <parameter name="CTRL_DDRT_DIMM_DENSITY" value="128" />
   <parameter name="PRI_HMC_MEM_IF_TWR_CRC_DM" value="0" />
   <parameter name="DIAG_DDR3_EXPORT_SEQ_AVALON_MASTER" value="false" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_7" value="0" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_6" value="0" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_7" value="45143095" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_6" value="60891209" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_9" value="0" />
-  <parameter name="UNUSED_MEM_PINS_PINLOC_8" value="0" />
+  <parameter name="UNUSED_MEM_PINS_PINLOC_8" value="7359519" />
   <parameter name="DIAG_RLD2_USE_NEW_EFFMON_S10" value="false" />
   <parameter name="PHY_DDRT_AC_DEEMPHASIS_ENUM" value="unset" />
   <parameter name="MEM_DDR4_ALERT_N_DQS_GROUP" value="0" />
@@ -4233,7 +4233,7 @@
   <parameter name="PHY_RLD2_USER_AC_SLEW_RATE_ENUM" value="unset" />
   <parameter name="BOARD_RLD3_USER_RCLK_SLEW_RATE" value="7.0" />
   <parameter name="MEM_QDR4_DQ_PER_WR_GROUP" value="18" />
-  <parameter name="PORT_CTRL_AMM_BYTEEN_WIDTH" value="72" />
+  <parameter name="PORT_CTRL_AMM_BYTEEN_WIDTH" value="64" />
   <parameter name="PHY_LPDDR3_USER_RZQ_IO_STD_ENUM" value="unset" />
   <parameter name="DIAG_LPDDR3_SIM_MEMORY_PRELOAD_SEC_EMIF_FILE" value="" />
   <parameter name="MEM_DDRT_DISCRETE_MIRROR_ADDRESSING_EN" value="false" />
@@ -4421,7 +4421,7 @@
   <parameter name="PHY_DDRT_MIMIC_HPS_EMIF" value="false" />
   <parameter name="PRI_HMC_CFG_RD_TO_WR" value="10" />
   <parameter name="DIAG_DDR4_USE_TG_HBM" value="false" />
-  <parameter name="PORT_MEM_DQS_N_WIDTH" value="9" />
+  <parameter name="PORT_MEM_DQS_N_WIDTH" value="8" />
   <parameter name="MEM_DDR3_TWLS_PS" value="125.0" />
   <parameter name="PORT_MEM_RM_PINLOC_AUTOGEN_WCNT" value="6" />
   <parameter name="EMIF_3_REF_CLK_SHARING" value="EXPORTED" />
@@ -4473,7 +4473,7 @@
   <parameter name="PORT_MEM_DQS_N_PINLOC_4" value="0" />
   <parameter name="CTRL_DDRT_WR_ACK_POLICY" value="POSTED" />
   <parameter name="PINS_DATA_IN_MODE_9" value="153391681" />
-  <parameter name="PORT_MEM_DQS_N_PINLOC_3" value="137" />
+  <parameter name="PORT_MEM_DQS_N_PINLOC_3" value="0" />
   <parameter name="PINS_DATA_IN_MODE_8" value="1059361353" />
   <parameter name="PORT_MEM_DQS_N_PINLOC_2" value="131187813" />
   <parameter name="MEM_QDR4_TCKDK_MAX_PS" value="150" />
@@ -4487,7 +4487,7 @@
   <parameter name="CTRL_QDR4_AVL_MAX_BURST_COUNT" value="4" />
   <parameter name="PORT_MEM_DQS_N_PINLOC_1" value="93365277" />
   <parameter name="PHY_DDR3_DEFAULT_REF_CLK_FREQ" value="true" />
-  <parameter name="PORT_MEM_DQS_N_PINLOC_0" value="17830921" />
+  <parameter name="PORT_MEM_DQS_N_PINLOC_0" value="17830920" />
   <parameter name="PORT_AFI_RST_N_WIDTH" value="1" />
   <parameter name="MEM_QDR4_DK_PER_PORT_WIDTH" value="2" />
   <parameter name="DIAG_EX_DESIGN_SEPARATE_RZQS" value="true" />
@@ -4539,7 +4539,7 @@
   <parameter name="DIAG_DDR4_SKIP_AC_PARITY_CHECK" value="false" />
   <parameter name="MEM_DDRT_SEQ_ODT_TABLE_LO" value="0" />
   <parameter name="PHY_MIMIC_HPS_EMIF" value="false" />
-  <parameter name="MEM_DDR4_DQ_WIDTH" value="72" />
+  <parameter name="MEM_DDR4_DQ_WIDTH" value="64" />
   <parameter name="PHY_DDRT_AC_IO_STD_ENUM" value="unset" />
   <parameter name="PRI_HMC_CFG_STARVE_LIMIT" value="10" />
   <parameter name="MEM_DDR3_TRAS_CYC" value="36" />
@@ -4667,7 +4667,7 @@
   <parameter name="DIAG_DDR3_CAL_ADDR0" value="0" />
   <parameter name="DIAG_DDR3_ABSTRACT_PHY" value="false" />
   <parameter name="MEM_RLD3_MR0" value="0" />
-  <parameter name="DBC_PIPE_LATS_1" value="34952" />
+  <parameter name="DBC_PIPE_LATS_1" value="2184" />
   <parameter name="MEM_DDR4_ADDR_WIDTH" value="17" />
   <parameter name="DBC_PIPE_LATS_0" value="286335522" />
   <parameter name="DBC_PIPE_LATS_3" value="0" />
@@ -4731,17 +4731,17 @@
   <parameter name="PHY_HPS_ENABLE_EARLY_RELEASE" value="false" />
   <parameter name="EMIF_4_CONN_TO_CALIP" value="CALIP_0" />
   <parameter name="MEM_LPDDR3_TDQSS_CYC" value="1.25" />
-  <parameter name="PINS_DATA_IN_MODE_13" value="33329737" />
+  <parameter name="PINS_DATA_IN_MODE_13" value="9" />
   <parameter name="PORT_MEM_DBI_N_PINLOC_4" value="0" />
   <parameter name="MEM_LPDDR3_TDS_AC_MV" value="150" />
-  <parameter name="PINS_DATA_IN_MODE_14" value="585" />
-  <parameter name="PORT_MEM_DBI_N_PINLOC_3" value="138" />
+  <parameter name="PINS_DATA_IN_MODE_14" value="0" />
+  <parameter name="PORT_MEM_DBI_N_PINLOC_3" value="0" />
   <parameter name="PINS_DATA_IN_MODE_15" value="0" />
   <parameter name="PORT_MEM_DBI_N_PINLOC_6" value="0" />
   <parameter name="PINS_DATA_IN_MODE_16" value="0" />
   <parameter name="PORT_MEM_DBI_N_PINLOC_5" value="0" />
   <parameter name="PINS_DATA_IN_MODE_17" value="0" />
-  <parameter name="PORT_MEM_DBI_N_PINLOC_0" value="18880521" />
+  <parameter name="PORT_MEM_DBI_N_PINLOC_0" value="18880520" />
   <parameter name="DIAG_QDR4_SIM_MEMORY_PRELOAD" value="false" />
   <parameter name="PINS_DATA_IN_MODE_18" value="0" />
   <parameter name="PINS_DATA_IN_MODE_19" value="0" />
@@ -4921,7 +4921,7 @@
   <parameter name="PORT_MEM_RAS_N_WIDTH" value="1" />
   <parameter name="PORT_MEM_DQS_PINLOC_9" value="0" />
   <parameter name="PORT_MEM_DQS_PINLOC_4" value="0" />
-  <parameter name="PORT_MEM_DQS_PINLOC_3" value="136" />
+  <parameter name="PORT_MEM_DQS_PINLOC_3" value="0" />
   <parameter name="PORT_MEM_DQS_PINLOC_6" value="0" />
   <parameter name="BOARD_DDR4_DQS_TO_CK_SKEW_NS" value="0.02" />
   <parameter name="PORT_MEM_DQS_PINLOC_5" value="0" />
@@ -4945,7 +4945,7 @@
   <parameter name="PINS_C2L_DRIVEN_2" value="251658240" />
   <parameter name="PINS_C2L_DRIVEN_3" value="1027593213" />
   <parameter name="CTRL_DDRT_GNT_TO_WR_DIFF_CHIP_DELTA_CYCS" value="1" />
-  <parameter name="PINS_C2L_DRIVEN_4" value="16056143" />
+  <parameter name="PINS_C2L_DRIVEN_4" value="3919" />
   <parameter name="PINS_C2L_DRIVEN_5" value="0" />
   <parameter name="PINS_C2L_DRIVEN_6" value="0" />
   <parameter name="PINS_C2L_DRIVEN_7" value="0" />
@@ -4970,9 +4970,9 @@
   <parameter name="MEM_QDR4_TCKQK_MAX_PS" value="225" />
   <parameter
      name="SEQ_PT_SIM_CONTENT"
-     value="00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d20e08100b0000000000000000000004077d58000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f" />
+     value="00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d20e08100b0000000000000000000004077d58000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f" />
   <parameter name="PORT_MEM_RM_PINLOC_4" value="0" />
-  <parameter name="PORT_MEM_DQS_PINLOC_0" value="16781321" />
+  <parameter name="PORT_MEM_DQS_PINLOC_0" value="16781320" />
   <parameter name="PORT_AFI_CS_N_WIDTH" value="1" />
   <parameter name="PORT_MEM_DQS_PINLOC_2" value="130138212" />
   <parameter name="SEC_HMC_CFG_GEAR_DOWN_EN" value="disable" />
@@ -5052,7 +5052,7 @@
   <parameter name="CTRL_DDR3_USER_PRIORITY_EN" value="false" />
   <parameter name="MEM_DDR4_R_DERIVED_BODTN" value="" />
   <parameter name="MEM_DDR4_TQSH_CYC" value="0.4" />
-  <parameter name="PORT_CTRL_AMM_WDATA_WIDTH" value="576" />
+  <parameter name="PORT_CTRL_AMM_WDATA_WIDTH" value="512" />
   <parameter name="PHY_DDR3_HPS_ENABLE_EARLY_RELEASE" value="false" />
   <parameter name="MEM_DDRT_WRITE_DBI" value="false" />
   <parameter name="PORT_MEM_DM_PINLOC_1" value="0" />
@@ -5574,7 +5574,7 @@
   <parameter name="MEM_RLD3_AREF_PROTOCOL_ENUM" value="RLD3_AREF_BAC" />
   <parameter name="DB_PINS_PROC_MODE_21" value="103911395" />
   <parameter name="PORT_AFI_CAS_N_WIDTH" value="1" />
-  <parameter name="DB_PINS_PROC_MODE_22" value="275876963" />
+  <parameter name="DB_PINS_PROC_MODE_22" value="1073741823" />
   <parameter name="PHY_QDR2_IO_VOLTAGE" value="1.5" />
   <parameter name="DB_PINS_PROC_MODE_20" value="275876963" />
   <parameter name="DB_PINS_PROC_MODE_25" value="0" />
@@ -5583,7 +5583,7 @@
   <parameter name="DIAG_EXPORT_SEQ_AVALON_HEAD_OF_CHAIN" value="true" />
   <parameter name="DB_PINS_PROC_MODE_26" value="0" />
   <parameter name="PHY_DDRT_DEFAULT_IO" value="true" />
-  <parameter name="DB_PINS_PROC_MODE_23" value="103911395" />
+  <parameter name="DB_PINS_PROC_MODE_23" value="1073741823" />
   <parameter name="DB_PINS_PROC_MODE_24" value="0" />
   <parameter name="DB_PINS_PROC_MODE_29" value="0" />
   <parameter name="DB_PINS_PROC_MODE_27" value="0" />
@@ -6055,13 +6055,13 @@
      value="DDRT_FINE_REFRESH_FIXED_1X" />
   <parameter name="MEM_DDR3_TTL_DQ_WIDTH" value="72" />
   <parameter name="DIAG_LPDDR3_EX_DESIGN_NUM_OF_SLAVES" value="1" />
-  <parameter name="MEM_TTL_DATA_WIDTH" value="72" />
+  <parameter name="MEM_TTL_DATA_WIDTH" value="64" />
   <parameter
      name="MEM_DDRT_AC_PARITY_LATENCY"
      value="DDRT_AC_PARITY_LATENCY_DISABLE" />
   <parameter
      name="SEQ_PT_SYN_CONTENT"
-     value="00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d00c08100b0000000000000000000004066008000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f" />
+     value="00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d00c08100b0000000000000000000004066008000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f" />
   <parameter name="PORT_MEM_RPS_N_PINLOC_0" value="0" />
   <parameter
      name="DIAG_QDR2_USER_SIM_MEMORY_PRELOAD_PRI_EMIF_FILE"
@@ -6079,7 +6079,7 @@
   <parameter name="CTRL_DDRT_PMM_ADR_FLOW_EN" value="false" />
   <parameter name="DB_PINS_PROC_MODE_1" value="103911395" />
   <parameter name="DB_PINS_PROC_MODE_2" value="275876963" />
-  <parameter name="MEM_DDR4_DQS_WIDTH" value="9" />
+  <parameter name="MEM_DDR4_DQS_WIDTH" value="8" />
   <parameter name="DB_PINS_PROC_MODE_0" value="275876963" />
   <parameter name="PRI_HMC_CFG_WR_ODT_ON" value="0" />
   <parameter name="PORT_MEM_WE_N_PINLOC_AUTOGEN_WCNT" value="2" />
@@ -6205,7 +6205,7 @@
   <parameter name="PORT_MEM_BA_PINLOC_0" value="86066178" />
   <parameter
      name="SYS_INFO_DEVICE_DIE_REVISIONS"
-     value="HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA" />
+     value="HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA" />
   <parameter name="PINS_DCC_SPLIT_AUTOGEN_WCNT" value="13" />
   <parameter name="PRI_HMC_CFG_PDN_TO_VALID" value="5" />
   <parameter name="MEM_DDR3_CFG_GEN_DBE" value="false" />
@@ -6266,7 +6266,7 @@
   <parameter name="PLL_C_CNT_HIGH_4" value="2" />
   <parameter name="PINS_OCT_MODE_7" value="0" />
   <parameter name="PLL_C_CNT_HIGH_5" value="256" />
-  <parameter name="PINS_OCT_MODE_4" value="16252799" />
+  <parameter name="PINS_OCT_MODE_4" value="3967" />
   <parameter name="PLL_C_CNT_HIGH_6" value="256" />
   <parameter name="PINS_OCT_MODE_5" value="0" />
   <parameter name="PLL_C_CNT_HIGH_7" value="256" />
@@ -6561,7 +6561,7 @@
   <parameter name="MEM_QDR2_TCQDOH_NS" value="-0.09" />
   <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_3" value="0" />
   <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_2" value="0" />
-  <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_1" value="34952" />
+  <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_1" value="2184" />
   <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_0" value="572662306" />
   <parameter name="PHY_DDR4_AC_IO_STD_ENUM" value="IO_STD_SSTL_12" />
   <parameter name="SEC_HMC_CFG_DBC2_SLOT_ROTATE_EN" value="dbc2_disable" />
@@ -6616,11 +6616,11 @@
   <parameter name="MEM_RLD2_FORMAT_ENUM" value="MEM_FORMAT_DISCRETE" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_38" value="0" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_37" value="0" />
-  <parameter name="LANE_PIN_USAGE_18" value="286266145" />
-  <parameter name="LANE_PIN_USAGE_19" value="4" />
+  <parameter name="LANE_PIN_USAGE_18" value="0" />
+  <parameter name="LANE_PIN_USAGE_19" value="0" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_39" value="0" />
   <parameter name="LANE_PIN_USAGE_16" value="20058385" />
-  <parameter name="LANE_PIN_USAGE_17" value="71582788" />
+  <parameter name="LANE_PIN_USAGE_17" value="17476" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_30" value="0" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_32" value="0" />
   <parameter name="UNUSED_MEM_PINS_PINLOC_31" value="0" />
@@ -6709,13 +6709,13 @@
   <parameter name="PORT_CTRL_AST_WR_DATA_WIDTH" value="1" />
   <parameter name="PINS_USAGE_6" value="0" />
   <parameter name="PINS_USAGE_5" value="0" />
-  <parameter name="PINS_USAGE_4" value="16252799" />
+  <parameter name="PINS_USAGE_4" value="3967" />
   <parameter name="PINS_USAGE_3" value="1040179197" />
   <parameter name="EMIF_14_STORED_PARAM" value="" />
   <parameter name="PINS_USAGE_9" value="0" />
   <parameter name="PINS_USAGE_8" value="0" />
   <parameter name="PINS_USAGE_7" value="0" />
-  <parameter name="MEM_DDR4_TTL_DQS_WIDTH" value="9" />
+  <parameter name="MEM_DDR4_TTL_DQS_WIDTH" value="8" />
   <parameter name="DIAG_ABSTRACT_PHY_WLAT" value="9" />
   <parameter name="MEM_DDR4_USER_VREFDQ_TRAINING_VALUE" value="56.0" />
   <parameter name="SEC_HMC_CFG_DBC2_ENABLE_RC" value="enable" />
@@ -6779,7 +6779,7 @@
   <parameter name="CTRL_QDR4_AVL_ENABLE_POWER_OF_TWO_BUS" value="false" />
   <parameter name="SEC_HMC_MEM_IF_TZQCS" value="0" />
   <parameter name="EX_DESIGN_GUI_RLD3_HDL_FORMAT" value="HDL_FORMAT_VERILOG" />
-  <parameter name="MEM_TTL_NUM_OF_READ_GROUPS" value="9" />
+  <parameter name="MEM_TTL_NUM_OF_READ_GROUPS" value="8" />
   <parameter name="SEC_HMC_CFG_SRF_ZQCAL_DISABLE" value="disable" />
   <parameter name="MEM_DDR3_RTT_WR_ENUM" value="DDR3_RTT_WR_RZQ_4" />
   <parameter name="BOARD_DDRT_RCLK_ISI_NS" value="0.0" />
@@ -6970,7 +6970,7 @@
   <parameter name="PHY_DDR4_MIMIC_HPS_EMIF" value="false" />
   <parameter name="PRI_HMC_CFG_DBC2_ENABLE_ECC" value="disable" />
   <parameter name="MEM_WRITE_LATENCY" value="18" />
-  <parameter name="PORT_MEM_DQS_WIDTH" value="9" />
+  <parameter name="PORT_MEM_DQS_WIDTH" value="8" />
   <parameter name="PRI_HMC_CFG_DBC2_SLOT_ROTATE_EN" value="dbc2_disable" />
   <parameter name="BOARD_QDR4_AC_ISI_NS" value="0.0" />
   <parameter name="DIAG_EFFICIENCY_MONITOR" value="EFFMON_MODE_DISABLED" />
@@ -7121,7 +7121,7 @@
   <parameter name="SEC_HMC_CFG_STARVE_LIMIT" value="10" />
   <parameter name="MEM_DDRT_TCL" value="15" />
   <parameter name="PRI_HMC_CFG_BANK_ADDR_WIDTH" value="bank_width_2" />
-  <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS" value="9" />
+  <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS" value="8" />
   <parameter name="PHY_DDR3_IO_VOLTAGE" value="1.5" />
   <parameter name="PRI_HMC_CFG_RD_TO_PCH" value="6" />
   <parameter name="PRI_HMC_3DS_PR_STAG_ENABLE" value="disable" />
@@ -7175,7 +7175,7 @@
   <parameter name="PORT_MEM_CA_PINLOC_14" value="0" />
   <parameter name="SWAP_DQS_A_B" value="false" />
   <parameter name="PORT_MEM_RWA_N_WIDTH" value="1" />
-  <parameter name="PORT_MEM_DQ_WIDTH" value="72" />
+  <parameter name="PORT_MEM_DQ_WIDTH" value="64" />
   <parameter name="EMIF_8_CONN_TO_CALIP" value="CALIP_0" />
   <parameter name="PHY_RLD2_USER_DATA_OUT_DEEMPHASIS_ENUM" value="unset" />
   <parameter name="PRI_HMC_CFG_DBC1_SLOT_ROTATE_EN" value="dbc1_disable" />
@@ -7198,304 +7198,304 @@
   <parameter name="SEC_HMC_MEM_IF_RD_PREAMBLE" value="0" />
   <generatedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_top.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_top.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_bufs.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_bufs.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufis.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufis.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufi_wrapper.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufi_wrapper.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_o.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_o.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_o.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_o.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_cp_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_cp_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_df.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_df.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_se.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_se.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_unused.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_unused.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_cal_counter.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_cal_counter.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_fast_sim.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_fast_sim.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_extra_clks.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_extra_clks.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_oct.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_oct.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_core_clks_rsts.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_core_clks_rsts.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hps_clks_rsts.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hps_clks_rsts.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_local_reset.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_local_reset.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles_wrap.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles_wrap.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_lane_remap.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_lane_remap.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_avl_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_avl_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_sideband_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_sideband_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_mmr_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_mmr_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_amm_data_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_amm_data_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_phylite_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_phylite_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_ast_data_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_ast_data_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_afi_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_afi_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_seq_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_seq_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_regs.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_regs.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_std_synchronizer_nocut.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_std_synchronizer_nocut.v"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.dat"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.dat"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_spice_files.zip"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_spice_files.zip"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_utils.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_utils.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_parameters.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_parameters.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_io_timing.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_io_timing.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_timing.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_timing.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_timing_core.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_timing_core.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha.sdc"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi.sdc"
        attributes="NO_AUTO_INSTANCE_DISCOVERY NO_SDC_PROMOTION" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_synth.hex"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_synth.hex"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_synth.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_synth.txt"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_sim.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_sim.txt"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_readme.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_readme.txt"
        attributes="" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_top.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_top.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_bufs.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_bufs.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufis.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufis.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufi_wrapper.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_ufi_wrapper.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_o.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_se_o.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_o.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_df_o.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_cp_i.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_udir_cp_i.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_df.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_df.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_se.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_bdir_se.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_unused.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_buf_unused.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_cal_counter.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_cal_counter.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_fast_sim.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_fast_sim.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_extra_clks.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_pll_extra_clks.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_oct.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_oct.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_core_clks_rsts.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_core_clks_rsts.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hps_clks_rsts.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hps_clks_rsts.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_local_reset.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_local_reset.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles_wrap.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles_wrap.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_tiles.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_lane_remap.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_io_lane_remap.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_avl_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_avl_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_sideband_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_sideband_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_mmr_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_mmr_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_amm_data_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_amm_data_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_phylite_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_phylite_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_ast_data_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_hmc_ast_data_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_afi_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_afi_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_seq_if.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_seq_if.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_regs.sv"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_emif_arch_fm_regs.sv"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/altera_std_synchronizer_nocut.v"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/altera_std_synchronizer_nocut.v"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.dat"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.dat"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_spice_files.zip"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_spice_files.zip"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_utils.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_utils.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_parameters.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_parameters.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_io_timing.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_io_timing.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_timing.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_timing.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_report_timing_core.tcl"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_report_timing_core.tcl"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha.sdc"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi.sdc"
        attributes="NO_AUTO_INSTANCE_DISCOVERY NO_SDC_PROMOTION" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_synth.hex"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_synth.hex"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_synth.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_synth.txt"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_seq_params_sim.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_seq_params_sim.txt"
        attributes="" />
    <file
-       path="/tmp/alt0346_2011223127210310732.dir/0001_intel_rtile_cxl_top_0_gen/hardware_test_design/common/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_gs4kwha_readme.txt"
+       path="/root/ia780i_type2_main_x64_noecc/hardware_test_design/common/mc_top/emif_ip/emif/altera_emif_arch_fm_191/synth/emif_altera_emif_arch_fm_191_zfateyi_readme.txt"
        attributes="" />
   </childGeneratedFiles>
   <sourceFiles>
    <file
-       path="/home/steve/opt/unionfs/alt_25_1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
+       path="/opt/altera_pro/25.1/ip/altera/emif/ip_arch_fm/altera_emif_arch_fm_hw.tcl" />
   </sourceFiles>
   <childSourceFiles/>
-  <instantiator instantiator="emif_altera_emif_fm_277_ybkgfay" as="arch" />
+  <instantiator instantiator="emif_altera_emif_fm_277_jlny3vi" as="arch" />
   <messages>
-   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_gs4kwha"</message>
+   <message level="Info" culprit="emif">"Generating: emif_altera_emif_arch_fm_191_zfateyi"</message>
   </messages>
  </entity>
 </deploy>

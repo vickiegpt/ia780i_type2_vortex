@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="emif" kind="emif" version="1.0" fabric="QSYS">
  <!-- Format version 25.1 129 (Future versions may contain additional information.) -->
- <!-- 2025.09.15.12:31:28 -->
+ <!-- 2026.09.01.04:27:49 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
@@ -148,7 +148,7 @@
    name="emif"
    kind="altera_emif_fm"
    version="2.7.7"
-   entity="emif_altera_emif_fm_277_ybkgfay"
+   entity="emif_altera_emif_fm_277_jlny3vi"
    library="altera_emif_fm_277"
    path="emif"
    hpath="emif"
@@ -204,7 +204,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SYS_INFO_DEVICE_DIE_REVISIONS">
    <type>[Ljava.lang.String;</type>
-   <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA</value>
+   <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -4836,7 +4836,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_DATA_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -4844,7 +4844,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_NUM_OF_READ_GROUPS">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -4852,7 +4852,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -6044,7 +6044,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_DQ_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -6700,7 +6700,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_DQS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -6940,7 +6940,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_TTL_DQS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -6948,7 +6948,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_TTL_DQ_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -19377,25 +19377,25 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>mem_dqs</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dqs</role>
    </port>
    <port>
     <name>mem_dqs_n</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dqs_n</role>
    </port>
    <port>
     <name>mem_dq</name>
     <direction>Bidir</direction>
-    <width>72</width>
+    <width>64</width>
     <role>mem_dq</role>
    </port>
    <port>
     <name>mem_dbi_n</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dbi_n</role>
    </port>
   </interface>
@@ -19629,7 +19629,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="addressSpan">
     <type>java.math.BigInteger</type>
-    <value>9663676416</value>
+    <value>8589934592</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -20052,7 +20052,7 @@ parameters are a RESULT of the module parameters. -->
     <valid>true</valid>
    </parameter>
    <type>avalon</type>
-   <span>9663676416</span>
+   <span>8589934592</span>
    <isStart>false</isStart>
    <port>
     <name>amm_ready_0</name>
@@ -20081,13 +20081,13 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>amm_readdata_0</name>
     <direction>Output</direction>
-    <width>576</width>
+    <width>512</width>
     <role>readdata</role>
    </port>
    <port>
     <name>amm_writedata_0</name>
     <direction>Input</direction>
-    <width>576</width>
+    <width>512</width>
     <role>writedata</role>
    </port>
    <port>
@@ -20099,7 +20099,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>amm_byteenable_0</name>
     <direction>Input</direction>
-    <width>72</width>
+    <width>64</width>
     <role>byteenable</role>
    </port>
    <port>
@@ -20244,7 +20244,7 @@ parameters are a RESULT of the module parameters. -->
    name="emif_arch"
    kind="altera_emif_arch_fm"
    version="19.1"
-   entity="emif_altera_emif_arch_fm_191_gs4kwha"
+   entity="emif_altera_emif_arch_fm_191_zfateyi"
    library="altera_emif_arch_fm_191"
    path="emif.arch"
    hpath="emif|arch"
@@ -20293,7 +20293,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SYS_INFO_DEVICE_DIE_REVISIONS">
    <type>[Ljava.lang.String;</type>
-   <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA</value>
+   <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -24917,7 +24917,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_DATA_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -24925,7 +24925,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_NUM_OF_READ_GROUPS">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -24933,7 +24933,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_TTL_NUM_OF_WRITE_GROUPS">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -26125,7 +26125,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_DQ_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -26781,7 +26781,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_DQS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -27021,7 +27021,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_TTL_DQS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -27029,7 +27029,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="MEM_DDR4_TTL_DQ_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -39101,7 +39101,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SEQ_PT_SYN_CONTENT">
    <type>java.lang.String</type>
-   <value>00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d00c08100b0000000000000000000004066008000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f</value>
+   <value>00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d00c08100b0000000000000000000004066008000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39109,7 +39109,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SEQ_PT_SIM_CONTENT">
    <type>java.lang.String</type>
-   <value>00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d20e08100b0000000000000000000004077d58000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f</value>
+   <value>00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d20e08100b0000000000000000000004077d58000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39245,7 +39245,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="LANES_USAGE_1">
    <type>int</type>
-   <value>45</value>
+   <value>5</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39309,7 +39309,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_USAGE_4">
    <type>int</type>
-   <value>16252799</value>
+   <value>3967</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39525,7 +39525,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="LANE_PIN_USAGE_17">
    <type>int</type>
-   <value>71582788</value>
+   <value>17476</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39533,7 +39533,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="LANE_PIN_USAGE_18">
    <type>int</type>
-   <value>286266145</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39541,7 +39541,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="LANE_PIN_USAGE_19">
    <type>int</type>
-   <value>4</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40101,7 +40101,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DB_PINS_PROC_MODE_22">
    <type>int</type>
-   <value>275876963</value>
+   <value>1073741823</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40109,7 +40109,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DB_PINS_PROC_MODE_23">
    <type>int</type>
-   <value>103911395</value>
+   <value>1073741823</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40549,7 +40549,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_DATA_IN_MODE_13">
    <type>int</type>
-   <value>33329737</value>
+   <value>9</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40557,7 +40557,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_DATA_IN_MODE_14">
    <type>int</type>
-   <value>585</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40797,7 +40797,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_C2L_DRIVEN_4">
    <type>int</type>
-   <value>16056143</value>
+   <value>3919</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40909,7 +40909,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_OCT_MODE_4">
    <type>int</type>
-   <value>16252799</value>
+   <value>3967</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41021,7 +41021,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PINS_DCC_SPLIT_4">
    <type>int</type>
-   <value>196656</value>
+   <value>48</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41101,7 +41101,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_0">
    <type>int</type>
-   <value>133311503</value>
+   <value>149044250</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41109,7 +41109,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_1">
    <type>int</type>
-   <value>95526003</value>
+   <value>145895565</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41117,7 +41117,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_2">
    <type>int</type>
-   <value>75572298</value>
+   <value>142746762</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41125,7 +41125,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_3">
    <type>int</type>
-   <value>55630906</value>
+   <value>139597959</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41133,7 +41133,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_4">
    <type>int</type>
-   <value>19954731</value>
+   <value>120716420</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41141,7 +41141,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_5">
    <type>int</type>
-   <value>7</value>
+   <value>77687911</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41149,7 +41149,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_6">
    <type>int</type>
-   <value>0</value>
+   <value>60891209</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41157,7 +41157,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_7">
    <type>int</type>
-   <value>0</value>
+   <value>45143095</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -41165,7 +41165,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_MEM_PINS_PINLOC_8">
    <type>int</type>
-   <value>0</value>
+   <value>7359519</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -42141,7 +42141,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_DQS_BUSES_LANELOC_0">
    <type>int</type>
-   <value>5249027</value>
+   <value>6302724</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -42149,7 +42149,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="UNUSED_DQS_BUSES_LANELOC_1">
    <type>int</type>
-   <value>4</value>
+   <value>4101</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -42253,7 +42253,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DBC_PIPE_LATS_1">
    <type>int</type>
-   <value>34952</value>
+   <value>2184</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -42349,7 +42349,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="DB_SEQ_RD_EN_FULL_PIPELINES_1">
    <type>int</type>
-   <value>34952</value>
+   <value>2184</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48621,7 +48621,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48629,7 +48629,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_PINLOC_0">
    <type>int</type>
-   <value>1048648</value>
+   <value>1048640</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48797,7 +48797,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_PINLOC_21">
    <type>int</type>
-   <value>138546306</value>
+   <value>134274</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48805,7 +48805,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_PINLOC_22">
    <type>int</type>
-   <value>141695109</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48813,7 +48813,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_PINLOC_23">
    <type>int</type>
-   <value>149042316</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -48821,7 +48821,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQ_PINLOC_24">
    <type>int</type>
-   <value>143</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -49029,7 +49029,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DBI_N_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -49037,7 +49037,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DBI_N_PINLOC_0">
    <type>int</type>
-   <value>18880521</value>
+   <value>18880520</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -49061,7 +49061,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DBI_N_PINLOC_3">
    <type>int</type>
-   <value>138</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50405,7 +50405,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50413,7 +50413,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_PINLOC_0">
    <type>int</type>
-   <value>16781321</value>
+   <value>16781320</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50437,7 +50437,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_PINLOC_3">
    <type>int</type>
-   <value>136</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50525,7 +50525,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_N_WIDTH">
    <type>int</type>
-   <value>9</value>
+   <value>8</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50533,7 +50533,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_N_PINLOC_0">
    <type>int</type>
-   <value>17830921</value>
+   <value>17830920</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -50557,7 +50557,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_MEM_DQS_N_PINLOC_3">
    <type>int</type>
-   <value>137</value>
+   <value>0</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -51605,7 +51605,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_CTRL_AMM_RDATA_WIDTH">
    <type>int</type>
-   <value>576</value>
+   <value>512</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -51613,7 +51613,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_CTRL_AMM_WDATA_WIDTH">
    <type>int</type>
-   <value>576</value>
+   <value>512</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -51629,7 +51629,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="PORT_CTRL_AMM_BYTEEN_WIDTH">
    <type>int</type>
-   <value>72</value>
+   <value>64</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -53409,25 +53409,25 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>mem_dqs</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dqs</role>
    </port>
    <port>
     <name>mem_dqs_n</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dqs_n</role>
    </port>
    <port>
     <name>mem_dq</name>
     <direction>Bidir</direction>
-    <width>72</width>
+    <width>64</width>
     <role>mem_dq</role>
    </port>
    <port>
     <name>mem_dbi_n</name>
     <direction>Bidir</direction>
-    <width>9</width>
+    <width>8</width>
     <role>mem_dbi_n</role>
    </port>
   </interface>
@@ -53653,7 +53653,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="addressSpan">
     <type>java.math.BigInteger</type>
-    <value>9663676416</value>
+    <value>8589934592</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -54076,7 +54076,7 @@ parameters are a RESULT of the module parameters. -->
     <valid>true</valid>
    </parameter>
    <type>avalon</type>
-   <span>9663676416</span>
+   <span>8589934592</span>
    <isStart>false</isStart>
    <port>
     <name>amm_ready_0</name>
@@ -54105,13 +54105,13 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>amm_readdata_0</name>
     <direction>Output</direction>
-    <width>576</width>
+    <width>512</width>
     <role>readdata</role>
    </port>
    <port>
     <name>amm_writedata_0</name>
     <direction>Input</direction>
-    <width>576</width>
+    <width>512</width>
     <role>writedata</role>
    </port>
    <port>
@@ -54123,7 +54123,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>amm_byteenable_0</name>
     <direction>Input</direction>
-    <width>72</width>
+    <width>64</width>
     <role>byteenable</role>
    </port>
    <port>

@@ -13,12 +13,14 @@ DEFINES = ROOT / "hardware_test_design/common/cxl_ed_defines.svh.iv"
 TOP_PKG = ROOT / "hardware_test_design/common/ed_cxlip_top_pkg.sv"
 MC_PKG = ROOT / "hardware_test_design/common/mc_top/ddr_mc_top_common_pkg.sv"
 EMIF_IP = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif.ip"
-EMIF_RTL = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif/emif.v"
+EMIF_CAL_IP = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif_cal_two_ch.ip"
+EMIF_RTL = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif/synth/emif.v"
 ECC_REQ = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_ecc_req.sv"
 ECC_RSP = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_ecc_rsp.sv"
 AVMM_FSM = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_avmm_fsm.sv"
 MC_TOP = ROOT / "hardware_test_design/common/mc_top/mc_top.sv"
 WRAPPER = ROOT / "hardware_test_design/ed_top_wrapper_typ2.sv"
+MC_EMIF = ROOT / "hardware_test_design/common/mc_top/mc_emif_avmm.sv"
 
 
 def active_tcl_lines(path: Path) -> list[str]:
@@ -178,6 +180,7 @@ def main() -> int:
 
     mc_top = MC_TOP.read_text(encoding="utf-8")
     wrapper = WRAPPER.read_text(encoding="utf-8")
+    mc_emif = MC_EMIF.read_text(encoding="utf-8")
     for text, location in ((mc_top, "mc_top"), (wrapper, "top wrapper")):
         require_regex(
             errors,
@@ -199,8 +202,29 @@ def main() -> int:
         r"emif2hdm_avmm_read_poison_emifclk\[genvarChanCount\]",
         "mc_top must connect sidecar read poison to the ECC response stage",
     )
+    for absent_module in ("dram0_ddr2666_32gb", "dram1_ddr2666_32gb"):
+        if absent_module in mc_emif:
+            errors.append(f"IA780I references absent EMIF module: {absent_module}")
+    for instance in ("emif_inst_0", "emif_inst_1"):
+        require_regex(
+            errors,
+            mc_emif,
+            rf"\bemif\s+{instance}\b",
+            f"IA780I channel must instantiate generated emif as {instance}",
+        )
 
     emif_ip = EMIF_IP.read_text(encoding="utf-8")
+    emif_cal_ip = EMIF_CAL_IP.read_text(encoding="utf-8")
+    expected_ip_device = "AGIB023R18A1E1V"
+    for ip_text, ip_name in ((emif_ip, "EMIF"), (emif_cal_ip, "EMIF calibration")):
+        device = ip_parameter_value(ip_text, "device")
+        if device != expected_ip_device:
+            errors.append(
+                f"{ip_name} source device must be {expected_ip_device}, got {device!r}"
+            )
+        if "AGIB027R29A1E2VR3" in ip_text:
+            errors.append(f"{ip_name} source still contains the old VR3 device")
+
     dq_width = ip_parameter_value(emif_ip, "MEM_DDR4_DQ_WIDTH")
     if dq_width != "64":
         errors.append(f"EMIF MEM_DDR4_DQ_WIDTH must be 64, got {dq_width!r}")
@@ -214,11 +238,33 @@ def main() -> int:
         if value != "false":
             errors.append(f"EMIF {parameter_id} must be false, got {value!r}")
 
-    if EMIF_RTL.exists():
+    if not EMIF_RTL.exists():
+        errors.append(f"generated EMIF RTL is missing: {EMIF_RTL}")
+    else:
         emif_rtl = EMIF_RTL.read_text(encoding="utf-8", errors="replace")
-        if re.search(r"\bmem_dq\s*\[[^]]*71\s*:\s*0[^]]*\]", emif_rtl):
+        require_regex(
+            errors,
+            emif_rtl,
+            r"\[\s*63\s*:\s*0\s*\]\s+mem_dq\b",
+            "generated EMIF RTL must expose mem_dq[63:0]",
+        )
+        require_regex(
+            errors,
+            emif_rtl,
+            r"\[\s*511\s*:\s*0\s*\]\s+amm_writedata_0\b",
+            "generated EMIF RTL must expose 512-bit AVMM write data",
+        )
+        require_regex(
+            errors,
+            emif_rtl,
+            r"\[\s*63\s*:\s*0\s*\]\s+amm_byteenable_0\b",
+            "generated EMIF RTL must expose 64-bit AVMM byte enable",
+        )
+        if re.search(r"\[\s*71\s*:\s*0\s*\]\s+mem_dq\b", emif_rtl):
             errors.append("generated EMIF RTL still exposes mem_dq[71:0]")
-        if re.search(r"\bamm_(?:write|read)data_0\s*\[[^]]*575\s*:\s*0[^]]*\]", emif_rtl):
+        if re.search(
+            r"\[\s*575\s*:\s*0\s*\]\s+amm_(?:write|read)data_0\b", emif_rtl
+        ):
             errors.append("generated EMIF RTL still exposes 576-bit AVMM data")
 
     if errors:

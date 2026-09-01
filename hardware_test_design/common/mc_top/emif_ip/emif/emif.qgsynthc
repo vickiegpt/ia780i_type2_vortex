@@ -4210,7 +4210,7 @@
           </parameter>
           <parameter>
             <name>MEM_DDR4_DQS_WIDTH</name>
-            <value>9</value>
+            <value>8</value>
           </parameter>
           <parameter>
             <name>MEM_DDR4_DQ_PER_DQS</name>
@@ -4218,7 +4218,7 @@
           </parameter>
           <parameter>
             <name>MEM_DDR4_DQ_WIDTH</name>
-            <value>72</value>
+            <value>64</value>
           </parameter>
           <parameter>
             <name>MEM_DDR4_DRV_STR_ENUM</name>
@@ -4850,11 +4850,11 @@
           </parameter>
           <parameter>
             <name>MEM_DDR4_TTL_DQS_WIDTH</name>
-            <value>9</value>
+            <value>8</value>
           </parameter>
           <parameter>
             <name>MEM_DDR4_TTL_DQ_WIDTH</name>
-            <value>72</value>
+            <value>64</value>
           </parameter>
           <parameter>
             <name>MEM_DDR4_TTL_NUM_OF_DIMMS</name>
@@ -7078,15 +7078,15 @@
           </parameter>
           <parameter>
             <name>MEM_TTL_DATA_WIDTH</name>
-            <value>72</value>
+            <value>64</value>
           </parameter>
           <parameter>
             <name>MEM_TTL_NUM_OF_READ_GROUPS</name>
-            <value>9</value>
+            <value>8</value>
           </parameter>
           <parameter>
             <name>MEM_TTL_NUM_OF_WRITE_GROUPS</name>
-            <value>9</value>
+            <value>8</value>
           </parameter>
           <parameter>
             <name>MEM_WRITE_LATENCY</name>
@@ -9350,7 +9350,7 @@
           </parameter>
           <parameter>
             <name>SYS_INFO_DEVICE_DIE_REVISIONS</name>
-            <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA</value>
+            <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA</value>
           </parameter>
           <parameter>
             <name>SYS_INFO_DEVICE_FAMILY</name>
@@ -9385,7 +9385,7 @@
         <className>altera_emif_fm</className>
         <version>2.7.7</version>
         <name>emif</name>
-        <uniqueName>emif_altera_emif_fm_277_ybkgfay</uniqueName>
+        <uniqueName>emif_altera_emif_fm_277_jlny3vi</uniqueName>
         <nonce>0</nonce>
         <incidentConnections></incidentConnections>
         <path>emif.emif</path>
@@ -11109,7 +11109,7 @@
               </parameter>
               <parameter>
                 <name>DBC_PIPE_LATS_1</name>
-                <value>34952</value>
+                <value>2184</value>
               </parameter>
               <parameter>
                 <name>DBC_PIPE_LATS_2</name>
@@ -11201,11 +11201,11 @@
               </parameter>
               <parameter>
                 <name>DB_PINS_PROC_MODE_22</name>
-                <value>275876963</value>
+                <value>1073741823</value>
               </parameter>
               <parameter>
                 <name>DB_PINS_PROC_MODE_23</name>
-                <value>103911395</value>
+                <value>1073741823</value>
               </parameter>
               <parameter>
                 <name>DB_PINS_PROC_MODE_24</name>
@@ -11429,7 +11429,7 @@
               </parameter>
               <parameter>
                 <name>DB_SEQ_RD_EN_FULL_PIPELINES_1</name>
-                <value>34952</value>
+                <value>2184</value>
               </parameter>
               <parameter>
                 <name>DB_SEQ_RD_EN_FULL_PIPELINES_2</name>
@@ -13341,7 +13341,7 @@
               </parameter>
               <parameter>
                 <name>LANES_USAGE_1</name>
-                <value>45</value>
+                <value>5</value>
               </parameter>
               <parameter>
                 <name>LANES_USAGE_2</name>
@@ -13405,15 +13405,15 @@
               </parameter>
               <parameter>
                 <name>LANE_PIN_USAGE_17</name>
-                <value>71582788</value>
+                <value>17476</value>
               </parameter>
               <parameter>
                 <name>LANE_PIN_USAGE_18</name>
-                <value>286266145</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>LANE_PIN_USAGE_19</name>
-                <value>4</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>LANE_PIN_USAGE_2</name>
@@ -14373,7 +14373,7 @@
               </parameter>
               <parameter>
                 <name>MEM_DDR4_DQS_WIDTH</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>MEM_DDR4_DQ_PER_DQS</name>
@@ -14381,7 +14381,7 @@
               </parameter>
               <parameter>
                 <name>MEM_DDR4_DQ_WIDTH</name>
-                <value>72</value>
+                <value>64</value>
               </parameter>
               <parameter>
                 <name>MEM_DDR4_DRV_STR_ENUM</name>
@@ -15013,11 +15013,11 @@
               </parameter>
               <parameter>
                 <name>MEM_DDR4_TTL_DQS_WIDTH</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>MEM_DDR4_TTL_DQ_WIDTH</name>
-                <value>72</value>
+                <value>64</value>
               </parameter>
               <parameter>
                 <name>MEM_DDR4_TTL_NUM_OF_DIMMS</name>
@@ -17241,15 +17241,15 @@
               </parameter>
               <parameter>
                 <name>MEM_TTL_DATA_WIDTH</name>
-                <value>72</value>
+                <value>64</value>
               </parameter>
               <parameter>
                 <name>MEM_TTL_NUM_OF_READ_GROUPS</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>MEM_TTL_NUM_OF_WRITE_GROUPS</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>MEM_WRITE_LATENCY</name>
@@ -19153,7 +19153,7 @@
               </parameter>
               <parameter>
                 <name>PINS_C2L_DRIVEN_4</name>
-                <value>16056143</value>
+                <value>3919</value>
               </parameter>
               <parameter>
                 <name>PINS_C2L_DRIVEN_5</name>
@@ -19201,11 +19201,11 @@
               </parameter>
               <parameter>
                 <name>PINS_DATA_IN_MODE_13</name>
-                <value>33329737</value>
+                <value>9</value>
               </parameter>
               <parameter>
                 <name>PINS_DATA_IN_MODE_14</name>
-                <value>585</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PINS_DATA_IN_MODE_15</name>
@@ -19369,7 +19369,7 @@
               </parameter>
               <parameter>
                 <name>PINS_DCC_SPLIT_4</name>
-                <value>196656</value>
+                <value>48</value>
               </parameter>
               <parameter>
                 <name>PINS_DCC_SPLIT_5</name>
@@ -19425,7 +19425,7 @@
               </parameter>
               <parameter>
                 <name>PINS_OCT_MODE_4</name>
-                <value>16252799</value>
+                <value>3967</value>
               </parameter>
               <parameter>
                 <name>PINS_OCT_MODE_5</name>
@@ -19541,7 +19541,7 @@
               </parameter>
               <parameter>
                 <name>PINS_USAGE_4</name>
-                <value>16252799</value>
+                <value>3967</value>
               </parameter>
               <parameter>
                 <name>PINS_USAGE_5</name>
@@ -20721,15 +20721,15 @@
               </parameter>
               <parameter>
                 <name>PORT_CTRL_AMM_BYTEEN_WIDTH</name>
-                <value>72</value>
+                <value>64</value>
               </parameter>
               <parameter>
                 <name>PORT_CTRL_AMM_RDATA_WIDTH</name>
-                <value>576</value>
+                <value>512</value>
               </parameter>
               <parameter>
                 <name>PORT_CTRL_AMM_WDATA_WIDTH</name>
-                <value>576</value>
+                <value>512</value>
               </parameter>
               <parameter>
                 <name>PORT_CTRL_AST_CMD_DATA_WIDTH</name>
@@ -21449,7 +21449,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DBI_N_PINLOC_0</name>
-                <value>18880521</value>
+                <value>18880520</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DBI_N_PINLOC_1</name>
@@ -21461,7 +21461,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DBI_N_PINLOC_3</name>
-                <value>138</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DBI_N_PINLOC_4</name>
@@ -21481,7 +21481,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DBI_N_WIDTH</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DINVA_PINLOC_0</name>
@@ -22197,7 +22197,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_N_PINLOC_0</name>
-                <value>17830921</value>
+                <value>17830920</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_N_PINLOC_1</name>
@@ -22221,7 +22221,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_N_PINLOC_3</name>
-                <value>137</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_N_PINLOC_4</name>
@@ -22253,11 +22253,11 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_N_WIDTH</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_PINLOC_0</name>
-                <value>16781321</value>
+                <value>16781320</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_PINLOC_1</name>
@@ -22281,7 +22281,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_PINLOC_3</name>
-                <value>136</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_PINLOC_4</name>
@@ -22313,11 +22313,11 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQS_WIDTH</name>
-                <value>9</value>
+                <value>8</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_0</name>
-                <value>1048648</value>
+                <value>1048640</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_1</name>
@@ -22373,19 +22373,19 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_21</name>
-                <value>138546306</value>
+                <value>134274</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_22</name>
-                <value>141695109</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_23</name>
-                <value>149042316</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_24</name>
-                <value>143</value>
+                <value>0</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_PINLOC_25</name>
@@ -22517,7 +22517,7 @@
               </parameter>
               <parameter>
                 <name>PORT_MEM_DQ_WIDTH</name>
-                <value>72</value>
+                <value>64</value>
               </parameter>
               <parameter>
                 <name>PORT_MEM_D_PINLOC_0</name>
@@ -25101,11 +25101,11 @@
               </parameter>
               <parameter>
                 <name>SEQ_PT_SIM_CONTENT</name>
-                <value>00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d20e08100b0000000000000000000004077d58000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f</value>
+                <value>00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d20e08100b0000000000000000000004077d58000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f</value>
               </parameter>
               <parameter>
                 <name>SEQ_PT_SYN_CONTENT</name>
-                <value>00024c400000000000000001000a2be801121608480909010102110902000101001401000903033400000000000000000d00c08100b0000000000000000000004066008000c40707016c00d40000012300001e780000015e00000000000000080814040c000b0a091003020100131211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b0000000908000000004434241474645404352515846555054526168575560646361086766618131211201b1a1928232221302b2a2938333231403b3a3948434241004b4a4908030201500b0a0958535251605b5a5968636261706b6a6978737271807b7a7988838281008b8a8900000a50000100010002003000030400000408000005146000060c0f</value>
+                <value>00024c400000000000000001000a2be801121608400808010102110802000101001401000803033400000000000000000d00c08100b0000000000000000000004066008000c40707016000d40000012300001e780000015e00000000000000080814040c000b0a091003020100001211000000060000000400020301000000002b2a290012111000161514131a1918172524231b0000272600280b000000090800000000443424147464540445352515756555054636261676665606131211101b1a1918232221202b2a2928333231303b3a3938434241404b4a4948030201000b0a0908535251505b5a5958636261606b6a6968737271707b7a797800000a50000100010002003000030400000408000005146000060c0f</value>
               </parameter>
               <parameter>
                 <name>SHORT_QSYS_INTERFACE_NAMES</name>
@@ -25137,7 +25137,7 @@
               </parameter>
               <parameter>
                 <name>SYS_INFO_DEVICE_DIE_REVISIONS</name>
-                <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM8_REVA</value>
+                <value>HSSI_GDR_REVB,HSSI_RNR_REVB,MAIN_FM7_REVA</value>
               </parameter>
               <parameter>
                 <name>SYS_INFO_DEVICE_FAMILY</name>
@@ -25169,11 +25169,11 @@
               </parameter>
               <parameter>
                 <name>UNUSED_DQS_BUSES_LANELOC_0</name>
-                <value>5249027</value>
+                <value>6302724</value>
               </parameter>
               <parameter>
                 <name>UNUSED_DQS_BUSES_LANELOC_1</name>
-                <value>4</value>
+                <value>4101</value>
               </parameter>
               <parameter>
                 <name>UNUSED_DQS_BUSES_LANELOC_10</name>
@@ -25217,11 +25217,11 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_0</name>
-                <value>133311503</value>
+                <value>149044250</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_1</name>
-                <value>95526003</value>
+                <value>145895565</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_10</name>
@@ -25381,7 +25381,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_2</name>
-                <value>75572298</value>
+                <value>142746762</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_20</name>
@@ -25425,7 +25425,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_3</name>
-                <value>55630906</value>
+                <value>139597959</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_30</name>
@@ -25469,7 +25469,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_4</name>
-                <value>19954731</value>
+                <value>120716420</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_40</name>
@@ -25513,7 +25513,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_5</name>
-                <value>7</value>
+                <value>77687911</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_50</name>
@@ -25557,7 +25557,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_6</name>
-                <value>0</value>
+                <value>60891209</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_60</name>
@@ -25601,7 +25601,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_7</name>
-                <value>0</value>
+                <value>45143095</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_70</name>
@@ -25645,7 +25645,7 @@
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_8</name>
-                <value>0</value>
+                <value>7359519</value>
               </parameter>
               <parameter>
                 <name>UNUSED_MEM_PINS_PINLOC_80</name>
@@ -25744,7 +25744,7 @@
             <className>altera_emif_arch_fm</className>
             <version>19.1</version>
             <name>arch</name>
-            <uniqueName>emif_altera_emif_arch_fm_191_gs4kwha</uniqueName>
+            <uniqueName>emif_altera_emif_arch_fm_191_zfateyi</uniqueName>
             <nonce>0</nonce>
             <incidentConnections></incidentConnections>
             <path>emif.emif.arch</path>

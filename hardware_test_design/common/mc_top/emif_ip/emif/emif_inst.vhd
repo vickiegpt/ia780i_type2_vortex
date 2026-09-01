@@ -18,10 +18,10 @@
 			mem_reset_n          : out   std_logic_vector(0 downto 0);                       -- mem_reset_n
 			mem_par              : out   std_logic_vector(0 downto 0);                       -- mem_par
 			mem_alert_n          : in    std_logic_vector(0 downto 0)    := (others => 'X'); -- mem_alert_n
-			mem_dqs              : inout std_logic_vector(8 downto 0)    := (others => 'X'); -- mem_dqs
-			mem_dqs_n            : inout std_logic_vector(8 downto 0)    := (others => 'X'); -- mem_dqs_n
-			mem_dq               : inout std_logic_vector(71 downto 0)   := (others => 'X'); -- mem_dq
-			mem_dbi_n            : inout std_logic_vector(8 downto 0)    := (others => 'X'); -- mem_dbi_n
+			mem_dqs              : inout std_logic_vector(7 downto 0)    := (others => 'X'); -- mem_dqs
+			mem_dqs_n            : inout std_logic_vector(7 downto 0)    := (others => 'X'); -- mem_dqs_n
+			mem_dq               : inout std_logic_vector(63 downto 0)   := (others => 'X'); -- mem_dq
+			mem_dbi_n            : inout std_logic_vector(7 downto 0)    := (others => 'X'); -- mem_dbi_n
 			local_cal_success    : out   std_logic;                                          -- local_cal_success
 			local_cal_fail       : out   std_logic;                                          -- local_cal_fail
 			emif_usr_reset_n     : out   std_logic;                                          -- reset_n
@@ -30,10 +30,10 @@
 			amm_read_0           : in    std_logic                       := 'X';             -- read
 			amm_write_0          : in    std_logic                       := 'X';             -- write
 			amm_address_0        : in    std_logic_vector(26 downto 0)   := (others => 'X'); -- address
-			amm_readdata_0       : out   std_logic_vector(575 downto 0);                     -- readdata
-			amm_writedata_0      : in    std_logic_vector(575 downto 0)  := (others => 'X'); -- writedata
+			amm_readdata_0       : out   std_logic_vector(511 downto 0);                     -- readdata
+			amm_writedata_0      : in    std_logic_vector(511 downto 0)  := (others => 'X'); -- writedata
 			amm_burstcount_0     : in    std_logic_vector(6 downto 0)    := (others => 'X'); -- burstcount
-			amm_byteenable_0     : in    std_logic_vector(71 downto 0)   := (others => 'X'); -- byteenable
+			amm_byteenable_0     : in    std_logic_vector(63 downto 0)   := (others => 'X'); -- byteenable
 			amm_readdatavalid_0  : out   std_logic;                                          -- readdatavalid
 			calbus_read          : in    std_logic                       := 'X';             -- calbus_read
 			calbus_write         : in    std_logic                       := 'X';             -- calbus_write

@@ -17,7 +17,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-module emif_altera_emif_arch_fm_191_gs4kwha_top #(
+module emif_altera_emif_arch_fm_191_zfateyi_top #(
 
    // Interface properties
    parameter PROTOCOL_ENUM                           = "",

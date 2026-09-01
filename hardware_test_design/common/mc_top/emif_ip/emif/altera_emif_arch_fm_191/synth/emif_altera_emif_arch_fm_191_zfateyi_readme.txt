@@ -204,18 +204,18 @@
    
       Lane index      Pin index       Port                  
       -------------------------------------------------------
-      3               47              mem_dq[71]
-      .               46              mem_dq[70]
-      .               45              mem_dq[69]
-      .               44              mem_dq[68]
+      3               47              -
+      .               46              -
+      .               45              -
+      .               44              -
       .               43              -
-      .               42              mem_dbi_n[8]
-      .               41              mem_dqs_n[8]
-      .               40              mem_dqs[8]
-      .               39              mem_dq[67]
-      .               38              mem_dq[66]
-      .               37              mem_dq[65]
-      .               36              mem_dq[64]
+      .               42              -
+      .               41              -
+      .               40              -
+      .               39              -
+      .               38              -
+      .               37              -
+      .               36              -
       2               35              mem_dq[63]
       .               34              mem_dq[62]
       .               33              mem_dq[61]
@@ -476,10 +476,10 @@
    mem_reset_n                    1       output      Asynchronous reset
    mem_par                        1       output      Command and address parity
    mem_alert_n                    1       input       Alert flag
-   mem_dqs                        9       bidir       Data strobe
-   mem_dqs_n                      9       bidir       Data strobe (negative leg)
-   mem_dq                         72      bidir       Read/write data
-   mem_dbi_n                      9       bidir       Acts as either the data bus inversion pin, or the data mask pin, depending on configuration. 
+   mem_dqs                        8       bidir       Data strobe
+   mem_dqs_n                      8       bidir       Data strobe (negative leg)
+   mem_dq                         64      bidir       Read/write data
+   mem_dbi_n                      8       bidir       Acts as either the data bus inversion pin, or the data mask pin, depending on configuration. 
 
 
 -----------------------------------------
@@ -520,20 +520,20 @@
    amm_read_0                     1       input       Read request signal
    amm_write_0                    1       input       Write request signal
    amm_address_0                  27      input       Address for the read/write request
-   amm_readdata_0                 576     output      Read data
-   amm_writedata_0                576     input       Write data
+   amm_readdata_0                 512     output      Read data
+   amm_writedata_0                512     input       Write data
    amm_burstcount_0               7       input       Number of transfers in each read/write burst
-   amm_byteenable_0               72      input       Byte-enable for write data
+   amm_byteenable_0               64      input       Byte-enable for write data
    amm_readdatavalid_0            1       output      Indicates whether read data is valid
    
    Interface properties:
-      WORD_WIDTH                    : 576
+      WORD_WIDTH                    : 512
       SYMBOL_WIDTH                  : 8
-      SYMBOLS_PER_WORD              : 72
-      BYTE_ENABLE_WIDTH             : 72
+      SYMBOLS_PER_WORD              : 64
+      BYTE_ENABLE_WIDTH             : 64
       USE_BYTE_ENABLE               : true
       WORD_ADDRESS_WIDTH            : 27
-      SYMBOL_ADDRESS_WIDTH          : 34
+      SYMBOL_ADDRESS_WIDTH          : 33
       BURST_COUNT_WIDTH             : 7
       WORD_ADDRESS_DIVISIBLE_BY     : 1
       BURST_COUNT_DIVISIBLE_BY      : 1
@@ -608,7 +608,7 @@
    SYS_INFO_DEVICE_SPEEDGRADE                        : 1
    SYS_INFO_DEVICE_TEMPERATURE_GRADE                 : EXTENDED
    SYS_INFO_DEVICE_POWER_MODEL                       : STANDARD_POWER
-   SYS_INFO_DEVICE_DIE_REVISIONS                     : HSSI_GDR_REVB HSSI_RNR_REVB MAIN_FM8_REVA
+   SYS_INFO_DEVICE_DIE_REVISIONS                     : HSSI_GDR_REVB HSSI_RNR_REVB MAIN_FM7_REVA
    FAMILY_ENUM                                       : FAMILY_AGILEX
    TRAIT_SUPPORTS_VID                                : 1
    TRAIT_IOBANK_REVISION                             : IO96A_REVB2
@@ -819,11 +819,11 @@
    MEM_NUM_OF_PHYSICAL_RANKS                         : 1
    MEM_NUM_OF_LOGICAL_RANKS                          : 1
    MEM_NUM_OF_DATA_ENDPOINTS                         : 1
-   MEM_TTL_DATA_WIDTH                                : 72
-   MEM_TTL_NUM_OF_READ_GROUPS                        : 9
-   MEM_TTL_NUM_OF_WRITE_GROUPS                       : 9
+   MEM_TTL_DATA_WIDTH                                : 64
+   MEM_TTL_NUM_OF_READ_GROUPS                        : 8
+   MEM_TTL_NUM_OF_WRITE_GROUPS                       : 8
    MEM_DDR4_FORMAT_ENUM                              : MEM_FORMAT_DISCRETE
-   MEM_DDR4_DQ_WIDTH                                 : 72
+   MEM_DDR4_DQ_WIDTH                                 : 64
    MEM_DDR4_DQ_PER_DQS                               : 8
    MEM_DDR4_DISCRETE_CS_WIDTH                        : 1
    MEM_DDR4_NUM_OF_DIMMS                             : 1
@@ -905,7 +905,7 @@
    MEM_DDR4_SPD_139_DB_REV                           : 0
    MEM_DDR4_LRDIMM_ODT_LESS_BS                       : true
    MEM_DDR4_LRDIMM_ODT_LESS_BS_PARK_OHM              : 240
-   MEM_DDR4_DQS_WIDTH                                : 9
+   MEM_DDR4_DQS_WIDTH                                : 8
    MEM_DDR4_CS_WIDTH                                 : 1
    MEM_DDR4_CS_PER_DIMM                              : 1
    MEM_DDR4_CKE_WIDTH                                : 1
@@ -935,8 +935,8 @@
    MEM_DDR4_INTEL_DEFAULT_DB_RTT_WR_ENUM_DISP        : RZQ/3 (80 Ohm)
    MEM_DDR4_INTEL_DEFAULT_DB_RTT_PARK_ENUM_DISP      : RTT_PARK disabled
    MEM_DDR4_INTEL_DEFAULT_DB_DQ_DRV_ENUM_DISP        : RZQ/7 (34 Ohm)
-   MEM_DDR4_TTL_DQS_WIDTH                            : 9
-   MEM_DDR4_TTL_DQ_WIDTH                             : 72
+   MEM_DDR4_TTL_DQS_WIDTH                            : 8
+   MEM_DDR4_TTL_DQ_WIDTH                             : 64
    MEM_DDR4_TTL_CS_WIDTH                             : 1
    MEM_DDR4_TTL_CK_WIDTH                             : 1
    MEM_DDR4_TTL_CKE_WIDTH                            : 1

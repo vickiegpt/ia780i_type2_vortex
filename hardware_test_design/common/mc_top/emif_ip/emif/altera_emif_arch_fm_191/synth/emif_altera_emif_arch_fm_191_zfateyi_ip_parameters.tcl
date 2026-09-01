@@ -26,7 +26,7 @@
 package require ::quartus::clock_uncertainty
 
 
-set ::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename emif_altera_emif_arch_fm_191_gs4kwha
+set ::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename emif_altera_emif_arch_fm_191_zfateyi
 
 set var(PROTOCOL)                                                DDR4
 set var(NUM_RANKS)                                               1
@@ -187,8 +187,7 @@ set var(PATTERNS_RCLK)                                           [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[4].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[5].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[6].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[8].b|cal_oct.obuf|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf|o]
 set var(PATTERNS_RCLK_N)                                         [list arch|arch_inst|bufs_inst|gen_mem_dqs.inst[0].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[1].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[2].b|cal_oct.obuf_bar|o \
@@ -196,8 +195,7 @@ set var(PATTERNS_RCLK_N)                                         [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[4].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[5].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[6].b|cal_oct.obuf_bar|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf_bar|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[8].b|cal_oct.obuf_bar|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf_bar|o]
 set var(PATTERNS_WCLK)                                           [list arch|arch_inst|bufs_inst|gen_mem_dqs.inst[0].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[1].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[2].b|cal_oct.obuf|o \
@@ -205,8 +203,7 @@ set var(PATTERNS_WCLK)                                           [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[4].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[5].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[6].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[8].b|cal_oct.obuf|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf|o]
 set var(PATTERNS_WCLK_N)                                         [list arch|arch_inst|bufs_inst|gen_mem_dqs.inst[0].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[1].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[2].b|cal_oct.obuf_bar|o \
@@ -214,8 +211,7 @@ set var(PATTERNS_WCLK_N)                                         [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[4].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[5].b|cal_oct.obuf_bar|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dqs.inst[6].b|cal_oct.obuf_bar|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf_bar|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[8].b|cal_oct.obuf_bar|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dqs.inst[7].b|cal_oct.obuf_bar|o]
 set var(PATTERNS_RDATA)                                          [list arch|arch_inst|bufs_inst|gen_mem_dq.inst[0].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[1].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[2].b|cal_oct.obuf|o \
@@ -279,15 +275,7 @@ set var(PATTERNS_RDATA)                                          [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[60].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[61].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[62].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[63].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[64].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[65].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[66].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[67].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[68].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[69].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[70].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[71].b|cal_oct.obuf|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[63].b|cal_oct.obuf|o]
 set var(PATTERNS_WDATA)                                          [list arch|arch_inst|bufs_inst|gen_mem_dq.inst[0].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[1].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[2].b|cal_oct.obuf|o \
@@ -351,15 +339,7 @@ set var(PATTERNS_WDATA)                                          [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[60].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[61].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dq.inst[62].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[63].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[64].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[65].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[66].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[67].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[68].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[69].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[70].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[71].b|cal_oct.obuf|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dq.inst[63].b|cal_oct.obuf|o]
 set var(PATTERNS_DM)                                             [list ]
 set var(PATTERNS_DBI)                                            [list arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[0].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[1].b|cal_oct.obuf|o \
@@ -368,8 +348,7 @@ set var(PATTERNS_DBI)                                            [list arch|arch
                                                                        arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[4].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[5].b|cal_oct.obuf|o \
                                                                        arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[6].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[7].b|cal_oct.obuf|o \
-                                                                       arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[8].b|cal_oct.obuf|o]
+                                                                       arch|arch_inst|bufs_inst|gen_mem_dbi_n.inst[7].b|cal_oct.obuf|o]
 set var(PATTERNS_ALERT_N)                                        [list arch|arch_inst|bufs_inst|gen_mem_alert_n.inst[0].b|no_oct.ibuf|i]
 
 initialize_clock_uncertainty_data

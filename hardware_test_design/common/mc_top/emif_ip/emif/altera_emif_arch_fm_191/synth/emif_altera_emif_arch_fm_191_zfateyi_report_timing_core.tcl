@@ -16,7 +16,7 @@
 ################################################################
 # Helper function to add a report_timing-based analysis section
 ################################################################
-proc emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis {opcname inst var_array_name summary_name title from_clks to_clks from_nodes to_nodes } {
+proc emif_altera_emif_arch_fm_191_zfateyi_add_report_timing_analysis {opcname inst var_array_name summary_name title from_clks to_clks from_nodes to_nodes } {
 
    #######################################
    # Need access to global variables
@@ -73,7 +73,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis {opcname in
 # Other Core-Logic related Timing Analysis
 #############################################################
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_add_c2p_p2c_report_timing_analysis {opcname inst pin_array_name var_array_name summary_name title from_clks to_clks from_nodes to_nodes p2c} {
+proc emif_altera_emif_arch_fm_191_zfateyi_add_c2p_p2c_report_timing_analysis {opcname inst pin_array_name var_array_name summary_name title from_clks to_clks from_nodes to_nodes p2c} {
 
    #######################################
    # Need access to global variables
@@ -150,7 +150,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_add_c2p_p2c_report_timing_analysis {op
 }
 
 
-proc emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis {opcname inst pin_array_name var_array_name summary_name} {
+proc emif_altera_emif_arch_fm_191_zfateyi_perform_core_analysis {opcname inst pin_array_name var_array_name summary_name} {
 
    #######################################
    # Need access to global variables
@@ -183,7 +183,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis {opcname inst pi
    } else {
 
       set master_instname $pins(master_instname)
-      set coreclkname [list ${master_instname}_core_usr_* ${master_instname}_core_afi_* ${master_instname}_core_dft_* ${master_instname}_ref_clock ${master_instname}_core_nios_clk [emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name $pins(pll_ref_clock)]]
+      set coreclkname [list ${master_instname}_core_usr_* ${master_instname}_core_afi_* ${master_instname}_core_dft_* ${master_instname}_ref_clock ${master_instname}_core_nios_clk [emif_altera_emif_arch_fm_191_zfateyi_get_clock_name_from_pin_name $pins(pll_ref_clock)]]
       set coreclks [get_clocks -nowarn $coreclkname]
 
       set phyclkname [list ${inst}_phy_*]
@@ -200,14 +200,14 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis {opcname inst pi
       # Core/periphery transfers
 
       # Core-to-periphery
-      set res [emif_altera_emif_arch_fm_191_gs4kwha_add_c2p_p2c_report_timing_analysis $opcname $inst $pin_array_name var global_summary "Core To Periphery" $coreclks $phyclks "*" $emif_regs 0]
+      set res [emif_altera_emif_arch_fm_191_zfateyi_add_c2p_p2c_report_timing_analysis $opcname $inst $pin_array_name var global_summary "Core To Periphery" $coreclks $phyclks "*" $emif_regs 0]
       set setup_margin    [min $setup_margin    [lindex $res 0]]
       set hold_margin     [min $hold_margin     [lindex $res 1]]
       set recovery_margin [min $recovery_margin [lindex $res 2]]
       set removal_margin  [min $removal_margin  [lindex $res 3]]
 
       # Periphery-to-core
-      set res [emif_altera_emif_arch_fm_191_gs4kwha_add_c2p_p2c_report_timing_analysis $opcname $inst $pin_array_name var global_summary "Periphery To Core" $phyclks $coreclks $emif_regs "*" 1]
+      set res [emif_altera_emif_arch_fm_191_zfateyi_add_c2p_p2c_report_timing_analysis $opcname $inst $pin_array_name var global_summary "Periphery To Core" $phyclks $coreclks $emif_regs "*" 1]
       set setup_margin    [min $setup_margin    [lindex $res 0]]
       set hold_margin     [min $hold_margin     [lindex $res 1]]
       set recovery_margin [min $recovery_margin [lindex $res 2]]
@@ -218,21 +218,21 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis {opcname inst pi
       set_active_clocks [remove_from_collection [all_clocks] $phyclks]
 
       # EMIF logic within FPGA core
-      set res [emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis $opcname $inst var global_summary "Within Core" $coreclks $coreclks $emif_regs $emif_regs]
+      set res [emif_altera_emif_arch_fm_191_zfateyi_add_report_timing_analysis $opcname $inst var global_summary "Within Core" $coreclks $coreclks $emif_regs $emif_regs]
       set setup_margin    [min $setup_margin    [lindex $res 0]]
       set hold_margin     [min $hold_margin     [lindex $res 1]]
       set recovery_margin [min $recovery_margin [lindex $res 2]]
       set removal_margin  [min $removal_margin  [lindex $res 3]]
 
       # Transfers between EMIF and user logic
-      set res [emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis $opcname $inst var global_summary "IP to User Logic" "*" "*" $emif_regs $rest_regs]
+      set res [emif_altera_emif_arch_fm_191_zfateyi_add_report_timing_analysis $opcname $inst var global_summary "IP to User Logic" "*" "*" $emif_regs $rest_regs]
       set setup_margin    [min $setup_margin    [lindex $res 0]]
       set hold_margin     [min $hold_margin     [lindex $res 1]]
       set recovery_margin [min $recovery_margin [lindex $res 2]]
       set removal_margin  [min $removal_margin  [lindex $res 3]]
 
       # Transfers between user and EMIF logic
-      set res [emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis $opcname $inst var global_summary "User Logic to IP" "*" "*" $rest_regs $emif_regs]
+      set res [emif_altera_emif_arch_fm_191_zfateyi_add_report_timing_analysis $opcname $inst var global_summary "User Logic to IP" "*" "*" $rest_regs $emif_regs]
       set setup_margin    [min $setup_margin    [lindex $res 0]]
       set hold_margin     [min $hold_margin     [lindex $res 1]]
       set recovery_margin [min $recovery_margin [lindex $res 2]]
@@ -240,7 +240,7 @@ proc emif_altera_emif_arch_fm_191_gs4kwha_perform_core_analysis {opcname inst pi
 
       # Transfers within non-EMIF logic (not reported by default since they are irrelevant to EMIF IP)
       if {$var(DIAG_TIMING_REGTEST_MODE)} {
-         set res [emif_altera_emif_arch_fm_191_gs4kwha_add_report_timing_analysis $opcname $inst var global_summary "Within User Logic" $coreclks $coreclks $rest_regs $rest_regs]
+         set res [emif_altera_emif_arch_fm_191_zfateyi_add_report_timing_analysis $opcname $inst var global_summary "Within User Logic" $coreclks $coreclks $rest_regs $rest_regs]
          set setup_margin    [min $setup_margin    [lindex $res 0]]
          set hold_margin     [min $hold_margin     [lindex $res 1]]
          set recovery_margin [min $recovery_margin [lindex $res 2]]

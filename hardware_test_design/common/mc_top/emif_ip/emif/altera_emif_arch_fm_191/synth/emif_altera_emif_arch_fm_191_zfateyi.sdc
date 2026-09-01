@@ -30,9 +30,9 @@
 # ------------------------------------------- #
 
 set script_dir [file dirname [info script]]
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_ip_parameters.tcl"
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_parameters.tcl"
-source "$script_dir/emif_altera_emif_arch_fm_191_gs4kwha_pin_map.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_ip_parameters.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_parameters.tcl"
+source "$script_dir/emif_altera_emif_arch_fm_191_zfateyi_pin_map.tcl"
 
 #--------------------------------------------#
 # -                                        - #
@@ -73,7 +73,7 @@ set debug 0
 set_time_format -unit ns -decimal_places 3
 
 # Determine if entity names are on
-set entity_names_on [ emif_altera_emif_arch_fm_191_gs4kwha_are_entity_names_on ]
+set entity_names_on [ emif_altera_emif_arch_fm_191_zfateyi_are_entity_names_on ]
 
 # ---------------------- #
 # -                    - #
@@ -84,24 +84,24 @@ set entity_names_on [ emif_altera_emif_arch_fm_191_gs4kwha_are_entity_names_on ]
 # PLL multiplier to mem clk
 regexp {([0-9\.]+) ps} $var(PLL_REF_CLK_FREQ_PS_STR) match var(PHY_REF_CLK_FREQ_PS)
 regexp {([0-9\.]+) ps} $var(PLL_VCO_FREQ_PS_STR) match var(PHY_VCO_FREQ_PS)
-set pll_multiplier [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [expr $var(PHY_MEM_CLK_FREQ_MHZ)/$var(PHY_REF_CLK_FREQ_MHZ)] ]
+set pll_multiplier [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [expr $var(PHY_MEM_CLK_FREQ_MHZ)/$var(PHY_REF_CLK_FREQ_MHZ)] ]
 set vco_multiplier [expr int($var(PHY_REF_CLK_FREQ_PS)/$var(PHY_VCO_FREQ_PS))]
 
 # Half of memory clock cycle
-set half_period [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr $var(UI) / 2.0 ] ]
+set half_period [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr $var(UI) / 2.0 ] ]
 
 # Half of reference clock
-set ref_period      [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr $var(PHY_REF_CLK_FREQ_PS)/1000.0] ]
-set ref_half_period [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr $ref_period / 2.0 ] ]
+set ref_period      [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr $var(PHY_REF_CLK_FREQ_PS)/1000.0] ]
+set ref_half_period [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr $ref_period / 2.0 ] ]
 
 # Other clock periods
-set tCK_AFI     [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(USER_CLK_RATIO) ] ]
-set tCK_C2P_P2C [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(C2P_P2C_CLK_RATIO) ] ]
-set tCK_PHY     [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(PHY_HMC_CLK_RATIO) ] ]
+set tCK_AFI     [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(USER_CLK_RATIO) ] ]
+set tCK_C2P_P2C [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(C2P_P2C_CLK_RATIO) ] ]
+set tCK_PHY     [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr 1000.0/$var(PHY_MEM_CLK_FREQ_MHZ)*$var(PHY_HMC_CLK_RATIO) ] ]
 
 # Asymmetric uncertainties on address and command paths
-set ac_min_delay [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr - $var(tIH) + $var(CA_TO_CK_BD_PKG_SKEW) ]]
-set ac_max_delay [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr   $var(tIS) + $var(CA_TO_CK_BD_PKG_SKEW) ]]
+set ac_min_delay [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr - $var(tIH) + $var(CA_TO_CK_BD_PKG_SKEW) ]]
+set ac_max_delay [ emif_altera_emif_arch_fm_191_zfateyi_round_3dp [ expr   $var(tIS) + $var(CA_TO_CK_BD_PKG_SKEW) ]]
 
 # ---------------------- #
 # -                    - #
@@ -119,9 +119,9 @@ set ac_max_delay [ emif_altera_emif_arch_fm_191_gs4kwha_round_3dp [ expr   $var(
 # -                                                                  - #
 # -------------------------------------------------------------------- #
 
-if { ! [ info exists emif_altera_emif_arch_fm_191_gs4kwha_sdc_cache ] } {
-   emif_altera_emif_arch_fm_191_gs4kwha_initialize_ddr_db emif_altera_emif_arch_fm_191_gs4kwha_ddr_db var
-   set emif_altera_emif_arch_fm_191_gs4kwha_sdc_cache 1
+if { ! [ info exists emif_altera_emif_arch_fm_191_zfateyi_sdc_cache ] } {
+   emif_altera_emif_arch_fm_191_zfateyi_initialize_ddr_db emif_altera_emif_arch_fm_191_zfateyi_ddr_db var
+   set emif_altera_emif_arch_fm_191_zfateyi_sdc_cache 1
 } else {
    if { $debug } {
       post_message -type info "SDC: reusing cached DDR DB"
@@ -136,12 +136,12 @@ if { ! [ info exists emif_altera_emif_arch_fm_191_gs4kwha_sdc_cache ] } {
 # -                                                           - #
 # ------------------------------------------------------------- #
 
-set instances [ array names emif_altera_emif_arch_fm_191_gs4kwha_ddr_db ]
+set instances [ array names emif_altera_emif_arch_fm_191_zfateyi_ddr_db ]
 foreach { inst } $instances {
    if { [ info exists pins ] } {
       unset pins
    }
-   array set pins $emif_altera_emif_arch_fm_191_gs4kwha_ddr_db($inst)
+   array set pins $emif_altera_emif_arch_fm_191_zfateyi_ddr_db($inst)
 
    # ----------------------- #
    # -                     - #
@@ -150,12 +150,12 @@ foreach { inst } $instances {
    # ----------------------- #
 
    # First determine if a reference clock has already been created (i.e. Reference clock sharing)
-   set ref_clock_exists [ emif_altera_emif_arch_fm_191_gs4kwha_does_ref_clk_exist $pins(pll_ref_clock) ]
+   set ref_clock_exists [ emif_altera_emif_arch_fm_191_zfateyi_does_ref_clk_exist $pins(pll_ref_clock) ]
    if { $ref_clock_exists == 0 }  {
       # This is the reference clock used by the PLL to derive any other clock in the core
       create_clock -period "$var(PHY_REF_CLK_FREQ_MHZ)MHz" -waveform [ list 0 $ref_half_period ] $pins(pll_ref_clock) -add -name ${inst}_ref_clock
    }
-   set pins(ref_clock_name) [emif_altera_emif_arch_fm_191_gs4kwha_get_clock_name_from_pin_name $pins(pll_ref_clock)]
+   set pins(ref_clock_name) [emif_altera_emif_arch_fm_191_zfateyi_get_clock_name_from_pin_name $pins(pll_ref_clock)]
 
    # ------------------ #
    # -                - #
@@ -183,7 +183,7 @@ foreach { inst } $instances {
          }
       }
 
-      set local_pll_vco_clk_${i_vco_clock} [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+      set local_pll_vco_clk_${i_vco_clock} [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
          -target $vco_clock \
          -name "${inst}_vco_clk${suffix}" \
          -source $pins(pll_ref_clock) \
@@ -212,7 +212,7 @@ foreach { inst } $instances {
    # and there's no transfers within core fabric to analyze
    if {! $var(IS_HPS)} {
 
-      set local_pll_master_vco_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+      set local_pll_master_vco_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
          -target $pins(master_vco_clock) \
          -name "${pins(master_instname)}_vco_clk" \
          -source $pins(pll_ref_clock) \
@@ -229,7 +229,7 @@ foreach { inst } $instances {
          set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(USER_CLK_RATIO)}]
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_usr_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_usr_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock) \
@@ -250,7 +250,7 @@ foreach { inst } $instances {
          set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(USER_CLK_RATIO)}]
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_usr_clock_sec [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_usr_clock_sec [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock_sec \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock_sec) \
@@ -271,7 +271,7 @@ foreach { inst } $instances {
          set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(USER_CLK_RATIO) * 2}]
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_usr_half_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_usr_half_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock) \
@@ -292,7 +292,7 @@ foreach { inst } $instances {
          set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(USER_CLK_RATIO) * 2}]
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_usr_half_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_usr_half_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock_sec \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock_sec) \
@@ -317,7 +317,7 @@ foreach { inst } $instances {
          }
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_afi_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_afi_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock) \
@@ -337,7 +337,7 @@ foreach { inst } $instances {
          set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(USER_CLK_RATIO)}]
          set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-         set local_core_dft_cpa_1_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_core_dft_cpa_1_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
             -target $master_core_clock \
             -name "${pins(master_instname)}_${name}" \
             -source $pins(master_vco_clock) \
@@ -360,7 +360,7 @@ foreach { inst } $instances {
             set phase             [expr { [lindex $var(PLL_C_CNT_PHASE_PS_STR_4) 0] * 360.0 / $var(PHY_VCO_FREQ_PS) / $var(pll_c4_cnt) } ]
             set duty_cyc          $var(PLL_C_CNT_DUTY_CYCLE_4)
             
-            set local_cal_master_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+            set local_cal_master_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
                -target $master_core_clock \
                -name "${pins(master_instname)}_${name}" \
                -source $pins(master_vco_clock) \
@@ -385,7 +385,7 @@ foreach { inst } $instances {
             set phase             [expr { [lindex $var(PLL_C_CNT_PHASE_PS_STR_3) 0] * 360.0 / $var(PHY_VCO_FREQ_PS) / $var(pll_c3_cnt) } ]
             set duty_cyc          $var(PLL_C_CNT_DUTY_CYCLE_3)
             
-            set local_cal_slave_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+            set local_cal_slave_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
                -target $master_core_clock \
                -name "${pins(master_instname)}_${name}" \
                -source $pins(master_vco_clock) \
@@ -412,7 +412,7 @@ foreach { inst } $instances {
             set phase             [expr { [lindex $var(PLL_C_CNT_PHASE_PS_STR_${i_clk_cnt_num}) 0] * 360.0 / $var(PHY_VCO_FREQ_PS) / $var(pll_c${i_clk_cnt_num}_cnt) } ]
             set duty_cyc          $var(PLL_C_CNT_DUTY_CYCLE_${i_clk_cnt_num})
 
-            set local_pll_extra_clock [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+            set local_pll_extra_clock [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
                -target $master_core_clock \
                -name "${pins(master_instname)}_${name}" \
                -source $pins(master_vco_clock) \
@@ -431,7 +431,7 @@ foreach { inst } $instances {
       set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(PHY_HMC_CLK_RATIO)}]
       set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-      set local_phy_clk_${i_phy_clock} [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+      set local_phy_clk_${i_phy_clock} [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
          -target $phy_clock \
          -name "${inst}_phy_clk_${i_phy_clock}" \
          -source [lindex $pins(pll_vco_clock) $i_phy_clock] \
@@ -447,7 +447,7 @@ foreach { inst } $instances {
       set divide_by [expr {$var(PLL_VCO_TO_MEM_CLK_FREQ_RATIO) * $var(C2P_P2C_CLK_RATIO)}]
       set phase [expr {$var(PLL_PHY_CLK_VCO_PHASE) * 45.0 / $divide_by}]
 
-      set local_phy_clk_l_${i_phy_clock_l} [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+      set local_phy_clk_l_${i_phy_clock_l} [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
          -target $phy_clock_l \
          -name "${inst}_phy_clk_l_${i_phy_clock_l}" \
          -source [lindex $pins(pll_vco_clock) $i_phy_clock_l] \
@@ -468,11 +468,11 @@ foreach { inst } $instances {
 
    set i_wf_clock 0
    foreach_in_collection wf_clock $write_fifo_clk {
-      set vco_clock_id [emif_altera_emif_arch_fm_191_gs4kwha_get_vco_clk_id $wf_clock var]
+      set vco_clock_id [emif_altera_emif_arch_fm_191_zfateyi_get_vco_clk_id $wf_clock var]
       if {$vco_clock_id == -1} {
          post_message -type critical_warning "Failed to find VCO clock"
       } else {
-         set local_wf_clk_${i_wf_clock} [ emif_altera_emif_arch_fm_191_gs4kwha_get_or_add_generated_clock \
+         set local_wf_clk_${i_wf_clock} [ emif_altera_emif_arch_fm_191_zfateyi_get_or_add_generated_clock \
            -target [get_node_info -name $wf_clock] \
            -name "${inst}_wf_clk_${i_wf_clock}" \
            -source [get_node_info -name $vco_clock_id] \
@@ -950,15 +950,15 @@ foreach { inst } $instances {
       #################################
 
       # Get P2C / C2P Multi-tile clock uncertainty
-      set p2c_c2p_multi_tile_clock_uncertainty [emif_altera_emif_arch_fm_191_gs4kwha_get_p2c_c2p_clock_uncertainty $inst var]
+      set p2c_c2p_multi_tile_clock_uncertainty [emif_altera_emif_arch_fm_191_zfateyi_get_p2c_c2p_clock_uncertainty $inst var]
 
       # Get extra periphery clock uncertainty
       set periphery_clock_uncertainty [list]
-      emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_clock_uncertainty periphery_clock_uncertainty var
+      emif_altera_emif_arch_fm_191_zfateyi_get_periphery_clock_uncertainty periphery_clock_uncertainty var
 
       # Get Fitter overconstraints
       if {$fit_flow == 1} {
-         emif_altera_emif_arch_fm_191_gs4kwha_get_periphery_overconstraints periphery_overconstraints_st periphery_overconstraints_mt var
+         emif_altera_emif_arch_fm_191_zfateyi_get_periphery_overconstraints periphery_overconstraints_st periphery_overconstraints_mt var
       } else {
          set periphery_overconstraints_st [list 0.0 0.0 0.0 0.0]
          set periphery_overconstraints_mt [list 0.0 0.0 0.0 0.0]
@@ -1039,11 +1039,11 @@ foreach { inst } $instances {
 
       # Get extra core clock uncertainty
       set core_clock_uncertainty [list]
-      emif_altera_emif_arch_fm_191_gs4kwha_get_core_clock_uncertainty core_clock_uncertainty var
+      emif_altera_emif_arch_fm_191_zfateyi_get_core_clock_uncertainty core_clock_uncertainty var
 
       # Get Fitter overconstraints
       if {$fit_flow == 1} {
-         emif_altera_emif_arch_fm_191_gs4kwha_get_core_overconstraints core_overconstraints var
+         emif_altera_emif_arch_fm_191_zfateyi_get_core_overconstraints core_overconstraints var
       } else {
          set core_overconstraints [list 0.0 0.0 0.0 0.0]
       }
@@ -1096,5 +1096,5 @@ foreach { inst } $instances {
 # -                        - #
 # -------------------------- #
 
-add_ddr_report_command "source [list [file join [file dirname [info script]] ${::GLOBAL_emif_altera_emif_arch_fm_191_gs4kwha_corename}_report_timing.tcl]]"
+add_ddr_report_command "source [list [file join [file dirname [info script]] ${::GLOBAL_emif_altera_emif_arch_fm_191_zfateyi_corename}_report_timing.tcl]]"
 

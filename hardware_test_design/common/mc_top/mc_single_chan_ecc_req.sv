@@ -70,6 +70,43 @@ module mc_single_chan_ecc_req
   output ddr_mc_top_common_pkg::t_reqfifo_data_post_ecc_axi     to_fsm_axi4_new_req_emifclk
 );
 
+`ifdef IA780I
+// IA-780I exposes a native 512-bit (64-byte) AVMM datapath.  Poison is
+// metadata, not an ECC corruption: keep it in the request record so it stays
+// aligned with the write through AVMM backpressure.
+always_ff @(posedge emifclk)
+begin
+  if (!emifresetn)
+    to_fsm_avmm_new_req_emifclk <= '0;
+  else begin
+    if (from_fsm_avmm_cntrl_emifclk.mem_ready) begin
+      to_fsm_avmm_new_req_emifclk.wr_id        <= from_mcrmw_new_req_emifclk.wr_id;
+      to_fsm_avmm_new_req_emifclk.rd_id        <= from_mcrmw_new_req_emifclk.rd_id;
+      to_fsm_avmm_new_req_emifclk.address      <= from_mcrmw_new_req_emifclk.address;
+      to_fsm_avmm_new_req_emifclk.writedata    <= from_mcrmw_new_req_emifclk.writedata;
+      to_fsm_avmm_new_req_emifclk.write_poison <= from_mcrmw_new_req_emifclk.write_poison;
+    end
+
+    if (from_fsm_avmm_cntrl_emifclk.mem_ready && from_mcrmw_new_req_emifclk.write)
+      to_fsm_avmm_new_req_emifclk.write <= 1'b1;
+    else if (from_fsm_avmm_cntrl_emifclk.clear_write_valid)
+      to_fsm_avmm_new_req_emifclk.write <= 1'b0;
+
+    if (from_fsm_avmm_cntrl_emifclk.mem_ready && from_mcrmw_new_req_emifclk.read)
+      to_fsm_avmm_new_req_emifclk.read <= 1'b1;
+    else if (from_fsm_avmm_cntrl_emifclk.clear_read_valid)
+      to_fsm_avmm_new_req_emifclk.read <= 1'b0;
+  end
+end
+
+always_comb
+begin
+  to_fsm_axi4_reqfifo_empty_emifclk = 1'b1;
+  to_fsm_axi4_new_req_emifclk       = '0;
+  to_mcrmw_mem_ready_emifclk        = from_fsm_avmm_cntrl_emifclk.mem_ready;
+end
+
+`else
 // ================================================================================================
 /* altecc_enc_* -> encode (swivel) ecc with data
    altecc_dec_* -> unswivel ecc from data and determine any errors
@@ -142,6 +179,7 @@ begin : gen_ECC_ENC_LATENCY_1
   logic [ddr_mc_top_common_pkg::MC_LOCAL_AXI_RAC_ID_BW-1:0]    to_emif_avmm_rd_id_comb;
   logic                                                        to_emif_avmm_write_valid_comb;
   logic                                                        to_emif_avmm_read_valid_comb;
+  logic                                                        to_emif_avmm_write_poison_comb;
 
   logic [ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0] to_emif_avmm_writedata_emifclk;
   logic [ddr_mc_top_common_pkg::MCTOP_MEMCNTRL_ADDR_WIDTH-1:0] to_emif_avmm_address_emifclk;
@@ -149,6 +187,7 @@ begin : gen_ECC_ENC_LATENCY_1
   logic [ddr_mc_top_common_pkg::MC_LOCAL_AXI_RAC_ID_BW-1:0]    to_emif_avmm_rd_id_emifclk;
   logic                                                        to_emif_avmm_write_valid_emifclk;
   logic                                                        to_emif_avmm_read_valid_emifclk;
+  logic                                                        to_emif_avmm_write_poison_emifclk;
 
   logic [ddr_mc_top_common_pkg::MCTOP_MC_HA_DP_DATA_WIDTH-1:0] to_emif_axi4_writedata_comb;
   logic [ddr_mc_top_common_pkg::MCTOP_MEMCNTRL_ADDR_WIDTH-1:0] to_emif_axi4_address_comb;
@@ -242,6 +281,12 @@ begin : gen_ECC_ENC_LATENCY_1
                                      : from_fsm_avmm_cntrl_emifclk.mem_ready
                                        ? from_mcrmw_new_req_emifclk.address
                                        : to_emif_avmm_address_emifclk;
+
+  assign to_emif_avmm_write_poison_comb = ~emif_avmm_1_axi_0
+                                          ? 1'b0
+                                          : from_fsm_avmm_cntrl_emifclk.mem_ready
+                                            ? from_mcrmw_new_req_emifclk.write_poison
+                                            : to_emif_avmm_write_poison_emifclk;
 									 
   // keep data and ecc encoded together for avmm
   assign to_emif_avmm_writedata_comb = ~emif_avmm_1_axi_0
@@ -297,6 +342,7 @@ begin : gen_ECC_ENC_LATENCY_1
 	to_emif_avmm_rd_id_emifclk     <= to_emif_avmm_rd_id_comb;
 	to_emif_avmm_address_emifclk   <= to_emif_avmm_address_comb;	
 	to_emif_avmm_writedata_emifclk <= to_emif_avmm_writedata_comb;
+	to_emif_avmm_write_poison_emifclk <= to_emif_avmm_write_poison_comb;
   end
 
   always_comb
@@ -315,6 +361,7 @@ begin : gen_ECC_ENC_LATENCY_1
     to_fsm_avmm_new_req_emifclk.rd_id      = to_emif_avmm_rd_id_emifclk;
     to_fsm_avmm_new_req_emifclk.address    = to_emif_avmm_address_emifclk;
     to_fsm_avmm_new_req_emifclk.writedata  = to_emif_avmm_writedata_emifclk;
+    to_fsm_avmm_new_req_emifclk.write_poison = to_emif_avmm_write_poison_emifclk;
   end
 
 end  // gen_ECC_ENC_LATENCY_1
@@ -347,6 +394,7 @@ begin : gen_ECC_ENC_LATENCY_0
 
     // keep data and ecc encoded together for avmm
 	to_fsm_avmm_new_req_emifclk.writedata = ~emif_avmm_1_axi_0 ? '0 : writedata_with_ecc_encoded_n_poison;
+	to_fsm_avmm_new_req_emifclk.write_poison = ~emif_avmm_1_axi_0 ? 1'b0 : from_mcrmw_new_req_emifclk.write_poison;
 
     // unswivel the ecc and data for AXI
     to_fsm_axi4_new_req_emifclk.writedata = emif_avmm_1_axi_0
@@ -380,6 +428,7 @@ endgenerate
 assign to_mcrmw_mem_ready_emifclk = emif_avmm_1_axi_0
                                     ? from_fsm_avmm_cntrl_emifclk.mem_ready
                                     : from_fsm_axi4_cntrl_emifclk.mem_ready;
+`endif
 
 // ================================================================================================
 endmodule

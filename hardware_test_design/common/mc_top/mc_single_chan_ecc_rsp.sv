@@ -60,6 +60,7 @@ module mc_single_chan_ecc_rsp
   */ 
   input logic [ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0] avmm_rd_rsp_data_emifclk,
   input logic [ddr_mc_top_common_pkg::MC_LOCAL_AXI_RAC_ID_BW-1:0]    avmm_rd_rsp_id_emifclk,
+  input logic                                                        sidecar_read_poison_emifclk,
 
   input logic avmm_rd_rsp_valid_emifclk,
  
@@ -69,6 +70,42 @@ module mc_single_chan_ecc_rsp
   output ddr_mc_top_common_pkg::t_rchan_rspfifo_ecc      eccrsp2rmw_rd_ecc_emifclk
 );
 
+`ifdef IA780I
+// IA-780I has no external ECC lane.  Return the native 512-bit payload and
+// pipeline poison metadata beside it with the configured one-cycle response
+// latency.
+always_ff @(posedge emifclk)
+begin
+  if (!emifresetn) begin
+    eccrsp2rmw_rd_resp_emifclk <= '0;
+    eccrsp2rmw_rd_ecc_emifclk  <= '0;
+  end
+  else begin
+    eccrsp2rmw_rd_resp_emifclk.read_data <= emif_avmm_1_axi_0
+      ? avmm_rd_rsp_data_emifclk
+      : noc2hdm_aximm_rdata_emifclk;
+    eccrsp2rmw_rd_resp_emifclk.read_id <= emif_avmm_1_axi_0
+      ? avmm_rd_rsp_id_emifclk
+      : noc2hdm_aximm_rid_emifclk[ddr_mc_top_common_pkg::MC_LOCAL_AXI_RRC_ID_BW-1:0];
+    eccrsp2rmw_rd_resp_emifclk.read_axi_resp <= emif_avmm_1_axi_0
+      ? ddr_mc_top_common_pkg::eresp_MCTOP_OKAY
+      : ddr_mc_top_common_pkg::t_mctop_axi4_resp_encoding'(noc2hdm_aximm_rresp_emifclk);
+    eccrsp2rmw_rd_resp_emifclk.read_resp_valid <= emif_avmm_1_axi_0
+      ? avmm_rd_rsp_valid_emifclk
+      : noc2hdm_aximm_rvalid_emifclk;
+    eccrsp2rmw_rd_resp_emifclk.read_poison <= sidecar_read_poison_emifclk;
+
+    eccrsp2rmw_rd_ecc_emifclk.ecc_err_corrected <= '0;
+    eccrsp2rmw_rd_ecc_emifclk.ecc_err_detected  <= '0;
+    eccrsp2rmw_rd_ecc_emifclk.ecc_err_fatal     <= '0;
+    eccrsp2rmw_rd_ecc_emifclk.ecc_err_syn_e     <= '0;
+    eccrsp2rmw_rd_ecc_emifclk.ecc_err_valid <= emif_avmm_1_axi_0
+      ? avmm_rd_rsp_valid_emifclk
+      : noc2hdm_aximm_rvalid_emifclk;
+  end
+end
+
+`else
 // ================================================================================================
 /* MUX between emif_avmm and emif_axi
 */
@@ -218,6 +255,7 @@ else begin : GEN_ECC_DEC_LATENCY_2_SHIFT
 
 end    // GEN_ECC_DEC_LATENCY_2_SHIFT
 endgenerate
+`endif
 
 // ================================================================================================
 endmodule

@@ -223,9 +223,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE ./common/atomic_afu/afu_ate_mem_t
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/atomic_afu/afu_ate_comparator.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/atomic_afu/afu_atomic_test_engine.sv
 
-set_global_assignment -name IP_FILE ./common/mc_top/altecc_enc_dec_ip/altecc_enc_latency0.ip
-set_global_assignment -name IP_FILE ./common/mc_top/altecc_enc_dec_ip/altecc_dec_latency1.ip
-set_global_assignment -name IP_FILE ./common/mc_top/altecc_enc_dec_ip/altecc_dec_latency2.ip
 set_global_assignment -name IP_FILE ./common/mc_top/emif_ip/emif_cal_two_ch.ip
 set_global_assignment -name IP_FILE ./common/mc_top/emif_ip/emif.ip
 set_global_assignment -name IP_FILE ./common/mc_top/sip_quartus_ips/rspfifo_IP/rspfifo.ip

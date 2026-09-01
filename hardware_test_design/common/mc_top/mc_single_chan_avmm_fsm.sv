@@ -53,6 +53,7 @@ module mc_single_chan_avmm_fsm
 
   output logic to_emif_avmm_write_emifclk,
   output logic to_emif_avmm_read_emifclk,
+  output logic to_emif_avmm_write_poison_emifclk,
  
   /* signals to AVMM response handler
   */
@@ -102,6 +103,7 @@ begin
        to_emif_avmm_address_emifclk =  '0;
          to_emif_avmm_write_emifclk = 1'b0;
           to_emif_avmm_read_emifclk = 1'b0;
+  to_emif_avmm_write_poison_emifclk = 1'b0;
          internal_clear_write_valid = 1'b0;		  
           internal_clear_read_valid = 1'b0;
                  internal_mem_ready = from_emif_avmm_mem_ready_emifclk;
@@ -132,6 +134,7 @@ begin
 		                 internal_mem_ready = 1'b0;	 
 	        to_avmm_rsp_valid_wr_id_emifclk = from_mceccreq_new_req_emifclk.write;
 		         to_emif_avmm_write_emifclk = from_mceccreq_new_req_emifclk.write;
+		  to_emif_avmm_write_poison_emifclk = from_mceccreq_new_req_emifclk.write_poison;
 		     to_emif_avmm_writedata_emifclk = from_mceccreq_new_req_emifclk.writedata;
 		       to_emif_avmm_address_emifclk = from_mceccreq_new_req_emifclk.address;
                   to_avmm_rsp_wr_id_emifclk = from_mceccreq_new_req_emifclk.wr_id;
@@ -163,6 +166,7 @@ begin
     begin
 		            internal_mem_ready = 1'b0;
 		    to_emif_avmm_write_emifclk = from_mceccreq_new_req_emifclk.write;
+		to_emif_avmm_write_poison_emifclk = from_mceccreq_new_req_emifclk.write_poison;
 		to_emif_avmm_writedata_emifclk = from_mceccreq_new_req_emifclk.writedata;
 		  to_emif_avmm_address_emifclk = from_mceccreq_new_req_emifclk.address; 
 		  

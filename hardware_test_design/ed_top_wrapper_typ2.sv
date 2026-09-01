@@ -1167,7 +1167,12 @@ import afu_axi_if_pkg::*;
 
   logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_write_emifclk;
   logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_read_emifclk;
+  logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_write_poison_emifclk;
+  logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] emif2hdm_avmm_read_poison_emifclk;
   logic emif_avmm_1_axi_0;
+
+  // Connected to the poison sidecar in the following implementation task.
+  assign emif2hdm_avmm_read_poison_emifclk = '0;
 
 
 //-------------------------------------------------------
@@ -3110,11 +3115,13 @@ end
 	 .hdm2emif_avmm_address_emifclk    ( hdm2emif_avmm_address_emifclk    ),
 	 .hdm2emif_avmm_write_emifclk      ( hdm2emif_avmm_write_emifclk      ),
 	 .hdm2emif_avmm_read_emifclk       ( hdm2emif_avmm_read_emifclk       ),
+	 .hdm2emif_avmm_write_poison_emifclk ( hdm2emif_avmm_write_poison_emifclk ),
 
      /* AVMM signals from emif
      */
 	 .emif2hdm_avmm_readdatavalid_emifclk ( emif2hdm_avmm_readdatavalid_emifclk ),
-	 .emif2hdm_avmm_readdata_emifclk      ( emif2hdm_avmm_readdata_emifclk      )
+	 .emif2hdm_avmm_readdata_emifclk      ( emif2hdm_avmm_readdata_emifclk      ),
+	 .emif2hdm_avmm_read_poison_emifclk   ( emif2hdm_avmm_read_poison_emifclk   )
   ); 
 
 
@@ -3183,4 +3190,3 @@ endmodule
 //------------------------------------------------------------------------------------
 //set foldmethod=marker
 //set foldmarker=<<<,>>>
-

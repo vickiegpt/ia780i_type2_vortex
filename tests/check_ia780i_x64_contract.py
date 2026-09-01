@@ -14,6 +14,11 @@ TOP_PKG = ROOT / "hardware_test_design/common/ed_cxlip_top_pkg.sv"
 MC_PKG = ROOT / "hardware_test_design/common/mc_top/ddr_mc_top_common_pkg.sv"
 EMIF_IP = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif.ip"
 EMIF_RTL = ROOT / "hardware_test_design/common/mc_top/emif_ip/emif/emif.v"
+ECC_REQ = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_ecc_req.sv"
+ECC_RSP = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_ecc_rsp.sv"
+AVMM_FSM = ROOT / "hardware_test_design/common/mc_top/mc_single_chan_avmm_fsm.sv"
+MC_TOP = ROOT / "hardware_test_design/common/mc_top/mc_top.sv"
+WRAPPER = ROOT / "hardware_test_design/ed_top_wrapper_typ2.sv"
 
 
 def active_tcl_lines(path: Path) -> list[str]:
@@ -62,6 +67,9 @@ def main() -> int:
     ):
         if any(forbidden in line for line in qsf):
             errors.append(f"forbidden active IA780I binding: {forbidden}")
+    active_altecc = [line for line in qsf if "altecc_" in line]
+    if active_altecc:
+        errors.append(f"ALTECC IP must not be active for IA780I: {active_altecc}")
 
     def count_pin(prefix: str) -> int:
         pattern = re.compile(
@@ -121,6 +129,75 @@ def main() -> int:
         r"MCTOP_EMIF_AMM_BE_WIDTH\s*=\s*(?:64|"
         r"\(MCTOP_EMIF_AMM_DATA_WIDTH/8\))\s*;",
         "MC EMIF byte-enable width must resolve to 64",
+    )
+
+    require_regex(
+        errors,
+        mc_pkg,
+        r"typedef\s+struct\s+packed\s*\{[^}]*logic\s+write_poison\s*;[^}]*"
+        r"\}\s*t_reqfifo_data_post_ecc_avmm\s*;",
+        "AVMM post-ECC request must carry write_poison with its data",
+    )
+
+    ecc_req = ECC_REQ.read_text(encoding="utf-8")
+    require_regex(
+        errors,
+        ecc_req,
+        r"`ifdef\s+IA780I.*?to_fsm_avmm_new_req_emifclk\.write_poison",
+        "IA780I no-ECC request path must pipeline write_poison",
+    )
+
+    ecc_rsp = ECC_RSP.read_text(encoding="utf-8")
+    require_regex(
+        errors,
+        ecc_rsp,
+        r"input\s+logic\s+sidecar_read_poison_emifclk",
+        "IA780I no-ECC response path must accept sidecar poison",
+    )
+    require_regex(
+        errors,
+        ecc_rsp,
+        r"`ifdef\s+IA780I.*?read_poison\s*<=?\s*sidecar_read_poison_emifclk",
+        "IA780I no-ECC response path must return sidecar poison",
+    )
+
+    avmm_fsm = AVMM_FSM.read_text(encoding="utf-8")
+    require_regex(
+        errors,
+        avmm_fsm,
+        r"output\s+logic\s+to_emif_avmm_write_poison_emifclk",
+        "AVMM FSM must export write_poison aligned to the write request",
+    )
+    require_regex(
+        errors,
+        avmm_fsm,
+        r"to_emif_avmm_write_poison_emifclk\s*=\s*"
+        r"from_mceccreq_new_req_emifclk\.write_poison",
+        "AVMM FSM must forward request write_poison",
+    )
+
+    mc_top = MC_TOP.read_text(encoding="utf-8")
+    wrapper = WRAPPER.read_text(encoding="utf-8")
+    for text, location in ((mc_top, "mc_top"), (wrapper, "top wrapper")):
+        require_regex(
+            errors,
+            text,
+            r"hdm2emif_avmm_write_poison_emifclk",
+            f"{location} must carry per-channel AVMM write poison",
+        )
+        require_regex(
+            errors,
+            text,
+            r"emif2hdm_avmm_read_poison_emifclk",
+            f"{location} must carry per-channel AVMM read poison",
+        )
+    require_regex(
+        errors,
+        mc_top,
+        r"mc_single_chan_ecc_rsp.*?inst_mc_ecc_rsp_block.*?"
+        r"\.sidecar_read_poison_emifclk\s*\(\s*"
+        r"emif2hdm_avmm_read_poison_emifclk\[genvarChanCount\]",
+        "mc_top must connect sidecar read poison to the ECC response stage",
     )
 
     emif_ip = EMIF_IP.read_text(encoding="utf-8")

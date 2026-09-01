@@ -61,15 +61,16 @@ localparam MC_HA_DDR4_ADDR_WIDTH     = 17;
 localparam MC_HA_DDR4_BA_WIDTH       = 2;  
 localparam MC_HA_DDR4_BG_WIDTH       = 2;  
 localparam MC_HA_DDR4_CK_WIDTH       = 1;  
-localparam MC_HA_DDR4_DQ_WIDTH       = 72; 
-
-
-
-
-`ifdef ENABLE_DDR_DBI_PINS
+`ifdef IA780I
+  localparam MC_HA_DDR4_DQ_WIDTH       = 64;
+  localparam MC_HA_DDR4_DQS_WIDTH      = 8;
+  localparam MC_HA_DDR4_DBI_WIDTH      = 8;
+`elsif ENABLE_DDR_DBI_PINS
+  localparam MC_HA_DDR4_DQ_WIDTH       = 72;
   localparam MC_HA_DDR4_DQS_WIDTH      = 9;
   localparam MC_HA_DDR4_DBI_WIDTH      = 9;
 `else
+  localparam MC_HA_DDR4_DQ_WIDTH       = 72;
   localparam MC_HA_DDR4_DQS_WIDTH      = 18;
 `endif
 
@@ -85,16 +86,25 @@ localparam MC_HA_DDR4_DQ_WIDTH       = 72;
   localparam MC_HA_DDR4_ODT_WIDTH      = 1;  
 `endif
 
-localparam EMIF_AMM_DATA_WIDTH      = 576;
 localparam EMIF_AMM_BURST_WIDTH     = 7;
+`ifdef IA780I
+localparam EMIF_AMM_DATA_WIDTH      = 512;
+localparam EMIF_AMM_BE_WIDTH        = 64;
+`else
+localparam EMIF_AMM_DATA_WIDTH      = 576;
 localparam EMIF_AMM_BE_WIDTH        = 72;
+`endif
 localparam REG_ON_REQFIFO_INPUT_EN  = 0;
 localparam REG_ON_REQFIFO_OUTPUT_EN = 1;
 localparam REG_ON_RSPFIFO_OUTPUT_EN = 1;
 
 localparam MC_HA_DP_ADDR_WIDTH       = 46;  // 46 supports full cxl addr width [51:6]
 localparam MC_HA_DP_DATA_WIDTH       = 512;
+`ifdef IA780I
+localparam MC_ECC_EN                 = 0;
+`else
 localparam MC_ECC_EN                 = 1;
+`endif
 localparam MC_ECC_ENC_LATENCY        = 1;
 localparam MC_ECC_DEC_LATENCY        = 1;
 localparam MC_RAM_INIT_W_ZERO_EN     = 1;

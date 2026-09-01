@@ -118,9 +118,14 @@ localparam MCTOP_MC_HA_DDR4_DBI_WIDTH      = 9;
 localparam MCTOP_MEMCNTRL_ADDR_WIDTH = 46;
 
 localparam MCTOP_EMIF_AMM_ADDR_WIDTH      = 27;
+`ifdef IA780I
+localparam MCTOP_EMIF_AMM_DATA_WIDTH      = 512;
+localparam MCTOP_EMIF_AMM_BE_WIDTH        = 64;
+`else
 localparam MCTOP_EMIF_AMM_DATA_WIDTH      = 576;
+localparam MCTOP_EMIF_AMM_BE_WIDTH        = 72;
+`endif
 localparam MCTOP_EMIF_AMM_BURST_WIDTH     = 7;
-localparam MCTOP_EMIF_AMM_BE_WIDTH        = (MCTOP_EMIF_AMM_DATA_WIDTH/8);
 
 localparam MCTOP_EMIF_AXI_ADDR_WIDTH = 46;
 localparam MCTOP_EMIF_AXI_DATA_WIDTH = 512;
@@ -133,7 +138,11 @@ localparam MCTOP_REG_ON_RSPFIFO_OUTPUT_EN = 0;
 
 localparam MCTOP_MC_HA_DP_ADDR_WIDTH       = 46;  // 46 supports full cxl addr width [51:6]
 localparam MCTOP_MC_HA_DP_DATA_WIDTH       = 512;
+`ifdef IA780I
+localparam MCTOP_MC_ECC_EN                 = 0;
+`else
 localparam MCTOP_MC_ECC_EN                 = 1;
+`endif
 localparam MCTOP_MC_ECC_ENC_LATENCY        = 1;
 localparam MCTOP_MC_ECC_DEC_LATENCY        = 1;
 localparam MCTOP_MC_RAM_INIT_W_ZERO_EN     = 1;
@@ -736,6 +745,7 @@ typedef struct packed {
 typedef struct packed {
      logic                                 write;
      logic                                 read;
+     logic                                 write_poison;
      logic [MC_LOCAL_AXI_WAC_ID_BW-1:0]    wr_id;
      logic [MC_LOCAL_AXI_RAC_ID_BW-1:0]    rd_id;
      logic [MCTOP_MEMCNTRL_ADDR_WIDTH-1:0] address;

@@ -147,10 +147,12 @@ module mc_top
 
   output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_write_emifclk,
   output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_read_emifclk,
+  output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] hdm2emif_avmm_write_poison_emifclk,
  
   /* AVMM signals from emif
   */
   input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0] emif2hdm_avmm_readdata_emifclk,
+  input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] emif2hdm_avmm_read_poison_emifclk,
  
   input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] emif2hdm_avmm_readdatavalid_emifclk,
  
@@ -902,6 +904,7 @@ begin : GENFOR_CHAN_COUNT
      .to_emif_avmm_address_emifclk    (    hdm2emif_avmm_address_emifclk[genvarChanCount] ),
      .to_emif_avmm_write_emifclk      (      hdm2emif_avmm_write_emifclk[genvarChanCount] ),
      .to_emif_avmm_read_emifclk       (       hdm2emif_avmm_read_emifclk[genvarChanCount] ),
+     .to_emif_avmm_write_poison_emifclk ( hdm2emif_avmm_write_poison_emifclk[genvarChanCount] ),
  
      /* signals to AVMM response handler
      */
@@ -1002,9 +1005,10 @@ begin : GENFOR_CHAN_COUNT
 
     /* AVMM read response signals in
     */
-	.avmm_rd_rsp_data_emifclk  (  avmm_rd_rsp_data_emifclk[genvarChanCount] ),
-    .avmm_rd_rsp_id_emifclk    (    avmm_rd_rsp_id_emifclk[genvarChanCount] ),
-    .avmm_rd_rsp_valid_emifclk ( avmm_rd_rsp_valid_emifclk[genvarChanCount] ),
+	.avmm_rd_rsp_data_emifclk       (       avmm_rd_rsp_data_emifclk[genvarChanCount] ),
+	.avmm_rd_rsp_id_emifclk         (         avmm_rd_rsp_id_emifclk[genvarChanCount] ),
+	.avmm_rd_rsp_valid_emifclk      (      avmm_rd_rsp_valid_emifclk[genvarChanCount] ),
+	.sidecar_read_poison_emifclk    ( emif2hdm_avmm_read_poison_emifclk[genvarChanCount] ),
 
     /* responses to RMW to cdc_rspfifo
     */ 

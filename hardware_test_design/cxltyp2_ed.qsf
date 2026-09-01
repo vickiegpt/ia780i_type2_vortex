@@ -464,6 +464,11 @@ set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/vortex/Vortex_axi.s
 # Vortex GPU wrapper for CXL Type2
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/vortex_gpu_wrapper.sv
 
+# CIRA job dispatch: device side of the doorbell protocol in cira_cxl_job.h
+set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/cira_job_dispatch.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/cira_cxl_cache_completion_writer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/cira_axi_write_arbiter.sv
+
 # ============================================================================
 # End rv64 Vortex GPU + CXL MemUring
 # ============================================================================

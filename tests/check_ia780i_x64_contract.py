@@ -67,6 +67,18 @@ def main() -> int:
     if "set_global_assignment -name VERILOG_MACRO IA780I" not in qsf:
         errors.append("IA780I macro is not active")
 
+    dcache_repl_macros = [
+        line for line in qsf if "VERILOG_MACRO" in line and "DCACHE_REPL_POLICY" in line
+    ]
+    expected_dcache_repl = (
+        'set_global_assignment -name VERILOG_MACRO "DCACHE_REPL_POLICY=0"'
+    )
+    if dcache_repl_macros != [expected_dcache_repl]:
+        errors.append(
+            "timing-closed Vortex D-cache must use the registered RANDOM "
+            f"replacement policy: {dcache_repl_macros}"
+        )
+
     for channel in (0, 1):
         require_regex(
             errors,

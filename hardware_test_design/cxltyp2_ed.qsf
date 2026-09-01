@@ -56,6 +56,7 @@ source ./constraints/ia780i_pinout.tcl
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/dram/dram1_ddr2666_32gb.ip
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/pcie/sigtap_512.ip
 set_global_assignment -name VERILOG_MACRO IA780I
+set_global_assignment -name VERILOG_MACRO "DCACHE_REPL_POLICY=0"
 #set_global_assignment -name VERILOG_MACRO DELAY_BUFFER_EN
 # Vortex GPU synthesis macros: select DSP FPU mode + Quartus BRAM/latency optimizations
 set_global_assignment -name VERILOG_MACRO "SYNTHESIS"

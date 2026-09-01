@@ -26,6 +26,9 @@ MC_TOP = ROOT / "hardware_test_design/common/mc_top/mc_top.sv"
 WRAPPER = ROOT / "hardware_test_design/ed_top_wrapper_typ2.sv"
 MC_EMIF = ROOT / "hardware_test_design/common/mc_top/mc_emif_avmm.sv"
 POISON_SIDECAR = ROOT / "hardware_test_design/common/mc_top/mc_poison_sidecar.sv"
+VORTEX_MSHR = (
+    ROOT / "hardware_test_design/common/rv64/vortex/cache/VX_cache_mshr.sv"
+)
 CXL_QIP = (
     ROOT
     / "hardware_test_design/intel_rtile_cxl_top_cxltyp2_ed"
@@ -78,6 +81,16 @@ def main() -> int:
             "timing-closed Vortex D-cache must use the registered RANDOM "
             f"replacement policy: {dcache_repl_macros}"
         )
+
+    vortex_mshr = VORTEX_MSHR.read_text(encoding="utf-8")
+    require_regex(
+        errors,
+        vortex_mshr,
+        r"`DISABLE_BRAM\s+reg\s+\[`CS_LINE_ADDR_WIDTH-1:0\]\s+"
+        r"addr_table\s*\[0:MSHR_SIZE-1\]\s*;",
+        "Vortex MSHR addr_table must use logic registers to break the RAM "
+        "output-to-address timing loop",
+    )
 
     for channel in (0, 1):
         require_regex(

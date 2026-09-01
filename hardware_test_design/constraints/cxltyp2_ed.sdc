@@ -250,19 +250,32 @@ apply_sdc_pre_synchronizer_nocut_data__din_s1 *synchronizer_nocut
 proc constrain_cxl_bundled_toggle_cdc {instance_path} {
    set from_nodes [get_keepers -nowarn [format {%s|src_data_hold[*]} $instance_path]]
    set to_nodes   [get_keepers -nowarn [format {%s|dst_data_hold[*]} $instance_path]]
+   set src_token  [get_keepers -nowarn [format {%s|src_toggle} $instance_path]]
+   set dst_token  [get_keepers -nowarn [format {%s|dst_toggle_meta} $instance_path]]
 
    if { [get_collection_size $from_nodes] == 0 ||
-        [get_collection_size $to_nodes] == 0 } {
-      error "Bundled CDC constraint did not match payload registers for $instance_path"
+        [get_collection_size $to_nodes] == 0 ||
+        [get_collection_size $src_token] == 0 ||
+        [get_collection_size $dst_token] == 0 } {
+      error "Bundled CDC constraint did not match payload/token registers for $instance_path"
    }
 
    set_max_skew -from $from_nodes -to $to_nodes \
-      -get_skew_value_from_clock_period dst_clock_period \
+      -get_skew_value_from_clock_period src_clock_period \
       -skew_value_multiplier 0.8
    set_net_delay -from $from_nodes -to $to_nodes -max \
       -get_value_from_clock_period dst_clock_period -value_multiplier 0.8
    set_max_delay -from $from_nodes -to $to_nodes 100
    set_min_delay -from $from_nodes -to $to_nodes -100
+
+   # Intel's handshake-clock-crosser contract also bounds relative arrival of
+   # the held payload and its event token at the destination.  Design
+   # Assistant uses this combined collection to validate CE-type CDC buses.
+   set skew_from_nodes [add_to_collection $from_nodes $src_token]
+   set skew_to_nodes   [add_to_collection $to_nodes $dst_token]
+   set_max_skew -from $skew_from_nodes -to $skew_to_nodes \
+      -get_skew_value_from_clock_period dst_clock_period \
+      -skew_value_multiplier 0.8
 }
 
 constrain_cxl_bundled_toggle_cdc \

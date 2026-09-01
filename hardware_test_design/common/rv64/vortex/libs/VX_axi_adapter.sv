@@ -24,6 +24,7 @@ module VX_axi_adapter #(
     parameter NUM_BANKS_OUT  = 1,
     parameter INTERLEAVE     = 0,
     parameter TAG_BUFFER_SIZE= 16,
+    parameter TAG_BUFFER_LUTRAM = 0,
     parameter ARBITER        = "R",
     parameter REQ_OUT_BUF    = 0,
     parameter RSP_OUT_BUF    = 0,
@@ -151,7 +152,8 @@ module VX_axi_adapter #(
             wire tbuf_full;
             VX_index_buffer #(
                 .DATAW (TAG_WIDTH_IN),
-                .SIZE  (TAG_BUFFER_SIZE)
+                .SIZE  (TAG_BUFFER_SIZE),
+                .LUTRAM(TAG_BUFFER_LUTRAM)
             ) tag_buf (
                 .clk        (clk),
                 .reset      (reset),

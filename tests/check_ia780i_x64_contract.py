@@ -29,6 +29,10 @@ POISON_SIDECAR = ROOT / "hardware_test_design/common/mc_top/mc_poison_sidecar.sv
 VORTEX_MSHR = (
     ROOT / "hardware_test_design/common/rv64/vortex/cache/VX_cache_mshr.sv"
 )
+VORTEX_AXI = ROOT / "hardware_test_design/common/rv64/vortex/Vortex_axi.sv"
+VORTEX_AXI_ADAPTER = (
+    ROOT / "hardware_test_design/common/rv64/vortex/libs/VX_axi_adapter.sv"
+)
 BUNDLED_CDC = ROOT / "hardware_test_design/common/rv64/cxl_bundled_toggle_cdc.sv"
 AFU_TOP = ROOT / "hardware_test_design/common/afu/afu_top.sv"
 CXL_QIP = (
@@ -409,6 +413,16 @@ def main() -> int:
             errors.append(f"bundled CDC SDC is missing {constraint}")
     require_regex(
         errors,
+        top_sdc,
+        r"set\s+src_token\s+.*src_toggle.*?"
+        r"set\s+dst_token\s+.*dst_toggle_meta.*?"
+        r"set\s+skew_from_nodes\s+\[add_to_collection\s+\$from_nodes\s+\$src_token\].*?"
+        r"set\s+skew_to_nodes\s+\[add_to_collection\s+\$to_nodes\s+\$dst_token\].*?"
+        r"set_max_skew\s+-from\s+\$skew_from_nodes\s+-to\s+\$skew_to_nodes",
+        "bundled CDC max-skew constraint must cover both payload and event token",
+    )
+    require_regex(
+        errors,
         afu_top,
         r"input\s+logic\s+ext_vx_launch_valid",
         "AFU must consume the destination-domain launch-valid pulse",
@@ -417,6 +431,22 @@ def main() -> int:
         errors.append("AFU still contains the obsolete second launch-toggle synchronizer")
     if "gpu_cycles_sync1" in wrapper or "gpu_instrs_sync1" in wrapper:
         errors.append("top wrapper still samples running multi-bit counters bitwise")
+
+    vortex_axi = VORTEX_AXI.read_text(encoding="utf-8")
+    vortex_axi_adapter = VORTEX_AXI_ADAPTER.read_text(encoding="utf-8")
+    require_regex(
+        errors,
+        vortex_axi_adapter,
+        r"parameter\s+TAG_BUFFER_LUTRAM\s*=\s*0.*?"
+        r"VX_index_buffer\s*#\s*\(.*?\.LUTRAM\s*\(TAG_BUFFER_LUTRAM\)",
+        "AXI adapter must expose and forward the tag-buffer LUTRAM selection",
+    )
+    require_regex(
+        errors,
+        vortex_axi,
+        r"VX_axi_adapter\s*#\s*\(.*?\.TAG_BUFFER_LUTRAM\s*\(1\)",
+        "IA780I Vortex AXI tag buffer must use LUTRAM to avoid the BRAM read-to-response timing path",
+    )
     require_regex(
         errors,
         bundled_cdc,

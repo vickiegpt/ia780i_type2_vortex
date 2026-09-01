@@ -49,13 +49,13 @@ set_global_assignment -name FAMILY "Agilex 7"
 #source ./constraints/qsf_device_pinout.tcl
 #set_global_assignment -name QSYS_FILE ./../intel_rtile_cxl_top_cxltyp2_ed.ip
 
-# IA780i
+# IA-780I bbrev1 board authority
 source ./constraints/ia780i_pinout.tcl
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/t2_s2.ip
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/dram/dram0_ddr2666_32gb.ip
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/dram/dram1_ddr2666_32gb.ip
 #set_global_assignment -name QSYS_FILE ../../AGIB023R18A1E1V/pcie/sigtap_512.ip
-#set_global_assignment -name VERILOG_MACRO IA780I
+set_global_assignment -name VERILOG_MACRO IA780I
 #set_global_assignment -name VERILOG_MACRO DELAY_BUFFER_EN
 # Vortex GPU synthesis macros: select DSP FPU mode + Quartus BRAM/latency optimizations
 set_global_assignment -name VERILOG_MACRO "SYNTHESIS"

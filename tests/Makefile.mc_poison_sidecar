@@ -1,0 +1,29 @@
+VERILATOR ?= verilator
+RTL_DIR   := ../hardware_test_design/common/mc_top
+
+TOP     := tb_mc_poison_sidecar
+SOURCES := $(RTL_DIR)/mc_poison_sidecar_pkg.sv \
+           $(RTL_DIR)/mc_poison_sidecar.sv \
+           $(TOP).sv
+BIN     := obj_dir/tb_mc_poison_sidecar
+
+VFLAGS := --binary -j 0 --timing -Wall -Wno-fatal \
+          -Wno-INITIALDLY -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC
+
+.PHONY: all run lint clean
+
+all: run
+
+$(BIN): $(SOURCES)
+	$(VERILATOR) $(VFLAGS) --top-module $(TOP) $(SOURCES) -o tb_mc_poison_sidecar
+
+run: $(BIN)
+	./$(BIN)
+
+lint:
+	$(VERILATOR) --lint-only -Wall -Wno-fatal \
+		$(RTL_DIR)/mc_poison_sidecar_pkg.sv \
+		$(RTL_DIR)/mc_poison_sidecar.sv
+
+clean:
+	rm -rf obj_dir

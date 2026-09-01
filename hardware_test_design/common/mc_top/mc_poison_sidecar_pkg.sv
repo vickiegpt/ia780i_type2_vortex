@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 // Poison metadata layout for the IA-780I x64/no-ECC memory channels.
 //
 // Each channel has 8 GiB of physical DDR (2^27 64-byte lines).  The final

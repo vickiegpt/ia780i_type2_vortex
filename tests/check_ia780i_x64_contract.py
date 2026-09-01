@@ -29,6 +29,8 @@ POISON_SIDECAR = ROOT / "hardware_test_design/common/mc_top/mc_poison_sidecar.sv
 VORTEX_MSHR = (
     ROOT / "hardware_test_design/common/rv64/vortex/cache/VX_cache_mshr.sv"
 )
+BUNDLED_CDC = ROOT / "hardware_test_design/common/rv64/cxl_bundled_toggle_cdc.sv"
+AFU_TOP = ROOT / "hardware_test_design/common/afu/afu_top.sv"
 CXL_QIP = (
     ROOT
     / "hardware_test_design/intel_rtile_cxl_top_cxltyp2_ed"
@@ -121,6 +123,19 @@ def main() -> int:
         errors.append(f"active CXL QIP does not exist: {CXL_QIP}")
     if any("./../intel_rtile_cxl_top_cxltyp2_ed" in line for line in qsf):
         errors.append("active CXL IP paths must remain inside hardware_test_design")
+
+    expected_bundled_cdc = (
+        "set_global_assignment -name SYSTEMVERILOG_FILE "
+        "./common/rv64/cxl_bundled_toggle_cdc.sv"
+    )
+    active_bundled_cdc = [
+        line for line in qsf if "cxl_bundled_toggle_cdc.sv" in line
+    ]
+    if active_bundled_cdc != [expected_bundled_cdc]:
+        errors.append(
+            "bundled CDC primitive must be compiled exactly once: "
+            f"{active_bundled_cdc}"
+        )
 
     device_lines = [
         line for line in qsf + pinout if re.search(r"-name\s+DEVICE\s+", line)
@@ -247,6 +262,8 @@ def main() -> int:
 
     mc_top = MC_TOP.read_text(encoding="utf-8")
     wrapper = WRAPPER.read_text(encoding="utf-8")
+    afu_top = AFU_TOP.read_text(encoding="utf-8")
+    bundled_cdc = BUNDLED_CDC.read_text(encoding="utf-8")
     mc_emif = MC_EMIF.read_text(encoding="utf-8")
     poison_sidecar = POISON_SIDECAR.read_text(encoding="utf-8")
     for text, location in ((mc_top, "mc_top"), (wrapper, "top wrapper")):
@@ -360,6 +377,48 @@ def main() -> int:
         r"`ifdef\s+IA780I.*?assign\s+mc_chan_memsize\[chanCount\]\s*=\s*"
         r"mc_poison_sidecar_pkg::VISIBLE_BYTES_PER_CHANNEL",
         "IA780I per-channel capacity must exclude the poison arena",
+    )
+
+    for instance, width in (("vx_launch_cdc_inst", "128"),
+                            ("vx_result_cdc_inst", "136")):
+        require_regex(
+            errors,
+            wrapper,
+            rf"cxl_bundled_toggle_cdc\s*#\s*\(\s*\.WIDTH\s*\(\s*{width}\s*\)\s*\)"
+            rf"\s*{instance}",
+            f"top wrapper must instantiate {instance} with WIDTH={width}",
+        )
+        require_regex(
+            errors,
+            top_sdc,
+            rf"constrain_cxl_bundled_toggle_cdc\s+.*{instance}",
+            f"top SDC must constrain {instance} as a bundled CDC path",
+        )
+    for constraint in ("set_max_skew", "set_net_delay", "set_max_delay", "set_min_delay"):
+        if constraint not in top_sdc:
+            errors.append(f"bundled CDC SDC is missing {constraint}")
+    require_regex(
+        errors,
+        afu_top,
+        r"input\s+logic\s+ext_vx_launch_valid",
+        "AFU must consume the destination-domain launch-valid pulse",
+    )
+    if "ext_toggle_s1" in afu_top or "ext_vx_launch_toggle" in afu_top:
+        errors.append("AFU still contains the obsolete second launch-toggle synchronizer")
+    if "gpu_cycles_sync1" in wrapper or "gpu_instrs_sync1" in wrapper:
+        errors.append("top wrapper still samples running multi-bit counters bitwise")
+    require_regex(
+        errors,
+        bundled_cdc,
+        r"src_data_hold\s*<=\s*src_data.*?src_toggle\s*<=\s*~src_toggle",
+        "bundled CDC source must snapshot payload before toggling the event",
+    )
+    require_regex(
+        errors,
+        bundled_cdc,
+        r"if\s*\(dst_toggle_sync\s*!=\s*dst_toggle_seen\).*?"
+        r"dst_data_hold\s*<=\s*src_data_hold",
+        "bundled CDC destination must capture the held payload on toggle",
     )
 
     emif_ip = EMIF_IP.read_text(encoding="utf-8")

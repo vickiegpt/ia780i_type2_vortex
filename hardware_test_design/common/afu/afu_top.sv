@@ -532,9 +532,9 @@ import cxl_memuring_vortex_pkg::*;
 , output logic [63:0] gpu_cycles_out
 , output logic [63:0] gpu_instrs_out
 
-// GPU launch toggle from ed_top_wrapper (pulse-to-toggle in ip2csr_avmm_clk 125 MHz)
-// Safe to 2-FF sync into ip2hdm_clk (400 MHz) — toggle is level-based.
-, input  logic        ext_vx_launch_toggle
+// GPU launch snapshot from the bundled CDC in ed_top_wrapper.  valid and the
+// payload are already synchronous to ip2hdm_clk here.
+, input  logic        ext_vx_launch_valid
 , input  logic [63:0] ext_vx_kernel_addr
 , input  logic [63:0] ext_vx_kernel_args
 
@@ -910,34 +910,8 @@ assign gpu_status_out = gpu_status_internal;
 assign gpu_cycles_out = gpu_cycles_internal;
 assign gpu_instrs_out = gpu_instrs_internal;
 
-//=========================================================================
-// CDC: External launch toggle (125 MHz) -> GPU clock domain (ip2hdm_clk)
-// Toggle-based pulse synchronizer:
-//   Stage 1 (pulse -> toggle) is done in ed_top_wrapper_typ2.sv
-//           in ip2csr_avmm_clk (125 MHz) domain.
-//   Stage 2: 2-FF sync of toggle into ip2hdm_clk (400 MHz)
-//   Stage 3: XOR edge-detect on synced toggle -> single-cycle pulse
-//=========================================================================
-
-(* preserve *) logic ext_toggle_s1, ext_toggle_s2, ext_toggle_s_prev;
-logic ext_launch_pulse;
-
-always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n) begin
-    if (!ip2hdm_reset_n) begin
-        ext_toggle_s1     <= 1'b0;
-        ext_toggle_s2     <= 1'b0;
-        ext_toggle_s_prev <= 1'b0;
-    end else begin
-        ext_toggle_s1     <= ext_vx_launch_toggle;  // metastability resolve
-        ext_toggle_s2     <= ext_toggle_s1;          // stable sample
-        ext_toggle_s_prev <= ext_toggle_s2;          // for edge detect
-    end
-end
-
-// Any toggle transition = one launch pulse in ip2hdm_clk domain
-assign ext_launch_pulse = (ext_toggle_s2 ^ ext_toggle_s_prev);
-
-// Latch external kernel config and generate launch via kernel_launch interface
+// Latch the coherent destination-domain launch snapshot and generate launch
+// via the kernel_launch interface.
 logic ext_launch_pending;
 vortex_kernel_args_t ext_kernel_args;
 
@@ -946,7 +920,7 @@ always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n) begin
         ext_launch_pending <= 1'b0;
         ext_kernel_args    <= '0;
     end else begin
-        if (ext_launch_pulse && !ext_launch_pending) begin
+        if (ext_vx_launch_valid && !ext_launch_pending) begin
             ext_launch_pending           <= 1'b1;
             ext_kernel_args.pc_start     <= ext_vx_kernel_addr;
             ext_kernel_args.kernel_param_ptr <= ext_vx_kernel_args;

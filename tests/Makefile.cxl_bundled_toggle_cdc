@@ -1,0 +1,28 @@
+# Verilator regression for the bundled-data toggle CDC primitive.
+
+VERILATOR ?= verilator
+RTL_DIR   := ../hardware_test_design/common/rv64
+
+TOP     := tb_cxl_bundled_toggle_cdc
+SOURCES := $(TOP).sv $(RTL_DIR)/cxl_bundled_toggle_cdc.sv
+BIN     := obj_dir/tb_cxl_bundled_toggle_cdc
+
+VFLAGS := --binary -j 0 --timing \
+          -Wno-WIDTHEXPAND -Wno-WIDTHTRUNC -Wno-INITIALDLY
+
+.PHONY: all run lint clean
+
+all: run
+
+$(BIN): $(SOURCES)
+	$(VERILATOR) $(VFLAGS) --top-module $(TOP) $(SOURCES) -o tb_cxl_bundled_toggle_cdc
+
+run: $(BIN)
+	./$(BIN)
+
+lint:
+	$(VERILATOR) --lint-only -Wall -Wno-DECLFILENAME \
+		--top-module cxl_bundled_toggle_cdc $(RTL_DIR)/cxl_bundled_toggle_cdc.sv
+
+clean:
+	rm -rf obj_dir

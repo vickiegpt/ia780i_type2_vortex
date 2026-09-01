@@ -219,6 +219,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE ./common/cafu_csr0/cafu_csr0_wrap
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/cafu_csr0/cafu_csr0_avmm_wrapper.sv
  
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/afu/afu_csr_avmm_slave.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ./common/rv64/cxl_bundled_toggle_cdc.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/afu/afu_top.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/afu/axi_mc_arbiter.sv
 

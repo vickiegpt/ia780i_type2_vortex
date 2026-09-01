@@ -241,6 +241,36 @@ proc apply_sdc_pre_synchronizer_nocut_data__din_s1 {entity_name} {
 apply_sdc_pre_synchronizer_nocut_data__din_s1 *synchronizer_nocut
 
 #-----------------------------------------------
+# Bundled-data toggle CDCs
+#-----------------------------------------------
+# These are multi-cycle-path CDCs: src_data_hold is frozen before the event
+# toggle, and dst_data_hold captures only after the toggle traverses a 2-FF
+# synchronizer.  Match the constraints emitted by Intel's generated CDC FIFO
+# IP so Design Assistant can verify bundle skew and routing delay.
+proc constrain_cxl_bundled_toggle_cdc {instance_path} {
+   set from_nodes [get_keepers -nowarn [format {%s|src_data_hold[*]} $instance_path]]
+   set to_nodes   [get_keepers -nowarn [format {%s|dst_data_hold[*]} $instance_path]]
+
+   if { [get_collection_size $from_nodes] == 0 ||
+        [get_collection_size $to_nodes] == 0 } {
+      error "Bundled CDC constraint did not match payload registers for $instance_path"
+   }
+
+   set_max_skew -from $from_nodes -to $to_nodes \
+      -get_skew_value_from_clock_period dst_clock_period \
+      -skew_value_multiplier 0.8
+   set_net_delay -from $from_nodes -to $to_nodes -max \
+      -get_value_from_clock_period dst_clock_period -value_multiplier 0.8
+   set_max_delay -from $from_nodes -to $to_nodes 100
+   set_min_delay -from $from_nodes -to $to_nodes -100
+}
+
+constrain_cxl_bundled_toggle_cdc \
+   ed_top_wrapper_typ2_inst|vx_launch_cdc_inst
+constrain_cxl_bundled_toggle_cdc \
+   ed_top_wrapper_typ2_inst|vx_result_cdc_inst
+
+#-----------------------------------------------
 # Set Clock uncertainity
 #-----------------------------------------------
 derive_clock_uncertainty
@@ -341,4 +371,3 @@ foreach each_inst $inst_list {
     }
 }
 #apply_sdc_pre_dcfifo ccv_afu_cdc_fifo_vcd*
-

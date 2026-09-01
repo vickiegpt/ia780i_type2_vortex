@@ -2634,46 +2634,69 @@ logic [7:0]  gpu_status_from_afu;
 logic [63:0] gpu_cycles_from_afu;
 logic [63:0] gpu_instrs_from_afu;
 
-// CDC: Launch trigger pulse (ip2csr_avmm_clk 125 MHz) -> toggle for afu_top.
-// vx_launch_trigger is a single-cycle pulse from ex_default_csr_top.
-// Convert to a toggle here so afu_top can safely 2-FF sync + edge-detect it
-// in the ip2hdm_clk (400 MHz) domain.
-logic vx_launch_toggle;
+// CDC: host launch snapshot (ip2csr_avmm_clk 125 MHz -> ip2hdm_clk 400 MHz).
+// The source-side register atomically freezes addr/args before the one-bit
+// toggle crosses the domain.  The AFU only sees destination-domain valid/data.
+logic         vx_launch_cdc_valid;
+logic [127:0] vx_launch_cdc_data;
 
-always_ff @(posedge ip2csr_avmm_clk or negedge ip2csr_avmm_rstn) begin
-    if (!ip2csr_avmm_rstn)
-        vx_launch_toggle <= 1'b0;
-    else if (vx_launch_trigger)
-        vx_launch_toggle <= ~vx_launch_toggle;
-end
+cxl_bundled_toggle_cdc #(.WIDTH(128)) vx_launch_cdc_inst (
+    .src_clk   (ip2csr_avmm_clk),
+    .src_rst_n (ip2csr_avmm_rstn),
+    .src_send  (vx_launch_trigger),
+    .src_data  ({vx_kernel_addr, vx_kernel_args}),
+    .dst_clk   (ip2hdm_clk),
+    .dst_rst_n (ip2hdm_reset_n_ff),
+    .dst_valid (vx_launch_cdc_valid),
+    .dst_data  (vx_launch_cdc_data)
+);
 
-// CDC: GPU status (ip2hdm_clk ~400 MHz) -> CSR domain (ip2csr_avmm_clk 125 MHz)
-// Status is quasi-static (changes on kernel launch/completion), 2-FF sync is safe.
-// Cycle/instruction counters are frozen after kernel completion, so they are
-// stable when the host reads them (host polls STATUS=DONE first).
+// CDC: coherent GPU status/result snapshot (ip2hdm_clk 400 MHz ->
+// ip2csr_avmm_clk 125 MHz).  A status transition emits one frozen bundle, so
+// the host never observes a torn running counter after STATUS_DONE/ERROR.
 logic [7:0]  vx_status_r;
 logic [63:0] vx_cycles_r;
 logic [63:0] vx_instrs_r;
 
-logic [7:0]  gpu_status_sync1;
-logic [63:0] gpu_cycles_sync1;
-logic [63:0] gpu_instrs_sync1;
+logic         gpu_snapshot_send;
+logic [7:0]   gpu_status_prev;
+logic         vx_result_cdc_valid;
+logic [135:0] vx_result_cdc_data;
+
+always_ff @(posedge ip2hdm_clk or negedge ip2hdm_reset_n_ff) begin
+    if (!ip2hdm_reset_n_ff) begin
+        gpu_status_prev   <= 8'h00;
+        gpu_snapshot_send <= 1'b0;
+    end else begin
+        gpu_snapshot_send <= 1'b0;
+        if (gpu_status_from_afu != gpu_status_prev) begin
+            gpu_status_prev   <= gpu_status_from_afu;
+            gpu_snapshot_send <= 1'b1;
+        end
+    end
+end
+
+cxl_bundled_toggle_cdc #(.WIDTH(136)) vx_result_cdc_inst (
+    .src_clk   (ip2hdm_clk),
+    .src_rst_n (ip2hdm_reset_n_ff),
+    .src_send  (gpu_snapshot_send),
+    .src_data  ({gpu_status_from_afu, gpu_cycles_from_afu,
+                 gpu_instrs_from_afu}),
+    .dst_clk   (ip2csr_avmm_clk),
+    .dst_rst_n (ip2csr_avmm_rstn),
+    .dst_valid (vx_result_cdc_valid),
+    .dst_data  (vx_result_cdc_data)
+);
 
 always_ff @(posedge ip2csr_avmm_clk or negedge ip2csr_avmm_rstn) begin
     if (!ip2csr_avmm_rstn) begin
-        gpu_status_sync1 <= 8'h00;
-        vx_status_r      <= 8'h00;
-        gpu_cycles_sync1 <= 64'h0;
-        vx_cycles_r      <= 64'h0;
-        gpu_instrs_sync1 <= 64'h0;
-        vx_instrs_r      <= 64'h0;
-    end else begin
-        gpu_status_sync1 <= gpu_status_from_afu;
-        vx_status_r      <= gpu_status_sync1;
-        gpu_cycles_sync1 <= gpu_cycles_from_afu;
-        vx_cycles_r      <= gpu_cycles_sync1;
-        gpu_instrs_sync1 <= gpu_instrs_from_afu;
-        vx_instrs_r      <= gpu_instrs_sync1;
+        vx_status_r <= 8'h00;
+        vx_cycles_r <= 64'h0;
+        vx_instrs_r <= 64'h0;
+    end else if (vx_result_cdc_valid) begin
+        vx_status_r <= vx_result_cdc_data[135:128];
+        vx_cycles_r <= vx_result_cdc_data[127:64];
+        vx_instrs_r <= vx_result_cdc_data[63:0];
     end
 end
 
@@ -2963,11 +2986,10 @@ end
 ,   .gpu_cycles_out          (gpu_cycles_from_afu)
 ,   .gpu_instrs_out          (gpu_instrs_from_afu)
 
-    // GPU launch trigger — toggle-encoded for safe CDC into ip2hdm_clk inside afu_top.
-    // vx_launch_toggle is generated below from the CSR pulse in ip2csr_avmm_clk.
-,   .ext_vx_launch_toggle    (vx_launch_toggle)
-,   .ext_vx_kernel_addr      (vx_kernel_addr)
-,   .ext_vx_kernel_args      (vx_kernel_args)
+    // GPU launch snapshot is already synchronous to ip2hdm_clk.
+,   .ext_vx_launch_valid     (vx_launch_cdc_valid)
+,   .ext_vx_kernel_addr      (vx_launch_cdc_data[127:64])
+,   .ext_vx_kernel_args      (vx_launch_cdc_data[63:0])
 
 
     // CIRA completion request/result handshake, all in ip2hdm_clk.

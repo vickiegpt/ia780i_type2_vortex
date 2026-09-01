@@ -178,6 +178,16 @@ def main() -> int:
     if any(ecc_dq.search(line) for line in pinout):
         errors.append("ECC DQ[71:64] must not be active")
 
+    reset_termination = (
+        'set_instance_assignment -name OUTPUT_TERMINATION '
+        '"SERIES 40 OHM WITHOUT CALIBRATION" -to mem_reset_n[*]'
+    )
+    if pinout.count(reset_termination) != 1:
+        errors.append(
+            "DDR4 RESET_N must explicitly use the fitter-selected series 40 ohm "
+            "output termination"
+        )
+
     defines = DEFINES.read_text(encoding="utf-8")
     require_regex(
         errors,

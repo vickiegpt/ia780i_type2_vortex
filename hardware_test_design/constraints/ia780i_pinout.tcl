@@ -425,3 +425,8 @@ set_instance_assignment -name IO_STANDARD "SSTL-12" -to mem_cs_n[1][0]
 set_instance_assignment -name IO_STANDARD "SSTL-12" -to mem_odt[1][0]
 set_instance_assignment -name IO_STANDARD "SSTL-12" -to mem_par[1]
 set_instance_assignment -name IO_STANDARD "TRUE DIFFERENTIAL SIGNALING" -to mem_refclk[1] -entity ddr4
+
+# The generated EMIF buffer selects series 40 ohm for DDR4 RESET_N.  Make the
+# board-boundary setting explicit so Quartus can audit both channels as fully
+# constrained rather than reporting an incomplete I/O assignment.
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to mem_reset_n[*]

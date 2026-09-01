@@ -22,10 +22,7 @@ module cxl_bundled_toggle_cdc #(
     (* preserve *) logic [WIDTH-1:0] src_data_hold;
     (* preserve *) logic             src_toggle;
 
-    (* altera_attribute = {"-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW; "
-                           "-name SYNCHRONIZER_IDENTIFICATION FORCED; "
-                           "-name DONT_MERGE_REGISTER ON; "
-                           "-name PRESERVE_REGISTER ON"} *)
+    (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW; -name SYNCHRONIZER_IDENTIFICATION FORCED; -name DONT_MERGE_REGISTER ON; -name PRESERVE_REGISTER ON" *)
     logic dst_toggle_meta;
     (* preserve *) logic dst_toggle_sync;
     (* preserve *) logic dst_toggle_seen;

@@ -1,0 +1,21 @@
+VERILATOR ?= verilator
+RTL_DIR   := ../hardware_test_design/common/mc_top
+
+TOP     := tb_mc_poison_sidecar_pkg
+SOURCES := $(RTL_DIR)/mc_poison_sidecar_pkg.sv $(TOP).sv
+BIN     := obj_dir/tb_mc_poison_sidecar_pkg
+
+VFLAGS := --binary -j 0 --timing -Wall -Wno-fatal
+
+.PHONY: all run clean
+
+all: run
+
+$(BIN): $(SOURCES)
+	$(VERILATOR) $(VFLAGS) --top-module $(TOP) $(SOURCES) -o tb_mc_poison_sidecar_pkg
+
+run: $(BIN)
+	./$(BIN)
+
+clean:
+	rm -rf obj_dir

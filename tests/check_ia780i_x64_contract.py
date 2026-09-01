@@ -212,6 +212,20 @@ def main() -> int:
             rf"\bemif\s+{instance}\b",
             f"IA780I channel must instantiate generated emif as {instance}",
         )
+    require_regex(
+        errors,
+        wrapper,
+        r"`ifdef\s+IA780I.*?assign\s+hdm_size_256mb\s*=\s*"
+        r"mc_poison_sidecar_pkg::HDM_SIZE_256MB",
+        "IA780I HDM advertisement must exclude the poison arena",
+    )
+    require_regex(
+        errors,
+        wrapper,
+        r"`ifdef\s+IA780I.*?assign\s+mc_chan_memsize\[chanCount\]\s*=\s*"
+        r"mc_poison_sidecar_pkg::VISIBLE_BYTES_PER_CHANNEL",
+        "IA780I per-channel capacity must exclude the poison arena",
+    )
 
     emif_ip = EMIF_IP.read_text(encoding="utf-8")
     emif_cal_ip = EMIF_CAL_IP.read_text(encoding="utf-8")

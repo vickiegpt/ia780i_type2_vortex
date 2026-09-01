@@ -83,6 +83,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE ./common/ed_cxlip_top_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/ed_mc_axi_if_pkg.sv
 
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/mc_top/ddr_mc_top_common_pkg.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ./common/mc_top/mc_poison_sidecar_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/mc_top/hdm_axi_if_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/mc_top/mc_ecc_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ./common/mc_top/mc_emif_avmm.sv

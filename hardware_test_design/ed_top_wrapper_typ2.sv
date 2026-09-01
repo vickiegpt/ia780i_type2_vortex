@@ -1444,7 +1444,9 @@ assign  ed_rx_header_update                      = {ed_rx_header[0][103:96], ed_
 //  (etc.)      (etc.)
 
 
-`ifdef HDM_64G
+`ifdef IA780I
+      assign hdm_size_256mb = mc_poison_sidecar_pkg::HDM_SIZE_256MB;
+`elsif HDM_64G
       assign hdm_size_256mb = 36'h100;// HDM_64G
 `else
       assign hdm_size_256mb = 36'h40; // HDM_16G
@@ -1490,7 +1492,11 @@ assign emif_avmm_1_axi_0 = 1'b1;
     //    assign mc_chan_memsize[chanCount] = 64'h8_0000_0000;  // 32 GB
     //    assign mc_chan_memsize[chanCount] = 64'h2_0000_0000;  // 8 GB
     // == memory channel size in bytes (assuming 512 bit words, not counting 64 ECC bits) ==
+`ifdef IA780I
+    assign mc_chan_memsize[chanCount] = mc_poison_sidecar_pkg::VISIBLE_BYTES_PER_CHANNEL;
+`else
     assign mc_chan_memsize[chanCount] = (2**(ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_ADDR_WIDTH)) << 6;  // shift left by 6 as each row has 64 bytes
+`endif
 
     assign emif_amm_burstcount[chanCount] = {{ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_BURST_WIDTH-1{1'b0}},1'b1};
 	

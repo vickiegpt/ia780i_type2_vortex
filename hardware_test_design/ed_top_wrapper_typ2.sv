@@ -1171,9 +1171,6 @@ import afu_axi_if_pkg::*;
   logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0] emif2hdm_avmm_read_poison_emifclk;
   logic emif_avmm_1_axi_0;
 
-  // Connected to the poison sidecar in the following implementation task.
-  assign emif2hdm_avmm_read_poison_emifclk = '0;
-
 
 //-------------------------------------------------------
 // Assignments                                  --
@@ -3175,8 +3172,10 @@ end
     .emif_amm_byteenable    ( hdm2emif_avmm_byteenable_emifclk ),
     .emif_amm_write         ( hdm2emif_avmm_write_emifclk ),
     .emif_amm_read          ( hdm2emif_avmm_read_emifclk ),
+    .emif_amm_write_poison  ( hdm2emif_avmm_write_poison_emifclk ),
     .emif_amm_readdata      ( emif2hdm_avmm_readdata_emifclk ),
     .emif_amm_readdatavalid ( emif2hdm_avmm_readdatavalid_emifclk ),
+    .emif_amm_read_poison   ( emif2hdm_avmm_read_poison_emifclk ),
     .emif_amm_ready         ( emif2hdm_avmm_ready_emifclk )
   );
 

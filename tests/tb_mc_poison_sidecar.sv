@@ -26,7 +26,27 @@ module tb_mc_poison_sidecar;
   logic         phy_readdatavalid;
   logic         phy_ready;
 
+  logic [26:0]  ch1_up_address;
+  logic [511:0] ch1_up_writedata;
+  logic [63:0]  ch1_up_byteenable;
+  logic         ch1_up_read;
+  logic         ch1_up_write;
+  logic         ch1_up_write_poison;
+  logic [511:0] ch1_up_readdata;
+  logic         ch1_up_readdatavalid;
+  logic         ch1_up_read_poison;
+  logic         ch1_up_ready;
+  logic [26:0]  ch1_phy_address;
+  logic [511:0] ch1_phy_writedata;
+  logic [63:0]  ch1_phy_byteenable;
+  logic         ch1_phy_read;
+  logic         ch1_phy_write;
+  logic [511:0] ch1_phy_readdata;
+  logic         ch1_phy_readdatavalid;
+  logic         ch1_phy_ready;
+
   logic [511:0] physical_mem [logic [26:0]];
+  logic [511:0] ch1_physical_mem [logic [26:0]];
   int checks;
   int phy_accept_count;
   int meta_read_count;
@@ -35,6 +55,28 @@ module tb_mc_poison_sidecar;
   always #1 clk = ~clk;
 
   mc_poison_sidecar dut (.*);
+  mc_poison_sidecar dut_ch1 (
+    .clk               (clk),
+    .reset_n           (reset_n),
+    .up_address        (ch1_up_address),
+    .up_writedata      (ch1_up_writedata),
+    .up_byteenable     (ch1_up_byteenable),
+    .up_read           (ch1_up_read),
+    .up_write          (ch1_up_write),
+    .up_write_poison   (ch1_up_write_poison),
+    .up_readdata       (ch1_up_readdata),
+    .up_readdatavalid  (ch1_up_readdatavalid),
+    .up_read_poison    (ch1_up_read_poison),
+    .up_ready          (ch1_up_ready),
+    .phy_address       (ch1_phy_address),
+    .phy_writedata     (ch1_phy_writedata),
+    .phy_byteenable    (ch1_phy_byteenable),
+    .phy_read          (ch1_phy_read),
+    .phy_write         (ch1_phy_write),
+    .phy_readdata      (ch1_phy_readdata),
+    .phy_readdatavalid (ch1_phy_readdatavalid),
+    .phy_ready         (ch1_phy_ready)
+  );
 
   task automatic check(input logic condition, input string description);
     if (!condition)
@@ -45,6 +87,14 @@ module tb_mc_poison_sidecar;
   function automatic logic [511:0] memory_value(input logic [26:0] address);
     if (physical_mem.exists(address))
       return physical_mem[address];
+    return '0;
+  endfunction
+
+  function automatic logic [511:0] ch1_memory_value(
+    input logic [26:0] address
+  );
+    if (ch1_physical_mem.exists(address))
+      return ch1_physical_mem[address];
     return '0;
   endfunction
 
@@ -69,6 +119,22 @@ module tb_mc_poison_sidecar;
     end
   end
 
+
+  always_ff @(posedge clk) begin
+    ch1_phy_readdatavalid <= 1'b0;
+    if (ch1_phy_read && ch1_phy_ready) begin
+      ch1_phy_readdata <= ch1_memory_value(ch1_phy_address);
+      ch1_phy_readdatavalid <= 1'b1;
+    end
+    if (ch1_phy_write && ch1_phy_ready) begin
+      for (int byte_index = 0; byte_index < 64; byte_index++) begin
+        if (ch1_phy_byteenable[byte_index])
+          ch1_physical_mem[ch1_phy_address][byte_index*8 +: 8] <=
+            ch1_phy_writedata[byte_index*8 +: 8];
+      end
+    end
+  end
+
   task automatic wait_until_ready;
     int timeout = 0;
     while (!up_ready) begin
@@ -79,14 +145,66 @@ module tb_mc_poison_sidecar;
     end
   endtask
 
+  task automatic ch1_wait_until_ready;
+    int timeout = 0;
+    while (!ch1_up_ready) begin
+      @(negedge clk);
+      timeout++;
+      if (timeout > 300000)
+        $fatal(1, "POISON_SIDECAR: timeout waiting for channel 1 ready");
+    end
+  endtask
+
+  task automatic ch1_data_write(
+    input logic [26:0] address,
+    input logic [511:0] data,
+    input logic poison
+  );
+    ch1_up_address = address;
+    ch1_wait_until_ready();
+    @(negedge clk);
+    ch1_up_writedata    = data;
+    ch1_up_byteenable   = '1;
+    ch1_up_write_poison = poison;
+    ch1_up_write        = 1'b1;
+    @(posedge clk);
+    @(negedge clk);
+    ch1_up_write = 1'b0;
+    ch1_wait_until_ready();
+  endtask
+
+  task automatic ch1_data_read(
+    input logic [26:0] address,
+    output logic [511:0] data,
+    output logic poison
+  );
+    int timeout = 0;
+    ch1_up_address = address;
+    ch1_wait_until_ready();
+    @(negedge clk);
+    ch1_up_read = 1'b1;
+    @(posedge clk);
+    @(negedge clk);
+    ch1_up_read = 1'b0;
+    while (!ch1_up_readdatavalid) begin
+      @(negedge clk);
+      timeout++;
+      if (timeout > 100)
+        $fatal(1, "POISON_SIDECAR: timeout waiting for channel 1 read");
+    end
+    data = ch1_up_readdata;
+    poison = ch1_up_read_poison;
+    ch1_wait_until_ready();
+  endtask
+
   task automatic data_write(
     input logic [26:0] address,
     input logic [511:0] data,
     input logic poison
   );
+    up_address = address;
     wait_until_ready();
     @(negedge clk);
-    up_address      = address;
     up_writedata    = data;
     up_byteenable   = '1;
     up_write_poison = poison;
@@ -103,9 +221,9 @@ module tb_mc_poison_sidecar;
     output logic poison
   );
     int timeout = 0;
+    up_address = address;
     wait_until_ready();
     @(negedge clk);
-    up_address = address;
     up_read    = 1'b1;
     @(posedge clk);
     @(negedge clk);
@@ -156,6 +274,15 @@ module tb_mc_poison_sidecar;
     phy_readdata    = '0;
     phy_readdatavalid = 1'b0;
     phy_ready       = 1'b1;
+    ch1_up_address      = '0;
+    ch1_up_writedata    = '0;
+    ch1_up_byteenable   = '1;
+    ch1_up_read         = 1'b0;
+    ch1_up_write        = 1'b0;
+    ch1_up_write_poison = 1'b0;
+    ch1_phy_readdata      = '0;
+    ch1_phy_readdatavalid = 1'b0;
+    ch1_phy_ready         = 1'b1;
     phy_accept_count = 0;
     meta_read_count  = 0;
     meta_write_count = 0;
@@ -252,6 +379,19 @@ module tb_mc_poison_sidecar;
     up_read = 1'b0;
     check(phy_accept_count == before_count,
           "private-range request emits no physical request");
+
+    data_write(27'h3000, pattern_a, 1'b0);
+    ch1_data_write(27'h3000, pattern_b, 1'b1);
+    data_read(27'h3000, read_data, read_poison);
+    check(!read_poison, "channel 0 retains clean poison state");
+    ch1_data_read(27'h3000, read_data, read_poison);
+    check(read_poison, "channel 1 retains independent poisoned state");
+    check(!memory_value(poison_meta_line(27'h3000))
+             [poison_bit_select(27'h3000)],
+          "channel 0 bitmap remains clear");
+    check(ch1_memory_value(poison_meta_line(27'h3000))
+             [poison_bit_select(27'h3000)],
+          "channel 1 bitmap is isolated from channel 0");
 
     $display("POISON_SIDECAR: PASS (%0d checks)", checks);
     $finish;

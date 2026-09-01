@@ -74,9 +74,11 @@ module mc_emif_avmm
   input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_BE_WIDTH-1:0]    emif_amm_byteenable,
   input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        emif_amm_write,
   input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        emif_amm_read,  
+  input logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        emif_amm_write_poison,
   
   output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0] emif_amm_readdata,
   output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                       emif_amm_readdatavalid,
+  output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                       emif_amm_read_poison,
   output logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                       emif_amm_ready
 );
 
@@ -91,6 +93,15 @@ logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]         calbus_read;        
 logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]         calbus_write;         // emif_cal_0:calbus_write_0 -> emif_fm_0:calbus_write
 
 logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1:calbus_clk]
+
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_ADDR_WIDTH-1:0]  phy_amm_address;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0]  phy_amm_writedata;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_BE_WIDTH-1:0]    phy_amm_byteenable;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        phy_amm_write;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        phy_amm_read;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0][ddr_mc_top_common_pkg::MCTOP_EMIF_AMM_DATA_WIDTH-1:0]  phy_amm_readdata;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        phy_amm_readdatavalid;
+logic [ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL-1:0]                                                        phy_amm_ready;
 
 // ================================================================================================
 `ifdef IA780I
@@ -122,15 +133,15 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .local_cal_fail       (local_cal_fail         [0] ), //  output,     width = 1,                   .local_cal_fail
            .emif_usr_reset_n     (emif_usr_reset_n       [0] ), //  output,     width = 1,   emif_usr_reset_n.reset_n
            .emif_usr_clk         (emif_usr_clk           [0] ), //  output,     width = 1,       emif_usr_clk.clk
-           .amm_address_0        (emif_amm_address       [0] ),
-           .amm_read_0           (emif_amm_read          [0] ), //   input,     width = 1,                   .read
-           .amm_write_0          (emif_amm_write         [0] ), //   input,     width = 1,                   .write
-           .amm_writedata_0      (emif_amm_writedata     [0] ), //   input,   width = 512,                   .writedata
+           .amm_address_0        (phy_amm_address        [0] ),
+           .amm_read_0           (phy_amm_read           [0] ), //   input,     width = 1,                   .read
+           .amm_write_0          (phy_amm_write          [0] ), //   input,     width = 1,                   .write
+           .amm_writedata_0      (phy_amm_writedata      [0] ), //   input,   width = 512,                   .writedata
            .amm_burstcount_0     (emif_amm_burstcount    [0] ), //   input,     width = 7,                   .burstcount
-           .amm_byteenable_0     (emif_amm_byteenable    [0] ), //   input,    width = 64,                   .byteenable
-           .amm_ready_0          (emif_amm_ready         [0] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
-           .amm_readdata_0       (emif_amm_readdata      [0] ), //  output,   width = 512,                   .readdata
-           .amm_readdatavalid_0  (emif_amm_readdatavalid [0] ), //  output,     width = 1,                   .readdatavalid
+           .amm_byteenable_0     (phy_amm_byteenable     [0] ), //   input,    width = 64,                   .byteenable
+           .amm_ready_0          (phy_amm_ready          [0] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
+           .amm_readdata_0       (phy_amm_readdata       [0] ), //  output,   width = 512,                   .readdata
+           .amm_readdatavalid_0  (phy_amm_readdatavalid  [0] ), //  output,     width = 1,                   .readdatavalid
            .calbus_read          (calbus_read            [0] ), //   input,     width = 1,        emif_calbus.calbus_read
            .calbus_write         (calbus_write           [0] ), //   input,     width = 1,                   .calbus_write
            .calbus_address       (calbus_address         [0] ), //   input,    width = 20,                   .calbus_address
@@ -167,15 +178,15 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .local_cal_fail       (local_cal_fail         [1] ), //  output,     width = 1,                   .local_cal_fail
            .emif_usr_reset_n     (emif_usr_reset_n       [1] ), //  output,     width = 1,   emif_usr_reset_n.reset_n
            .emif_usr_clk         (emif_usr_clk           [1] ), //  output,     width = 1,       emif_usr_clk.clk
-           .amm_address_0        (emif_amm_address       [1] ),
-           .amm_read_0           (emif_amm_read          [1] ), //   input,     width = 1,                   .read
-           .amm_write_0          (emif_amm_write         [1] ), //   input,     width = 1,                   .write
-           .amm_writedata_0      (emif_amm_writedata     [1] ), //   input,   width = 512,                   .writedata
+           .amm_address_0        (phy_amm_address        [1] ),
+           .amm_read_0           (phy_amm_read           [1] ), //   input,     width = 1,                   .read
+           .amm_write_0          (phy_amm_write          [1] ), //   input,     width = 1,                   .write
+           .amm_writedata_0      (phy_amm_writedata      [1] ), //   input,   width = 512,                   .writedata
            .amm_burstcount_0     (emif_amm_burstcount    [1] ), //   input,     width = 7,                   .burstcount
-           .amm_byteenable_0     (emif_amm_byteenable    [1] ), //   input,    width = 64,                   .byteenable
-           .amm_ready_0          (emif_amm_ready         [1] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
-           .amm_readdata_0       (emif_amm_readdata      [1] ), //  output,   width = 512,                   .readdata
-           .amm_readdatavalid_0  (emif_amm_readdatavalid [1] ), //  output,     width = 1,                   .readdatavalid
+           .amm_byteenable_0     (phy_amm_byteenable     [1] ), //   input,    width = 64,                   .byteenable
+           .amm_ready_0          (phy_amm_ready          [1] ), //  output,     width = 1,         ctrl_amm_0.waitrequest_n
+           .amm_readdata_0       (phy_amm_readdata       [1] ), //  output,   width = 512,                   .readdata
+           .amm_readdatavalid_0  (phy_amm_readdatavalid  [1] ), //  output,     width = 1,                   .readdatavalid
            .calbus_read          (calbus_read            [1] ), //   input,     width = 1,        emif_calbus.calbus_read
            .calbus_write         (calbus_write           [1] ), //   input,     width = 1,                   .calbus_write
            .calbus_address       (calbus_address         [1] ), //   input,    width = 20,                   .calbus_address
@@ -185,6 +196,50 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
            .local_reset_req      (1'b0                       ), //   input,     width = 1,    local_reset_req.local_reset_req
            .calbus_clk           (calbus_clk                 )  //   input,     width = 1,    emif_calbus_clk.clk
         );
+
+  generate for (genvar chanCount = 0;
+                chanCount < ddr_mc_top_common_pkg::MCTOP_MC_CHANNEL;
+                chanCount++) begin : GEN_POISON_SIDECAR
+    mc_poison_sidecar sidecar
+    (
+      .clk                 (emif_usr_clk[chanCount]),
+      .reset_n             (emif_usr_reset_n[chanCount]),
+      .up_address          (emif_amm_address[chanCount]),
+      .up_writedata        (emif_amm_writedata[chanCount]),
+      .up_byteenable       (emif_amm_byteenable[chanCount]),
+      .up_read             (emif_amm_read[chanCount]),
+      .up_write            (emif_amm_write[chanCount]),
+      .up_write_poison     (emif_amm_write_poison[chanCount]),
+      .up_readdata         (emif_amm_readdata[chanCount]),
+      .up_readdatavalid    (emif_amm_readdatavalid[chanCount]),
+      .up_read_poison      (emif_amm_read_poison[chanCount]),
+      .up_ready            (emif_amm_ready[chanCount]),
+      .phy_address         (phy_amm_address[chanCount]),
+      .phy_writedata       (phy_amm_writedata[chanCount]),
+      .phy_byteenable      (phy_amm_byteenable[chanCount]),
+      .phy_read            (phy_amm_read[chanCount]),
+      .phy_write           (phy_amm_write[chanCount]),
+      .phy_readdata        (phy_amm_readdata[chanCount]),
+      .phy_readdatavalid   (phy_amm_readdatavalid[chanCount]),
+      .phy_ready           (phy_amm_ready[chanCount])
+    );
+
+`ifndef SYNTHESIS
+    always_ff @(posedge emif_usr_clk[chanCount]) begin
+      if (emif_usr_reset_n[chanCount]) begin
+        if (phy_amm_write[chanCount])
+          assert ({1'b0, phy_amm_address[chanCount]} <
+                  mc_poison_sidecar_pkg::PHYS_LINE_COUNT_PER_CHANNEL);
+        if (emif_amm_ready[chanCount] && emif_amm_write[chanCount])
+          assert ({1'b0, emif_amm_address[chanCount]} <
+                  mc_poison_sidecar_pkg::DATA_LINE_COUNT_PER_CHANNEL);
+        if (emif_amm_readdatavalid[chanCount])
+          assert (!$isunknown(emif_amm_read_poison[chanCount]));
+      end
+    end
+`endif
+  end
+  endgenerate
 
 `else 
 `ifndef REVB_DEVKIT
@@ -370,6 +425,10 @@ logic calbus_clk;   // emif_cal_0:calbus_clk -> [emif_fm_0:calbus_clk, emif_fm_1
 
 `endif  // ifndef REVB_DEVKIT
 `endif  // ifdef  IA780I
+
+`ifndef IA780I
+  assign emif_amm_read_poison = '0;
+`endif
 
 // ================================================================================================
 /* EMIF AVMM Calibration blocks

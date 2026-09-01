@@ -214,6 +214,57 @@ def main() -> int:
         )
     require_regex(
         errors,
+        mc_emif,
+        r"input\s+logic\s+\[[^]]*MCTOP_MC_CHANNEL[^]]*\]\s*"
+        r"emif_amm_write_poison",
+        "mc_emif_avmm must accept per-channel write poison",
+    )
+    require_regex(
+        errors,
+        mc_emif,
+        r"output\s+logic\s+\[[^]]*MCTOP_MC_CHANNEL[^]]*\]\s*"
+        r"emif_amm_read_poison",
+        "mc_emif_avmm must return per-channel read poison",
+    )
+    require_regex(
+        errors,
+        mc_emif,
+        r"mc_poison_sidecar\s+sidecar.*?\.phy_address\s*\(\s*"
+        r"phy_amm_address\[chanCount\]",
+        "mc_emif_avmm must instantiate a poison sidecar per channel",
+    )
+    require_regex(
+        errors,
+        mc_emif,
+        r"\.amm_address_0\s*\(\s*phy_amm_address\s*\[0\]",
+        "IA780I channel 0 EMIF must use the sidecar physical address",
+    )
+    require_regex(
+        errors,
+        mc_emif,
+        r"\.amm_address_0\s*\(\s*phy_amm_address\s*\[1\]",
+        "IA780I channel 1 EMIF must use the sidecar physical address",
+    )
+    if re.search(
+        r"assign\s+emif2hdm_avmm_read_poison_emifclk\s*=\s*'0", wrapper
+    ):
+        errors.append("top wrapper still ties sidecar read poison to zero")
+    require_regex(
+        errors,
+        wrapper,
+        r"\.emif_amm_write_poison\s*\(\s*"
+        r"hdm2emif_avmm_write_poison_emifclk\s*\)",
+        "top wrapper must connect merged write poison into mc_emif_avmm",
+    )
+    require_regex(
+        errors,
+        wrapper,
+        r"\.emif_amm_read_poison\s*\(\s*"
+        r"emif2hdm_avmm_read_poison_emifclk\s*\)",
+        "top wrapper must connect sidecar read poison from mc_emif_avmm",
+    )
+    require_regex(
+        errors,
         wrapper,
         r"`ifdef\s+IA780I.*?assign\s+hdm_size_256mb\s*=\s*"
         r"mc_poison_sidecar_pkg::HDM_SIZE_256MB",
